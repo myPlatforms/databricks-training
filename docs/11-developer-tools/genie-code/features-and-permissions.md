@@ -94,9 +94,11 @@ Genie Code는 세션을 넘어 지속될 가치가 있는 사실을 기억합니
 | 노트북 | Serverless code execution | 서버리스 실행 |
 | Lakeflow Pipelines | Pipeline development in Lakeflow | ETL 워크로드와 Lakeflow 파이프라인 작성 |
 | SQL | Genie Ontology (Public Preview), Explore sample data | 지표 정의와 조인 힌트 등 비즈니스 맥락 검색, 샘플 데이터 탐색용 SQL 생성 |
-| 문서 처리 | Document processing | 비정형 문서를 파싱·분류·추출하는 파이프라인 구축과 점검 (릴리즈 노트 2026-09-25) |
+| 문서 처리 | Document processing | 비정형 문서를 파싱·분류·추출하는 파이프라인 구축과 점검 (릴리즈 노트 2026-09-25). `ai_parse_document`, `ai_classify`, 인용(citation)과 신뢰도 점수(confidence score)를 포함한 `ai_extract`로 Lakeflow job을 만들고, 라벨 테이블 기준 필드별 평가(Measure), 수정안 제시(Improve), 재평가(Re-evaluate) 루프를 자동화합니다. 수정안은 승인 후 적용되는 diff로 제시됩니다 (블로그 2026-10-27) |
 | AI/BI 대시보드 | Data analysis in dashboards | 대시보드 계획·생성과 데이터 분석 |
+| AI/BI 대시보드 | Bulk import from Power BI and Tableau | Power BI 또는 Tableau 파일을 한 번에 최대 100개까지 AI/BI 대시보드와 메트릭 뷰(metric view)로 가져오기 (릴리즈 노트 2026-10-22) |
 | MLflow | Observability and evaluation in MLflow | AI 애플리케이션 관찰·평가·개선 |
+| Lakeflow Jobs | Improved Lakeflow Performance Observability | 지원되는 태스크의 Job 수준 쿼리 성능 지표·인사이트에서 **Optimize** 버튼으로 Genie Code를 열어 쿼리 개선을 돕습니다. 쿼리 프로파일링은 서버리스 컴퓨트, SQL Warehouses, Lakeflow Pipelines를 지원합니다. compliance security profile 워크스페이스에는 2026-11-25 이후 기본 제공 예정 (What's coming) |
 | 전체 공통 | Chat with Genie Code, Inline suggestions, Quick fix, Diagnose error, /slash commands, Command shortcuts, Filter data | 기본 대화와 편집 보조 |
 | 전체 공통 | Schedule tasks with Genie Code | 예약 작업 ([상세](scheduled-tasks.md)) |
 | 전체 공통 | Branch and edit chats | 채팅 분기와 수정 (릴리즈 노트 2026-09-09 "conversation controls") |
@@ -152,3 +154,6 @@ Genie Code는 세션을 넘어 지속될 가치가 있는 사실을 기억합니
 - [Remember context across sessions](https://docs.databricks.com/aws/en/genie-code/memory)
 - [Improve Genie Code responses](https://docs.databricks.com/aws/en/genie-code/tips)
 - [Genie Code 개요](https://docs.databricks.com/aws/en/genie-code/)
+- [AI/BI 릴리즈 노트 (2026) — Dashboard enhancements](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#dashboard-enhancements)
+- [From spot fixes to measured gains: improving document extraction accuracy with ai_extract and MLflow Prompt Registry](https://www.databricks.com/blog/spot-fixes-measured-gains-improving-document-extraction-accuracy-aiextract-and-mlflow-prompt)
+- [What's coming — Improved Lakeflow Performance Observability](https://docs.databricks.com/aws/en/release-notes/whats-coming#improved-lakeflow-performance-observability-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)
