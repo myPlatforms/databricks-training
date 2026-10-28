@@ -7,6 +7,10 @@
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color: #1b3139;
   --md-accent-fg-color: #ff6b5c;
+  --md-typeset-a-color: #ff8a7a;
+}
+[data-md-color-scheme="default"] {
+  --md-typeset-a-color: #c4321f;
 }
 .md-typeset table:not([class]) { font-size: 0.72rem; }
 .md-typeset table:not([class]) th { white-space: nowrap; }

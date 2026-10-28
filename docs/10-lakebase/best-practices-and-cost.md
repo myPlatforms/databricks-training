@@ -78,7 +78,7 @@
 ### 3.1 저장소 쿼터
 
 - 브랜치마다 데이터베이스 스토리지 쿼터가 있습니다. 요청으로 조정할 수 있습니다.
-- 쿼터에 집계되는 것은 실제 데이터(테이블, 인덱스)입니다. 포인트인타임 복구용 기록은 집계되지 않습니다.
+- 쿼터에 집계되는 것은 실제 데이터(테이블, 인덱스)입니다. 인스턴트 복구용 기록은 집계되지 않습니다.
 - 쿼터에 도달하면 쓰기 성능이 떨어집니다. 데이터를 지우면 공간을 회수할 수 있습니다.
 - 컴퓨트는 시작하거나 재시작할 때 현재 쿼터를 읽습니다. 이미 실행 중인 컴퓨트는 재시작 전까지 이전 쿼터를 씁니다(Azure 문서).
 
@@ -91,9 +91,9 @@
 | 적용 범위 | 프로젝트의 모든 루트 브랜치 |
 | 비용 영향 | 보존 기간을 늘리면 스토리지가 늘어남 |
 
-포인트인타임 복구와 "과거 시점 쿼리(point-in-time branching)"에 쓰이는 기간입니다. 필요 이상으로 늘리지 않는 것이 비용 측면에서 유리합니다.
+인스턴트 복구와 "과거 시점 쿼리(Querying data at a point in time)"에 쓰이는 기간입니다. 필요 이상으로 늘리지 않는 것이 비용 측면에서 유리합니다.
 
-### 3.3 포인트인타임 복구 절차
+### 3.3 인스턴트 복구 절차
 
 문서 기준 절차는 다음과 같습니다. 이 절차는 **UI 흐름만** 문서에 있습니다. CLI나 API 명령은 근거 문서에서 확인하지 못했습니다.
 
@@ -103,7 +103,7 @@
 
 복구 결과는 **새 루트 브랜치** 입니다. 원래 브랜치는 바뀌지 않으며, 원래 연결은 계속 동작합니다. 복구된 데이터를 쓰려면 애플리케이션의 연결 설정을 새 브랜치로 바꿔야 합니다.
 
-> **주의** 복구는 해당 브랜치의 **모든 Postgres 데이터베이스** 를 그 시점으로 되돌린 새 브랜치를 만듭니다. 문제가 된 데이터베이스 하나만 원하더라도 전체가 포함됩니다.
+> **주의** 복구는 해당 브랜치의 ** 모든 Postgres 데이터베이스** 를 그 시점으로 되돌린 새 브랜치를 만듭니다. 문제가 된 데이터베이스 하나만 원하더라도 전체가 포함됩니다.
 
 > **주의** 프로젝트에는 루트 브랜치가 최대 3개입니다. 복구 전에 쓰지 않는 루트 브랜치를 삭제해야 할 수 있습니다.
 
@@ -119,7 +119,7 @@
 | 사용자 태그 | 프로젝트의 사용자 정의 태그는 계정의 청구 가능 사용 기록(`system.billing.usage`)에 기록됨. 팀, 프로젝트, 비용 센터별 추적에 사용 |
 | 태그 갱신 | API나 CLI로 태그를 갱신하면 기존 태그 목록 전체가 교체됨 |
 | 스토리지 | 기록 보존 기간 연장은 스토리지를 늘림 |
-| 스토리지 쿼터 | 포인트인타임 복구 기록은 쿼터에 집계되지 않음 |
+| 스토리지 쿼터 | 인스턴트 복구 기록은 쿼터에 집계되지 않음 |
 | 브랜치 (만료 설정) | 만료 설정 브랜치는 **바뀐 데이터** 만 과금 |
 | 브랜치 (영구) | 만료가 없는 브랜치는 **데이터 전체 크기** 로 과금 |
 | 스케일 투 제로 | 비활성 컴퓨트를 일시 중지해 활성 컴퓨트 한도를 지키는 용도로 설명. 일시 중지 상태의 과금 여부는 문서에 명시 없음 |
@@ -182,7 +182,7 @@
 - [Manage projects (AWS)](https://docs.databricks.com/aws/en/oltp/projects/manage-projects)
 - [Manage projects (Azure)](https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects)
 - [Autoscaling (AWS)](https://docs.databricks.com/aws/en/oltp/projects/autoscaling)
-- [Point-in-time restore (AWS)](https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore)
+- [Point-in-time restore (AWS, 인스턴트 복구)](https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore)
 - [Branches (AWS)](https://docs.databricks.com/aws/en/oltp/projects/branches)
 - [Authentication (AWS)](https://docs.databricks.com/aws/en/oltp/projects/authentication)
 - [Connection pooling (AWS)](https://docs.databricks.com/aws/en/oltp/projects/connection-pooling)

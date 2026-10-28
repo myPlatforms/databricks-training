@@ -2,7 +2,7 @@
 
 > 기준일: 2026-10-28 · 근거: 공식 문서
 
-Lakebase에 접속하는 방법은 두 가지입니다. **OAuth 토큰** 을 Postgres 비밀번호로 쓰는 방식과, Postgres **네이티브 비밀번호 역할** 을 쓰는 방식입니다. 이 페이지는 두 방식의 차이, 토큰 만료와 연결 수명, 역할과 권한, 커넥션 풀링을 다룹니다.
+Lakebase에 접속하는 방법은 두 가지입니다. **OAuth 토큰** 을 Postgres 비밀번호로 쓰는 방식과, Postgres ** 네이티브 비밀번호 역할** 을 쓰는 방식입니다. 이 페이지는 두 방식의 차이, 토큰 만료와 연결 수명, 역할과 권한, 커넥션 풀링을 다룹니다.
 
 ## 1. 왜 이 구조가 필요한가
 
@@ -38,6 +38,8 @@ Lakebase는 Databricks 아이디(사용자, 서비스 프린시펄, 그룹)를 P
 3. Postgres는 토큰이 유효한지 로그인 시점에 확인하고, 역할이 있는지 확인합니다.
 
 발급된 토큰 응답에는 `token`과 `expire_time`이 들어 있습니다.
+
+UI에서는 Lakebase 앱에서 **Connect** 를 열고, Role 드롭다운의 OAuth 역할을 고른 뒤, psql이 비밀번호를 물으면 **Copy OAuth token** 버튼으로 복사한 값을 붙여 넣습니다. 이 버튼은 ** 현재 로그인한 아이덴티티**의 토큰만 만들며, 서비스 프린시펄이나 다른 사용자의 토큰은 만들지 않습니다. 그런 경우에는 CLI나 SDK를 씁니다.
 
 ### 토큰 발급 (CLI)
 
@@ -250,6 +252,7 @@ DATABASES = {
 ## 참고 문서
 
 - [Authentication (AWS)](https://docs.databricks.com/aws/en/oltp/projects/authentication)
+- [Connection quickstart (AWS)](https://docs.databricks.com/aws/en/oltp/projects/connect-overview)
 - [Connection pooling (AWS)](https://docs.databricks.com/aws/en/oltp/projects/connection-pooling)
 - [Postgres roles (AWS)](https://docs.databricks.com/aws/en/oltp/projects/postgres-roles)
 - [Postgres clients (AWS)](https://docs.databricks.com/aws/en/oltp/projects/postgres-clients)

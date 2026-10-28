@@ -20,7 +20,7 @@ Lakebase는 브랜치를 copy-on-write 방식으로 즉시 만들고, 기록 보
 
 ### 2.1 동작 원리
 
-문서 설명은 다음과 같습니다. 브랜치는 Git 브랜치와 비슷하게 동작합니다. 새 브랜치는 **copy-on-write**로 "in seconds" 만들어집니다. 부모의 스키마와 데이터를 상속하고 스토리지를 공유하며, 데이터가 바뀔 때만 변경분이 따로 저장됩니다. 브랜치 생성 시간은 데이터베이스 크기와 무관합니다.
+문서 설명은 다음과 같습니다. 브랜치는 Git 브랜치와 비슷하게 동작합니다. 새 브랜치는 **copy-on-write** 로 "in seconds" 만들어집니다. 부모의 스키마와 데이터를 상속하고 스토리지를 공유하며, 데이터가 바뀔 때만 변경분이 따로 저장됩니다. 브랜치 생성 시간은 데이터베이스 크기와 무관합니다.
 
 | 개념 | 문서 설명 |
 |---|---|
@@ -58,7 +58,7 @@ for project in w.postgres.list_projects():
 
 ## 3. 인스턴트 복구 (Instant restore)
 
-문서 페이지 제목은 **Point-in-time restore**이고, 랜딩 페이지의 기능 이름은 **Instant restore**입니다. 이 장은 두 이름을 모두 표기합니다. 기능 상태 라벨은 페이지에 없습니다.
+문서 페이지 제목은 **Point-in-time restore** 이고, 랜딩 페이지의 기능 이름은 **Instant restore** 입니다. 이 장은 두 이름을 모두 표기합니다. 기능 상태 라벨은 페이지에 없습니다.
 
 ### 3.1 동작 원리
 
@@ -71,22 +71,22 @@ for project in w.postgres.list_projects():
 | 루트 브랜치 한도 | "Projects have a maximum of 3 root branches" |
 | 비용 | "Extending the restore window increases your storage." |
 
-복구 범위는 **브랜치의 모든 Postgres 데이터베이스**입니다. 문제가 된 데이터베이스 하나만 되돌릴 수 없습니다.
+복구 범위는 **브랜치의 모든 Postgres 데이터베이스** 입니다. 문제가 된 데이터베이스 하나만 되돌릴 수 없습니다.
 
 ### 3.2 복구 절차 (UI)
 
 문서가 설명하는 절차는 UI뿐입니다. CLI나 API 명령은 원문에 없습니다.
 
-1. Lakebase 앱에서 프로젝트를 열고 사이드바의 **Backup & Restore**를 선택합니다.
-2. **Restore from history**에서 원본 브랜치를 고르고, 날짜·시각 선택기로 복구 시점을 고릅니다. **Preview data**로 미리 볼 수 있습니다.
-3. **Restore**를 클릭하고 확인 화면에서 **Restore**를 한 번 더 클릭합니다.
+1. Lakebase 앱에서 프로젝트를 열고 사이드바의 **Backup & Restore** 를 선택합니다.
+2. **Restore from history** 에서 원본 브랜치를 고르고, 날짜·시각 선택기로 복구 시점을 고릅니다. **Preview data** 로 미리 볼 수 있습니다.
+3. **Restore** 를 클릭하고 확인 화면에서 **Restore** 를 한 번 더 클릭합니다.
 4. 복구된 데이터를 쓰려면 애플리케이션의 연결 설정을 새 브랜치로 바꿉니다.
 
 > **주의** 루트 브랜치는 최대 3개입니다. 복구 전에 쓰지 않는 루트 브랜치를 삭제해야 할 수 있습니다.
 
 ## 4. 특정 시점 브랜치 (Querying data at a point in time)
 
-문서 설명에 따르면, 보존 기간 안의 임의 시점 데이터를 **별도 브랜치**로 만들어 조회합니다. 운영은 영향을 받지 않습니다. 이 기능은 데이터 이슈를 조사하거나 과거 상태를 분석할 때 씁니다.
+문서 설명에 따르면, 보존 기간 안의 임의 시점 데이터를 **별도 브랜치** 로 만들어 조회합니다. 운영은 영향을 받지 않습니다. 이 기능은 데이터 이슈를 조사하거나 과거 상태를 분석할 때 씁니다.
 
 | 항목 | 내용 (원문) |
 |---|---|
@@ -101,7 +101,7 @@ for project in w.postgres.list_projects():
 
 ## 5. 재해 복구 (Disaster recovery)
 
-> **참고** 재해 복구 상태는 **Private Preview**입니다. 원문은 "During the Private Preview, disaster recovery is not intended for production use."라고 명시합니다. 운영 설계에 넣지 마십시오.
+> **참고** 재해 복구 상태는 **Private Preview** 입니다. 원문은 "During the Private Preview, disaster recovery is not intended for production use."라고 명시합니다. 운영 설계에 넣지 마십시오.
 
 ### 5.1 동작 원리
 

@@ -8,7 +8,8 @@ Lakebase는 Databricks 플랫폼에 통합된 **관리형 Postgres 데이터베�
 
 | 항목 | 내용 | 상태 |
 |---|---|---|
-| Lakebase Postgres 전체 | 관리형 Postgres, Unity Catalog 통합 | 문서에 상태 라벨 없음 (Autoscaling 프로젝트 기준) |
+| Lakebase Postgres 전체 | 관리형 Postgres, Unity Catalog 통합 | 문서에 상태 라벨 없음 (Lakebase Postgres 랜딩 페이지 기준) |
+| 재해 복구(Disaster recovery) | 다른 리전의 보조 워크스페이스로 주기적 복제 | Private Preview (운영 용도 아님) |
 | 동기화 테이블(Synced Table) | Unity Catalog 테이블 → Lakebase | 문서에 "generally available"로 명시 (LTAP Direct Writes는 Beta) |
 | 변경 데이터 피드(Change Data Feed, CDF) | Lakebase 테이블 변경 → Unity Catalog Delta | Public Preview |
 | 논리 복제(Logical replication) | Lakebase ↔ 외부 Postgres | 문서에 상태 라벨 없음 |
@@ -65,7 +66,7 @@ Azure 문서는 프로젝트 구조를 같은 방식으로 설명합니다. 프�
 
 ### 스토리지와 컴퓨트 분리
 
-공식 문서는 Lakebase 아키텍처가 **상태가 없는(stateless) Postgres 컴퓨트** 와 **내구성 있는 스토리지 계층** 을 분리한다고 설명합니다. 스토리지 계층은 세이프키퍼(safekeeper), 페이지서버(pageserver), 클라우드 오브젝트 스토리지로 구성됩니다. 스토리지는 영역 중복(zone-redundant)이며, 컴퓨트가 실행 중이든, 일시 중지되었든, 장애 조치 중이든 데이터는 유지됩니다.
+공식 문서는 Lakebase 아키텍처가 **상태가 없는(stateless) Postgres 컴퓨트** 와 ** 내구성 있는 스토리지 계층** 을 분리한다고 설명합니다. 스토리지 계층은 세이프키퍼(safekeeper), 페이지서버(pageserver), 클라우드 오브젝트 스토리지로 구성됩니다. 스토리지는 영역 중복(zone-redundant)이며, 컴퓨트가 실행 중이든, 일시 중지되었든, 장애 조치 중이든 데이터는 유지됩니다.
 
 이 분리의 결과는 다음과 같습니다.
 
@@ -94,16 +95,16 @@ Azure 문서는 프로젝트 구조를 같은 방식으로 설명합니다. 프�
 
 > **참고** 브랜치 과금 설명은 Lakebase 브랜치 문서의 원문입니다. 과금 단위의 단가는 이 장에서 다루지 않습니다(베스트 프랙티스와 비용 페이지 참조).
 
-### 포인트인타임 복구 (Point-in-time restore)
+### 인스턴트 복구 (Instant restore)
 
-루트 브랜치에 대해 기록 보존 기간(History window) 내의 임의 시점으로 복구할 수 있습니다.
+랜딩 페이지의 기능 이름은 **Instant restore** 이고, 상세 페이지 제목은 **Point-in-time restore** 입니다. 루트 브랜치에 대해 기록 보존 기간(History window) 내의 임의 시점으로 복구할 수 있습니다.
 
 - 보존 기간은 2일부터 30일까지 설정할 수 있으며, 기본값은 7일입니다.
 - 보존 기간 설정은 프로젝트의 모든 브랜치에 적용됩니다.
 - 보존 기간을 늘리면 스토리지가 늘어납니다.
 - 복구는 기존 브랜치를 제자리에서 바꾸지 않고, **새 루트 브랜치** 를 만듭니다. 원래 브랜치와 연결은 영향을 받지 않습니다.
 
-복구 방법과 세부 사항은 [트레이드오프](#4-트레이드오프)와 [주의사항](#5-주의사항)에서 다룹니다.
+복구 절차, 특정 시점 브랜치, 재해 복구는 [브랜치와 복구](branches-and-recovery.md)에서 다룹니다.
 
 ## 3. 어떻게 쓰는가
 
@@ -158,7 +159,7 @@ psql 'postgresql://user@example.com@ep-abc-123.databricks.com/databricks_postgre
 
 ### 언제 Lakebase가 맞는가
 
-Lakebase는 **애플리케이션의 트랜잭션 저장소** 와 **레이크하우스 데이터의 서빙 계층** 이 필요할 때 적합합니다. 예를 들어 다음 경우입니다.
+Lakebase는 **애플리케이션의 트랜잭션 저장소** 와 ** 레이크하우스 데이터의 서빙 계층** 이 필요할 때 적합합니다. 예를 들어 다음 경우입니다.
 
 - 사용자 요청마다 행을 읽고 쓰는 웹·모바일 백엔드
 - 분석 테이블의 결과를 애플리케이션이 저지연으로 조회해야 하는 경우(동기화 테이블)
@@ -174,9 +175,24 @@ Lakebase는 **애플리케이션의 트랜잭션 저장소** 와 **레이크하�
 
 > **주의** 문서는 쿼리를 Postgres 엔진이 실행한다는 점을 명시합니다. 따라서 대량 분석 쿼리를 Lakebase에 던지면 같은 컴퓨트에서 실행되는 애플리케이션 트래픽에 영향을 줄 수 있습니다.
 
-### 재해 복구
+### 재해 복구 (Disaster recovery)
 
-Lakebase 개요 페이지는 재해 복구가 **보조 워크스페이스(Secondary Workspace)** 를 다른 리전에 두고 복제하며, 장애 조치는 **수동** 으로 수행한다고 설명합니다. 자동 장애 조치로 설명하지 않습니다. 세부 절차는 재해 복구 문서에서 확인해야 합니다. 이 장에서는 개요 설명만 옮겼습니다.
+> **참고** 재해 복구는 **Private Preview** 입니다. 문서는 "During the Private Preview, disaster recovery is not intended for production use."라고 명시합니다.
+
+랜딩 페이지 설명에 따르면 재해 복구는 **보조 워크스페이스(Secondary Workspace)** 를 다른 리전에 두고 주기적으로 복제합니다. 장애 조치는 ** 수동(Failover is always manual)** 입니다. 상세 동작과 복구 브랜치는 [브랜치와 복구](branches-and-recovery.md)를 참조하십시오.
+
+### 리전 가용성 (Region availability)
+
+AWS 문서의 Region availability 절(Manage projects 페이지 내 `#availability`)이 나열한 리전은 다음 12개입니다.
+
+| 클라우드 | 리전 |
+|---|---|
+| AWS | us-east-1(N. Virginia), us-east-2(Ohio), us-west-2(Oregon), ca-central-1, sa-east-1, eu-central-1, eu-west-1, eu-west-2, ap-south-1, ap-southeast-1, ap-southeast-2, ap-northeast-1(Tokyo) |
+
+- 문서 원문: "Your Lakebase project is created in your Databricks workspace region."
+- 서울 리전(ap-northeast-2)은 이 목록에 없습니다.
+- 이 목록은 AWS 문서 기준입니다. Azure 목록(24개, `koreacentral` 포함)은 Azure 문서를 따르며, 이 장에서 Azure 리전 가용성 절을 다시 확인하지 않았습니다.
+- 리전별 기능 지원(예: CDF, 논리 복제)은 목록과 별개입니다. 각 기능 페이지의 클라우드·리전 표기를 따르십시오.
 
 ## 5. 주의사항
 
@@ -194,7 +210,8 @@ Lakebase 개요 페이지는 재해 복구가 **보조 워크스페이스(Second
 - [Manage projects (AWS)](https://docs.databricks.com/aws/en/oltp/projects/manage-projects)
 - [Manage projects (Azure)](https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects)
 - [Branches](https://docs.databricks.com/aws/en/oltp/projects/branches)
-- [Point-in-time restore](https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore)
+- [Point-in-time restore (인스턴트 복구)](https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore)
+- [Disaster recovery](https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery)
 - [Lakebase Change Data Feed](https://docs.databricks.com/aws/en/oltp/projects/lakebase-cdf)
 - [Synced tables](https://docs.databricks.com/aws/en/oltp/projects/sync-tables)
 - [Logical replication](https://docs.databricks.com/aws/en/oltp/projects/logical-replication)
