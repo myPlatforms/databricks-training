@@ -46,9 +46,11 @@ Databricks 한국어 교육 자료. 공개 리포 `myPlatforms/databricks-traini
 ## 빌드·검증
 
 ```bash
-uv run mkdocs build --strict   # 깨진 링크·미등록 페이지 검사
-uv run mkdocs serve            # 로컬 미리보기 http://127.0.0.1:8000
+uv run --frozen mkdocs build --strict   # 깨진 링크·미등록 페이지 검사
+uv run --frozen mkdocs serve            # 로컬 미리보기 http://127.0.0.1:8000
 ```
+
+- `uv.lock`은 공개 PyPI URL(`files.pythonhosted.org`)로 기록한다. 사내 프록시로 `uv lock`을 다시 돌리면 프록시 URL이 들어가 CI가 실패하므로, 재생성 후 URL을 공개 주소로 치환하고 `--frozen`으로 실행한다.
 
 PR은 CI에서 `mkdocs build --strict`가 통과해야 병합한다. `main` 병합 시 GitHub Pages로 자동 배포된다.
 

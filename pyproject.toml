@@ -6,3 +6,6 @@ dependencies = [
     "mkdocs-literate-nav>=0.6.3",
     "mkdocs-material>=9.8.0",
 ]
+
+[tool.uv]
+package = false

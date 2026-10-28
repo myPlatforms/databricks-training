@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - name: Build (strict)
-        run: uv run mkdocs build --strict
+        run: uv run --frozen mkdocs build --strict
       - name: Deploy to gh-pages
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
