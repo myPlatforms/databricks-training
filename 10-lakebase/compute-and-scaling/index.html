@@ -13,6 +13,10 @@
         <link rel="canonical" href="https://myplatforms.github.io/databricks-training/10-lakebase/compute-and-scaling/">
       
       
+        <link rel="prev" href="../what-is-lakebase/">
+      
+      
+        <link rel="next" href="../branches-and-recovery/">
       
       
         
@@ -258,10 +262,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../" class="md-tabs__link">
           
   
@@ -400,6 +406,8 @@
       
   
   
+    
+  
   
   
     
@@ -425,20 +433,25 @@
       
         
       
+        
+      
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -460,13 +473,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -511,17 +524,236 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../deployment-types/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    배포 형태 비교
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-어떻게-동작하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 어떻게 동작하는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 어떻게 동작하는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Autoscaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-스케일-투-제로" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 스케일 투 제로
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-읽기-복제본-read-replica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 읽기 복제본 (Read replica)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-고가용성-high-availability-ha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 고가용성 (High availability, HA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-어떻게-쓰는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 어떻게 쓰는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 어떻게 쓰는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-설정-흐름-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 설정 흐름 (UI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-프로젝트-기본-컴퓨트-설정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 프로젝트 기본 컴퓨트 설정
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 트레이드오프
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 주의사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branches-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    브랜치와 복구
   
 
     
@@ -1352,12 +1584,12 @@
 </tr>
 </tbody>
 </table>
-<p><strong>재접속 동작</strong>: 일시 중지된 컴퓨트로 새 쿼리나 연결 요청이 오면 Lakebase가 자동으로 다시 활성화합니다. 재활성화는 "within a few hundred milliseconds"가 걸린다고 문서가 설명합니다. 문서는 애플리케이션이 이 짧은 재활성화 구간을 위해 <strong>연결 재시도 로직</strong>을 구현해야 한다고 권장합니다. 재활성화 후 세션 상태(임시 테이블, 프리페어드 문장, 커넥션 풀)는 초기화됩니다.</p>
+<p><strong>재접속 동작</strong>: 일시 중지된 컴퓨트로 새 쿼리나 연결 요청이 오면 Lakebase가 자동으로 다시 활성화합니다. 재활성화는 "within a few hundred milliseconds"가 걸린다고 문서가 설명합니다. 문서는 애플리케이션이 이 짧은 재활성화 구간을 위해 ** 연결 재시도 로직**을 구현해야 한다고 권장합니다. 재활성화 후 세션 상태(임시 테이블, 프리페어드 문장, 커넥션 풀)는 초기화됩니다.</p>
 <blockquote>
 <p><strong>주의</strong> 스케일 투 제로와 연결 풀은 함께 설계해야 합니다. 세션 상태가 초기화되므로, 풀이 오래된 연결을 들고 있으면 첫 요청에서 실패할 수 있습니다. 재시도와 연결 검증을 넣으십시오.</p>
 </blockquote>
 <h3 id="23-읽기-복제본-read-replica">2.3 읽기 복제본 (Read replica)<a class="headerlink" href="#23-읽기-복제본-read-replica" title="Permanent link">&para;</a></h3>
-<p>문서 설명: 읽기 복제본은 주 읽기-쓰기 컴퓨트와 <strong>같은 데이터에 대해 읽기 작업을 수행하는 독립된 읽기 전용 컴퓨트</strong>입니다.</p>
+<p>문서 설명: 읽기 복제본은 주 읽기-쓰기 컴퓨트와 <strong>같은 데이터에 대해 읽기 작업을 수행하는 독립된 읽기 전용 컴퓨트</strong> 입니다.</p>
 <table>
 <thead>
 <tr>
@@ -1407,7 +1639,7 @@
 </tr>
 <tr>
 <td>설정 방법</td>
-<td>주 컴퓨트의 편집 창에서 <strong>Compute type</strong>을 <strong>High availability</strong>로 설정한 뒤 <strong>Configuration</strong> 선택</td>
+<td>주 컴퓨트의 편집 창에서 <strong>Compute type</strong> 을 <strong>High availability</strong> 로 설정한 뒤 <strong>Configuration</strong> 선택</td>
 </tr>
 <tr>
 <td>스케일 투 제로</td>
@@ -1428,14 +1660,14 @@
 <ol>
 <li>Lakebase 앱에서 프로젝트를 열고 브랜치의 <strong>Computes</strong> 탭으로 갑니다.</li>
 <li>컴퓨트를 편집해 크기 범위(최소·최대 CU)를 설정합니다. 최대 32 CU 이하에서만 스케일 투 제로를 켤 수 있습니다.</li>
-<li>필요하면 <strong>Add Read Replica</strong>로 읽기 복제본을 추가합니다(브랜치당 최대 6개).</li>
-<li>고가용성이 필요하면 <strong>Compute type</strong>을 <strong>High availability</strong>로 바꾸고 구성을 선택합니다. 이때 스케일 투 제로는 꺼야 합니다.</li>
+<li>필요하면 <strong>Add Read Replica</strong> 로 읽기 복제본을 추가합니다(브랜치당 최대 6개).</li>
+<li>고가용성이 필요하면 <strong>Compute type</strong> 을 <strong>High availability</strong> 로 바꾸고 구성을 선택합니다. 이때 스케일 투 제로는 꺼야 합니다.</li>
 </ol>
 <blockquote>
 <p><strong>참고</strong> 이 페이지의 근거 문서들은 컴퓨트 설정의 CLI나 SDK 예시를 제공하지 않았습니다. 자동화가 필요하면 Postgres API 레퍼런스를 확인하십시오.</p>
 </blockquote>
 <h3 id="32-프로젝트-기본-컴퓨트-설정">3.2 프로젝트 기본 컴퓨트 설정<a class="headerlink" href="#32-프로젝트-기본-컴퓨트-설정" title="Permanent link">&para;</a></h3>
-<p>새 프로젝트의 기본 컴퓨트 설정은 프로젝트 설정의 <strong>Compute defaults</strong>에서 바꿀 수 있습니다. 바꿔도 기존 컴퓨트 설정은 바뀌지 않고, 새로 만드는 주 컴퓨트와 읽기 복제본의 초기값에만 적용됩니다.</p>
+<p>새 프로젝트의 기본 컴퓨트 설정은 프로젝트 설정의 <strong>Compute defaults</strong> 에서 바꿀 수 있습니다. 바꿔도 기존 컴퓨트 설정은 바뀌지 않고, 새로 만드는 주 컴퓨트와 읽기 복제본의 초기값에만 적용됩니다.</p>
 <h2 id="4-트레이드오프">4. 트레이드오프<a class="headerlink" href="#4-트레이드오프" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1514,6 +1746,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../what-is-lakebase/" class="md-footer__link md-footer__link--prev" aria-label="이전: Lakebase 개요">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                Lakebase 개요
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../branches-and-recovery/" class="md-footer__link md-footer__link--next" aria-label="다음: 브랜치와 복구">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                브랜치와 복구
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">

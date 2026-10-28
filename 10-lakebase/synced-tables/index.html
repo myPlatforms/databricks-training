@@ -433,6 +433,8 @@
       
         
       
+        
+      
     
     
     
@@ -525,14 +527,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment-types/" class="md-nav__link">
+      <a href="../compute-and-scaling/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    배포 형태 비교
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branches-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    브랜치와 복구
   
 
     
@@ -1774,7 +1804,7 @@
 </blockquote>
 <p>동기화 테이블(Synced Table)은 Unity Catalog의 Delta 테이블을 Lakebase Postgres 데이터베이스에 복사해 <strong>저지연 읽기</strong> 를 제공하는 기능입니다. 방향은 레이크하우스 → Lakebase입니다. 반대 방향(Lakebase 변경을 Delta로 옮기는 기능)은 <a href="../change-data-out/">변경 데이터 반출</a>에서 다룹니다.</p>
 <blockquote>
-<p><strong>참고</strong> 문서는 동기화 테이블의 Postgres 쪽에서 <strong>읽기 쿼리만 실행할 것</strong> 을 강하게 권장합니다. 원본 데이터 수정은 레이크하우스 쪽에서 합니다.</p>
+<p><strong>참고</strong> 문서는 동기화 테이블의 Postgres 쪽에서 ** 읽기 쿼리만 실행할 것** 을 강하게 권장합니다. 원본 데이터 수정은 레이크하우스 쪽에서 합니다.</p>
 </blockquote>
 <h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
 <p>레이크하우스 테이블은 분석에 맞지만, 애플리케이션이 행 단위로 빠르게 조회하기에는 맞지 않습니다. 이전에는 보통 다음 방법을 썼습니다.</p>

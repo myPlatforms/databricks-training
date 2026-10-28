@@ -433,6 +433,8 @@
       
         
       
+        
+      
     
     
     
@@ -525,14 +527,42 @@
   
   
     <li class="md-nav__item">
-      <a href="deployment-types/" class="md-nav__link">
+      <a href="compute-and-scaling/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    배포 형태 비교
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="branches-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    브랜치와 복구
   
 
     
@@ -1197,12 +1227,13 @@
 <p>이 장을 마치면 다음을 할 수 있습니다.</p>
 <ul>
 <li>OLTP 워크로드를 레이크하우스와 분리해서 운영할 때의 문제와 Lakebase가 해결하는 지점을 설명합니다.</li>
-<li>Lakebase 배포 형태(Autoscaling, Provisioned)의 차이를 비교하고 신규 프로젝트에 맞는 형태를 고릅니다.</li>
+<li>컴퓨트의 자동 확장(Autoscaling), 스케일 투 제로, 읽기 복제본, 고가용성(HA) 구성을 설정하고 한도를 확인합니다.</li>
 <li>OAuth 토큰을 Postgres 비밀번호로 사용하는 연결 방식과 토큰 만료, 연결 수명 제한을 이해하고 재발급 로직을 설계합니다.</li>
 <li>동기화 테이블(Synced Table)로 Unity Catalog의 Delta 테이블을 Lakebase로 옮기는 설정과 제약을 파악합니다.</li>
 <li>변경 데이터 피드(Change Data Feed, CDF)와 논리 복제(Logical replication)의 지원 범위와 상태를 구분합니다.</li>
 <li>Databricks Apps에 Lakebase 리소스를 바인딩하고 주입되는 환경 변수를 확인합니다.</li>
-<li>브랜치, 포인트인타임 복구(Point-in-time restore), 과금 구조를 운영 관점에서 점검합니다.</li>
+<li>브랜치, 인스턴트 복구(Instant restore), 특정 시점 브랜치, 재해 복구(Private Preview)의 차이를 구분합니다.</li>
+<li>과금 구조를 문서 원문 범위에서 점검합니다.</li>
 </ul>
 <h2 id="페이지-안내">페이지 안내<a class="headerlink" href="#페이지-안내" title="Permanent link">&para;</a></h2>
 <table>
@@ -1217,46 +1248,54 @@
 <tr>
 <td>1</td>
 <td><a href="what-is-lakebase/">Lakebase 개요</a></td>
-<td>왜 필요한가, 구성 요소(프로젝트·브랜치·컴퓨트·데이터베이스·역할), 스토리지·컴퓨트 분리, 브랜칭, 복구</td>
+<td>왜 필요한가, 구성 요소(프로젝트·브랜치·컴퓨트·데이터베이스·역할), 스토리지·컴퓨트 분리, 리전 가용성</td>
 </tr>
 <tr>
 <td>2</td>
-<td><a href="deployment-types/">배포 형태 비교</a></td>
-<td>Autoscaling과 Provisioned의 차이, 현재 상태, 선택 기준</td>
+<td><a href="compute-and-scaling/">컴퓨트와 스케일링</a></td>
+<td>Autoscaling(CU, 범위 제약), 스케일 투 제로, 읽기 복제본, 고가용성(HA)</td>
 </tr>
 <tr>
 <td>3</td>
+<td><a href="branches-and-recovery/">브랜치와 복구</a></td>
+<td>브랜치, 인스턴트 복구, 특정 시점 브랜치, 재해 복구(Private Preview)</td>
+</tr>
+<tr>
+<td>4</td>
 <td><a href="connect-and-auth/">연결과 인증</a></td>
 <td>OAuth 토큰을 비밀번호로 쓰는 방식, 토큰 만료, 연결 수명, 롤과 권한, 클라이언트 도구</td>
 </tr>
 <tr>
-<td>4</td>
+<td>5</td>
 <td><a href="connection-pooling/">커넥션 풀링</a></td>
 <td>내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러와 OAuth의 배타 관계</td>
 </tr>
 <tr>
-<td>5</td>
+<td>6</td>
 <td><a href="synced-tables/">동기화 테이블</a></td>
 <td>Unity Catalog Delta를 Lakebase로 동기화, 동기화 모드, 타입 매핑, 제약</td>
 </tr>
 <tr>
-<td>6</td>
+<td>7</td>
 <td><a href="change-data-out/">변경 데이터 반출</a></td>
 <td>CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위</td>
 </tr>
 <tr>
-<td>7</td>
+<td>8</td>
 <td><a href="apps-integration/">Databricks Apps와 함께 쓰기</a></td>
 <td>리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할</td>
 </tr>
 <tr>
-<td>8</td>
+<td>9</td>
 <td><a href="best-practices-and-cost/">베스트 프랙티스와 비용</a></td>
 <td>운영 설정 기준, 연결 설계, 과금 구조(문서에 명시된 범위)</td>
 </tr>
 </tbody>
 </table>
 <p>권장 학습 순서는 위 표 순서입니다. 연결과 인증 페이지는 동기화 테이블, Apps 페이지의 전제가 되므로 건너뛰지 않는 것을 권장합니다.</p>
+<blockquote>
+<p><strong>참고</strong> 이전 버전 <strong>Lakebase Provisioned</strong> 에서 넘어온 경우: Provisioned 인스턴스는 2026년 7월에 Autoscaling 플랫폼으로 업그레이드가 완료되었다고 문서가 설명합니다. 업그레이드 과정에서 데이터, 연결 문자열, API 호출, Asset Bundle과 Terraform 구성은 보존되었다고 문서가 명시합니다. Provisioned UI는 2026년 9월 1일까지 제공되며, 이후에는 Lakebase UI에서 인스턴스를 관리하라고 안내합니다. 이 장은 Provisioned를 주제로 다루지 않습니다.</p>
+</blockquote>
 <h2 id="선수-지식">선수 지식<a class="headerlink" href="#선수-지식" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>SQL과 Postgres 기초</strong>: 테이블, 인덱스, 트랜잭션, 롤(Role)과 권한(GRANT)을 알고 있어야 합니다.</li>

@@ -433,6 +433,8 @@
       
         
       
+        
+      
     
     
     
@@ -525,14 +527,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment-types/" class="md-nav__link">
+      <a href="../compute-and-scaling/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    배포 형태 비교
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branches-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    브랜치와 복구
   
 
     
@@ -870,10 +900,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-포인트인타임-복구-절차" class="md-nav__link">
+  <a href="#33-인스턴트-복구-절차" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 포인트인타임 복구 절차
+        3.3 인스턴트 복구 절차
       
     </span>
   </a>
@@ -1528,10 +1558,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-포인트인타임-복구-절차" class="md-nav__link">
+  <a href="#33-인스턴트-복구-절차" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 포인트인타임 복구 절차
+        3.3 인스턴트 복구 절차
       
     </span>
   </a>
@@ -1858,7 +1888,7 @@
 <h3 id="31-저장소-쿼터">3.1 저장소 쿼터<a class="headerlink" href="#31-저장소-쿼터" title="Permanent link">&para;</a></h3>
 <ul>
 <li>브랜치마다 데이터베이스 스토리지 쿼터가 있습니다. 요청으로 조정할 수 있습니다.</li>
-<li>쿼터에 집계되는 것은 실제 데이터(테이블, 인덱스)입니다. 포인트인타임 복구용 기록은 집계되지 않습니다.</li>
+<li>쿼터에 집계되는 것은 실제 데이터(테이블, 인덱스)입니다. 인스턴트 복구용 기록은 집계되지 않습니다.</li>
 <li>쿼터에 도달하면 쓰기 성능이 떨어집니다. 데이터를 지우면 공간을 회수할 수 있습니다.</li>
 <li>컴퓨트는 시작하거나 재시작할 때 현재 쿼터를 읽습니다. 이미 실행 중인 컴퓨트는 재시작 전까지 이전 쿼터를 씁니다(Azure 문서).</li>
 </ul>
@@ -1889,8 +1919,8 @@
 </tr>
 </tbody>
 </table>
-<p>포인트인타임 복구와 "과거 시점 쿼리(point-in-time branching)"에 쓰이는 기간입니다. 필요 이상으로 늘리지 않는 것이 비용 측면에서 유리합니다.</p>
-<h3 id="33-포인트인타임-복구-절차">3.3 포인트인타임 복구 절차<a class="headerlink" href="#33-포인트인타임-복구-절차" title="Permanent link">&para;</a></h3>
+<p>인스턴트 복구와 "과거 시점 쿼리(Querying data at a point in time)"에 쓰이는 기간입니다. 필요 이상으로 늘리지 않는 것이 비용 측면에서 유리합니다.</p>
+<h3 id="33-인스턴트-복구-절차">3.3 인스턴트 복구 절차<a class="headerlink" href="#33-인스턴트-복구-절차" title="Permanent link">&para;</a></h3>
 <p>문서 기준 절차는 다음과 같습니다. 이 절차는 <strong>UI 흐름만</strong> 문서에 있습니다. CLI나 API 명령은 근거 문서에서 확인하지 못했습니다.</p>
 <ol>
 <li>Lakebase 앱에서 프로젝트를 열고 사이드바의 <strong>Backup &amp; Restore</strong> 를 선택합니다.</li>
@@ -1899,7 +1929,7 @@
 </ol>
 <p>복구 결과는 <strong>새 루트 브랜치</strong> 입니다. 원래 브랜치는 바뀌지 않으며, 원래 연결은 계속 동작합니다. 복구된 데이터를 쓰려면 애플리케이션의 연결 설정을 새 브랜치로 바꿔야 합니다.</p>
 <blockquote>
-<p><strong>주의</strong> 복구는 해당 브랜치의 <strong>모든 Postgres 데이터베이스</strong> 를 그 시점으로 되돌린 새 브랜치를 만듭니다. 문제가 된 데이터베이스 하나만 원하더라도 전체가 포함됩니다.</p>
+<p><strong>주의</strong> 복구는 해당 브랜치의 ** 모든 Postgres 데이터베이스** 를 그 시점으로 되돌린 새 브랜치를 만듭니다. 문제가 된 데이터베이스 하나만 원하더라도 전체가 포함됩니다.</p>
 <p><strong>주의</strong> 프로젝트에는 루트 브랜치가 최대 3개입니다. 복구 전에 쓰지 않는 루트 브랜치를 삭제해야 할 수 있습니다.</p>
 <p><strong>참고</strong> 복구된 루트 브랜치에는 스냅샷 일정을 설정할 수 있다고 문서가 설명합니다. 수동 스냅샷은 프로젝트당 최대 10개입니다.</p>
 </blockquote>
@@ -1931,7 +1961,7 @@
 </tr>
 <tr>
 <td>스토리지 쿼터</td>
-<td>포인트인타임 복구 기록은 쿼터에 집계되지 않음</td>
+<td>인스턴트 복구 기록은 쿼터에 집계되지 않음</td>
 </tr>
 <tr>
 <td>브랜치 (만료 설정)</td>
@@ -2031,7 +2061,7 @@
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/manage-projects">Manage projects (AWS)</a></li>
 <li><a href="https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects">Manage projects (Azure)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/autoscaling">Autoscaling (AWS)</a></li>
-<li><a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore">Point-in-time restore (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore">Point-in-time restore (AWS, 인스턴트 복구)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/branches">Branches (AWS)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/authentication">Authentication (AWS)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/connection-pooling">Connection pooling (AWS)</a></li>

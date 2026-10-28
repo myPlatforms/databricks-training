@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://myplatforms.github.io/databricks-training/10-lakebase/connect-and-auth/">
       
       
-        <link rel="prev" href="../deployment-types/">
+        <link rel="prev" href="../branches-and-recovery/">
       
       
         <link rel="next" href="../connection-pooling/">
@@ -433,6 +433,8 @@
       
         
       
+        
+      
     
     
     
@@ -525,14 +527,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment-types/" class="md-nav__link">
+      <a href="../compute-and-scaling/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    배포 형태 비교
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branches-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    브랜치와 복구
   
 
     
@@ -1638,7 +1668,7 @@
 <blockquote>
 <p>기준일: 2026-10-28 · 근거: 공식 문서</p>
 </blockquote>
-<p>Lakebase에 접속하는 방법은 두 가지입니다. <strong>OAuth 토큰</strong> 을 Postgres 비밀번호로 쓰는 방식과, Postgres <strong>네이티브 비밀번호 역할</strong> 을 쓰는 방식입니다. 이 페이지는 두 방식의 차이, 토큰 만료와 연결 수명, 역할과 권한, 커넥션 풀링을 다룹니다.</p>
+<p>Lakebase에 접속하는 방법은 두 가지입니다. <strong>OAuth 토큰</strong> 을 Postgres 비밀번호로 쓰는 방식과, Postgres ** 네이티브 비밀번호 역할** 을 쓰는 방식입니다. 이 페이지는 두 방식의 차이, 토큰 만료와 연결 수명, 역할과 권한, 커넥션 풀링을 다룹니다.</p>
 <h2 id="1-왜-이-구조가-필요한가">1. 왜 이 구조가 필요한가<a class="headerlink" href="#1-왜-이-구조가-필요한가" title="Permanent link">&para;</a></h2>
 <p>애플리케이션이 Postgres에 접속할 때 보통 정적 비밀번호를 설정 파일이나 환경 변수에 둡니다. 이 방식에는 다음 문제가 있습니다.</p>
 <ul>
@@ -1701,6 +1731,7 @@
 <li>Postgres는 토큰이 유효한지 로그인 시점에 확인하고, 역할이 있는지 확인합니다.</li>
 </ol>
 <p>발급된 토큰 응답에는 <code>token</code>과 <code>expire_time</code>이 들어 있습니다.</p>
+<p>UI에서는 Lakebase 앱에서 <strong>Connect</strong> 를 열고, Role 드롭다운의 OAuth 역할을 고른 뒤, psql이 비밀번호를 물으면 <strong>Copy OAuth token</strong> 버튼으로 복사한 값을 붙여 넣습니다. 이 버튼은 ** 현재 로그인한 아이덴티티**의 토큰만 만들며, 서비스 프린시펄이나 다른 사용자의 토큰은 만들지 않습니다. 그런 경우에는 CLI나 SDK를 씁니다.</p>
 <h3 id="토큰-발급-cli">토큰 발급 (CLI)<a class="headerlink" href="#토큰-발급-cli" title="Permanent link">&para;</a></h3>
 <p>엔드포인트 경로 형식은 <code>projects/{project-id}/branches/{branch-id}/endpoints/{endpoint-id}</code>입니다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>databricks<span class="w"> </span>postgres<span class="w"> </span>generate-database-credential<span class="w"> </span><span class="se">\</span>
@@ -1947,6 +1978,7 @@
 <h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/authentication">Authentication (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/connect-overview">Connection quickstart (AWS)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/connection-pooling">Connection pooling (AWS)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/postgres-roles">Postgres roles (AWS)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/oltp/projects/postgres-clients">Postgres clients (AWS)</a></li>
@@ -1988,7 +2020,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../deployment-types/" class="md-footer__link md-footer__link--prev" aria-label="이전: 배포 형태 비교">
+          <a href="../branches-and-recovery/" class="md-footer__link md-footer__link--prev" aria-label="이전: 브랜치와 복구">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1998,7 +2030,7 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                배포 형태 비교
+                브랜치와 복구
               </div>
             </div>
           </a>

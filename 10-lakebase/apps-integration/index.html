@@ -433,6 +433,8 @@
       
         
       
+        
+      
     
     
     
@@ -525,14 +527,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment-types/" class="md-nav__link">
+      <a href="../compute-and-scaling/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    배포 형태 비교
+    컴퓨트와 스케일링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branches-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    브랜치와 복구
   
 
     
@@ -1536,8 +1566,8 @@
 </tbody>
 </table>
 <blockquote>
-<p><strong>주의</strong> 환경 변수가 주입되는 것은 <strong>첫 번째 데이터베이스 리소스</strong> 입니다. 여러 데이터베이스를 바인딩하면 환경 변수는 첫 번째 것만 반영합니다. 문서는 나머지 연결 정보를 얻으려면 리소스 키와 함께 <code>valueFrom</code>을 쓰라고 안내합니다.</p>
-<p><strong>주의</strong> 문서가 나열한 환경 변수에는 <strong>비밀번호나 토큰 변수가 없습니다</strong>. 그래서 앱이 Postgres 비밀번호를 어떻게 얻는지는 이 장의 근거 문서에서 확인하지 못했습니다. 아래 코드 예시는 앱의 <code>WorkspaceClient</code>로 토큰을 발급하는 방식이며, 문서가 명시한 조합이지만 실제 배포에서 한 번 검증하십시오.</p>
+<p><strong>주의</strong> 환경 변수가 주입되는 것은 ** 첫 번째 데이터베이스 리소스** 입니다. 여러 데이터베이스를 바인딩하면 환경 변수는 첫 번째 것만 반영합니다. 문서는 나머지 연결 정보를 얻으려면 리소스 키와 함께 <code>valueFrom</code>을 쓰라고 안내합니다.</p>
+<p><strong>주의</strong> 문서가 나열한 환경 변수에는 ** 비밀번호나 토큰 변수가 없습니다**. 그래서 앱이 Postgres 비밀번호를 어떻게 얻는지는 이 장의 근거 문서에서 확인하지 못했습니다. 아래 코드 예시는 앱의 <code>WorkspaceClient</code>로 토큰을 발급하는 방식이며, 문서가 명시한 조합이지만 실제 배포에서 한 번 검증하십시오.</p>
 </blockquote>
 <h2 id="5-서비스-프린시펄과-권한">5. 서비스 프린시펄과 권한<a class="headerlink" href="#5-서비스-프린시펄과-권한" title="Permanent link">&para;</a></h2>
 <ul>
