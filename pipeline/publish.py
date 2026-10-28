@@ -46,7 +46,9 @@ def gh(token: str) -> httpx.Client:
 
 
 def _json(r: httpx.Response) -> dict:
-    r.raise_for_status()
+    if r.is_error:
+        msg = r.json().get("message", "") if "json" in r.headers.get("content-type", "") else r.text[:200]
+        raise RuntimeError(f"GitHub {r.request.method} {r.request.url.path} -> {r.status_code}: {msg}")
     return r.json()
 
 
@@ -97,6 +99,27 @@ def pr_body(proposals: list) -> str:
     return "\n".join(lines)
 
 
+def check_token(c: httpx.Client, repo: str, token: str) -> None:
+    """Fail early with a diagnosable message; never prints the token itself."""
+    r = c.get(f"/repos/{repo}")
+    if r.status_code == 401:
+        raise RuntimeError(
+            "GitHub rejected the token (401 Bad credentials): "
+            f"length={len(token)}, github_pat_ prefix={token.startswith('github_pat_')}. "
+            "Re-create the fine-grained PAT and store it again in the secret."
+        )
+    _json(r)
+    # repo.permissions reflects the account, not the token — probe a harmless write instead
+    # (an unreferenced blob is garbage-collected by GitHub).
+    probe = c.post(f"/repos/{repo}/git/blobs", json={"content": "permission probe", "encoding": "utf-8"})
+    if probe.status_code == 403:
+        raise RuntimeError(
+            "Token cannot write to the repo (403 on git/blobs): set Repository permissions -> "
+            f"Contents: Read and write. GitHub says: {probe.json().get('message', '')}"
+        )
+    _json(probe)
+
+
 def publish(spark: SparkSession, fq: str, repo: str, token: str, run_id: str) -> dict:
     proposals = spark.sql(f"""
         SELECT proposal_id, page_path, change_type, rationale, proposed_markdown, source_urls
@@ -109,6 +132,7 @@ def publish(spark: SparkSession, fq: str, repo: str, token: str, run_id: str) ->
 
     ok, status = [], {}
     with gh(token) as c:
+        check_token(c, repo, token)
         seen_paths = set()
         for p in proposals:
             repo_path = f"docs/{p.page_path}"
@@ -141,9 +165,24 @@ def publish(spark: SparkSession, fq: str, repo: str, token: str, run_id: str) ->
                 "sha"
             ]
             msg = f"Refresh {len(ok)} page(s) from release notes and docs changes ({today})"
+            owner = repo.split("/", 1)[0]
+            existing = _json(
+                c.get(f"/repos/{repo}/pulls", params={"head": f"{owner}:{branch}", "state": "open"})
+            )
+            if existing:  # serverless retries re-run the task — reuse the PR opened by a previous attempt
+                pr = existing[0]
+                for p in ok:
+                    status[p.proposal_id] = ("pr_open", pr["html_url"])
+                return _finish(spark, fq, proposals, status, ok)
             commit = {"message": msg, "tree": tree_sha, "parents": [base_sha]}
             commit_sha = _json(c.post(f"/repos/{repo}/git/commits", json=commit))["sha"]
-            _json(c.post(f"/repos/{repo}/git/refs", json={"ref": f"refs/heads/{branch}", "sha": commit_sha}))
+            ref = c.post(f"/repos/{repo}/git/refs", json={"ref": f"refs/heads/{branch}", "sha": commit_sha})
+            if ref.status_code == 422:  # branch left by a failed attempt — point it at the new commit
+                _json(
+                    c.patch(f"/repos/{repo}/git/refs/heads/{branch}", json={"sha": commit_sha, "force": True})
+                )
+            else:
+                _json(ref)
             pr_req = {
                 "title": f"[자동] 최신화 수정안 {len(ok)}건 ({today})",
                 "head": branch,
@@ -154,6 +193,10 @@ def publish(spark: SparkSession, fq: str, repo: str, token: str, run_id: str) ->
             for p in ok:
                 status[p.proposal_id] = ("pr_open", pr["html_url"])
 
+    return _finish(spark, fq, proposals, status, ok)
+
+
+def _finish(spark: SparkSession, fq: str, proposals: list, status: dict, ok: list) -> dict:
     rows = [(pid, v[0], v[1]) if isinstance(v, tuple) else (pid, v, None) for pid, v in status.items()]
     spark.createDataFrame(rows, "proposal_id STRING, st STRING, url STRING").createOrReplaceTempView("pub")
     spark.sql(f"""
@@ -185,7 +228,9 @@ def main() -> None:
     stats: dict = {}
     error = None
     try:
-        token = dbutils.secrets.get(scope=args.secret_scope, key=args.secret_key)
+        token = dbutils.secrets.get(
+            scope=args.secret_scope, key=args.secret_key
+        ).strip()  # pasted values may end in \n
         stats = publish(spark, fq, args.repo, token, args.job_run_id)
         print("publish", stats)
     except Exception:
