@@ -1,0 +1,2271 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Databricks Data Intelligence Platform 한국어 교육 자료 (공식 문서 기반, 주기적 최신화)">
+      
+      
+      
+        <link rel="canonical" href="https://myplatforms.github.io/databricks-training/10-lakebase/synced-tables/">
+      
+      
+        <link rel="prev" href="../connection-pooling/">
+      
+      
+        <link rel="next" href="../change-data-out/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://www.databricks.com/en-website-assets/favicon-32x32.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>동기화 테이블 - Databricks 교육 자료</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#동기화-테이블-synced-tables" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Databricks 교육 자료" class="md-header__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Databricks 교육 자료
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              동기화 테이블
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="다크 모드"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="라이트 모드"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  소개
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../updates/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  변경 이력
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  10. Lakebase
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../11-developer-tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  11. 개발자 도구
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Databricks 교육 자료" class="md-nav__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    Databricks 교육 자료
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    소개
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../updates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 이력
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Lakebase
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    10. Lakebase
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what-is-lakebase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakebase 개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    배포 형태 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connect-and-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    연결과 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connection-pooling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    커넥션 풀링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    동기화 테이블
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    동기화 테이블
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-어떻게-동작하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 어떻게 동작하는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 어떻게 동작하는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#원본과-대상" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        원본과 대상
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동기화-모드" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동기화 모드
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#기본-키와-데이터-정합성" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 키와 데이터 정합성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#타입-매핑" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        타입 매핑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-어떻게-쓰는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 어떻게 쓰는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 어떻게 쓰는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#원본-테이블-준비-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        원본 테이블 준비 (SQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동기화-테이블-생성-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동기화 테이블 생성 (UI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동기화-테이블-생성-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동기화 테이블 생성 (CLI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#결과-조회-postgres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결과 조회 (Postgres)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#주기적-갱신-설정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주기적 갱신 설정
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 트레이드오프
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 트레이드오프">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#용량-계획-문서-수치" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        용량 계획 (문서 수치)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-제약과-동작" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 제약과 동작
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 제약과 동작">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#스키마와-정의-변경" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        스키마와 정의 변경
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#삭제-동작" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        삭제 동작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#권한과-소유권" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        권한과 소유권
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#중복-키와-null-키" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        중복 키와 NULL 키
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#기타" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기타
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-타입-주의-널-문자와-벡터" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 타입 주의: 널 문자와 벡터
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 주의사항
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 주의사항">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#관련-ai-기능-릴리즈-노트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관련 AI 기능 (릴리즈 노트)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../change-data-out/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 데이터 반출
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Databricks Apps와 함께 쓰기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../best-practices-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    베스트 프랙티스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../11-developer-tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. 개발자 도구
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    11. 개발자 도구
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../11-developer-tools/genie-code/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Genie Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/features-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    모드·기능과 데이터 접근 권한
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/instructions-and-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    인스트럭션과 스킬
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 연결
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/scheduled-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    예약 작업
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/lakeflow-jobs-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakeflow Jobs의 Genie Code 태스크
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/governance-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    거버넌스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-어떻게-동작하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 어떻게 동작하는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 어떻게 동작하는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#원본과-대상" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        원본과 대상
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동기화-모드" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동기화 모드
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#기본-키와-데이터-정합성" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기본 키와 데이터 정합성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#타입-매핑" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        타입 매핑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-어떻게-쓰는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 어떻게 쓰는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 어떻게 쓰는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#원본-테이블-준비-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        원본 테이블 준비 (SQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동기화-테이블-생성-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동기화 테이블 생성 (UI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#동기화-테이블-생성-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동기화 테이블 생성 (CLI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#결과-조회-postgres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결과 조회 (Postgres)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#주기적-갱신-설정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주기적 갱신 설정
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 트레이드오프
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 트레이드오프">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#용량-계획-문서-수치" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        용량 계획 (문서 수치)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-제약과-동작" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 제약과 동작
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 제약과 동작">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#스키마와-정의-변경" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        스키마와 정의 변경
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#삭제-동작" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        삭제 동작
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#권한과-소유권" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        권한과 소유권
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#중복-키와-null-키" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        중복 키와 NULL 키
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#기타" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기타
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-타입-주의-널-문자와-벡터" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 타입 주의: 널 문자와 벡터
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 주의사항
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 주의사항">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#관련-ai-기능-릴리즈-노트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관련 AI 기능 (릴리즈 노트)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/myPlatforms/databricks-training/edit/main/docs/10-lakebase/synced-tables.md" title="이 페이지를 편집" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="동기화-테이블-synced-tables">동기화 테이블 (Synced Tables)<a class="headerlink" href="#동기화-테이블-synced-tables" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>기준일: 2026-10-28 · 근거: 공식 문서</p>
+</blockquote>
+<p>동기화 테이블(Synced Table)은 Unity Catalog의 Delta 테이블을 Lakebase Postgres 데이터베이스에 복사해 <strong>저지연 읽기</strong> 를 제공하는 기능입니다. 방향은 레이크하우스 → Lakebase입니다. 반대 방향(Lakebase 변경을 Delta로 옮기는 기능)은 <a href="../change-data-out/">변경 데이터 반출</a>에서 다룹니다.</p>
+<blockquote>
+<p><strong>참고</strong> 문서는 동기화 테이블의 Postgres 쪽에서 <strong>읽기 쿼리만 실행할 것</strong> 을 강하게 권장합니다. 원본 데이터 수정은 레이크하우스 쪽에서 합니다.</p>
+</blockquote>
+<h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
+<p>레이크하우스 테이블은 분석에 맞지만, 애플리케이션이 행 단위로 빠르게 조회하기에는 맞지 않습니다. 이전에는 보통 다음 방법을 썼습니다.</p>
+<table>
+<thead>
+<tr>
+<th>기존 방법</th>
+<th>한계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>별도 ETL로 운영 DB에 적재</td>
+<td>파이프라인을 직접 만들고 운영, 지연과 실패 처리 부담</td>
+</tr>
+<tr>
+<td>애플리케이션이 레이크하우스를 직접 조회</td>
+<td>웨어하우스 비용과 지연, 행 단위 조회에 부적합</td>
+</tr>
+<tr>
+<td>결과를 CSV 등으로 내보내 적재</td>
+<td>수동이며 최신성 보장 없음</td>
+</tr>
+</tbody>
+</table>
+<p>동기화 테이블은 Unity Catalog 테이블을 선언하면 Lakebase에 Postgres 테이블이 생기고, 원하는 모드에 따라 데이터가 갱신됩니다. 동기화는 Lakeflow 파이프라인으로 실행됩니다(파이프라인 이름은 문서에서 "Database Table Sync pipeline"으로 표기).</p>
+<h2 id="2-어떻게-동작하는가">2. 어떻게 동작하는가<a class="headerlink" href="#2-어떻게-동작하는가" title="Permanent link">&para;</a></h2>
+<h3 id="원본과-대상">원본과 대상<a class="headerlink" href="#원본과-대상" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>지원 원본</td>
+<td>관리형·외부 Delta 테이블, 관리형·외부 Iceberg 테이블, 뷰, 구체화 뷰(materialized view)</td>
+</tr>
+<tr>
+<td>대상</td>
+<td>Lakebase 프로젝트의 브랜치·데이터베이스 안의 Postgres 테이블</td>
+</tr>
+<tr>
+<td>이름 규칙</td>
+<td>Unity Catalog 스키마가 Postgres 스키마가 되며, 테이블 이름에 <code>_synced</code>가 붙음 (UI 빠른 시작 예시 기준)</td>
+</tr>
+<tr>
+<td>쓰기 권한</td>
+<td>동기화 테이블은 Unity Catalog로 관리. Postgres에서 직접 쓰기는 권장하지 않음</td>
+</tr>
+</tbody>
+</table>
+<h3 id="동기화-모드">동기화 모드<a class="headerlink" href="#동기화-모드" title="Permanent link">&para;</a></h3>
+<p>문서 표의 설명을 옮깁니다. 상태 라벨은 페이지에 모드별로 명시되어 있지 않으며, 페이지 전체가 동기화 테이블을 "generally available"로 설명합니다. LTAP Direct Writes만 Beta로 표기되어 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th>모드</th>
+<th>문서 설명</th>
+<th>적합한 경우</th>
+<th>지연·효율</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Snapshot</strong></td>
+<td>한 번에 전체 데이터를 복사하고, 동기화 때마다 전체를 다시 복사</td>
+<td>원본이 한 주기에 행의 10% 넘게 바뀔 때</td>
+<td>문서는 원본 데이터의 10% 넘게 바뀔 때 약 10배 효율적이라고 설명 (비교 기준은 문서에 명시 없음)</td>
+</tr>
+<tr>
+<td><strong>Triggered</strong></td>
+<td>실행 요청 또는 주기 실행 때 변경(삽입·수정·삭제)을 반영</td>
+<td>원본 변경이 정해진 주기로 일어날 때</td>
+<td>5분보다 짧은 간격으로 실행하면 비싸다고 설명</td>
+</tr>
+<tr>
+<td><strong>Continuous</strong></td>
+<td>초 단위 지연의 실시간 스트리밍</td>
+<td>변경을 거의 즉시 반영해야 할 때</td>
+<td>지연은 가장 낮고 비용은 가장 높음. 최소 15초 간격</td>
+</tr>
+</tbody>
+</table>
+<p>UI에서는 Snapshot과 Triggered가 <strong>On-demand</strong> 모드의 고급 설정 안에 있고, Continuous는 별도 모드로 표시됩니다.</p>
+<h3 id="기본-키와-데이터-정합성">기본 키와 데이터 정합성<a class="headerlink" href="#기본-키와-데이터-정합성" title="Permanent link">&para;</a></h3>
+<ul>
+<li>기본 키(Primary key)는 보통 자동으로 감지됩니다.</li>
+<li>기본 키 열은 NULL을 허용하지 않습니다. 기본 키에 NULL이 있는 행은 동기화에서 제외됩니다.</li>
+<li>기본 키가 중복되면 파이프라인이 실패합니다. 단, <strong>Timeseries Key</strong> 를 지정하면 키별로 가장 최신 시각의 행만 남습니다.</li>
+</ul>
+<h3 id="타입-매핑">타입 매핑<a class="headerlink" href="#타입-매핑" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Unity Catalog</th>
+<th>Postgres</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BIGINT</td>
+<td>BIGINT</td>
+</tr>
+<tr>
+<td>BINARY</td>
+<td>BYTEA</td>
+</tr>
+<tr>
+<td>BOOLEAN</td>
+<td>BOOLEAN</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>DATE</td>
+</tr>
+<tr>
+<td>DECIMAL(p,s)</td>
+<td>NUMERIC</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>DOUBLE PRECISION</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>REAL</td>
+</tr>
+<tr>
+<td>INT</td>
+<td>INTEGER</td>
+</tr>
+<tr>
+<td>INTERVAL</td>
+<td>INTERVAL</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>SMALLINT</td>
+</tr>
+<tr>
+<td>STRING</td>
+<td>TEXT</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>TIMESTAMP WITH TIME ZONE</td>
+</tr>
+<tr>
+<td>TIMESTAMP_NTZ</td>
+<td>TIMESTAMP WITHOUT TIME ZONE</td>
+</tr>
+<tr>
+<td>TINYINT</td>
+<td>SMALLINT</td>
+</tr>
+<tr>
+<td>ARRAY, MAP, STRUCT</td>
+<td>JSONB</td>
+</tr>
+</tbody>
+</table>
+<p>GEOGRAPHY, GEOMETRY, VARIANT, OBJECT 타입은 지원되지 않습니다.</p>
+<p>사용자 지정 타입(<code>type_overrides</code> API 또는 UI의 <strong>Customize column types</strong>)으로 다음을 지정할 수 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th>원본</th>
+<th>Postgres 타입</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARRAY<FLOAT>, ARRAY<DOUBLE></td>
+<td><code>vector(n)</code></td>
+<td>차원 1–16,000. 벡터 확장 설치 필요</td>
+</tr>
+<tr>
+<td>ARRAY<FLOAT>, ARRAY<DOUBLE></td>
+<td><code>halfvec(n)</code></td>
+<td>차원 1–16,000. 벡터 확장 설치 필요</td>
+</tr>
+<tr>
+<td>STRING</td>
+<td><code>varchar(n)</code></td>
+<td>최대 길이 1–10,485,760. 확장 불필요</td>
+</tr>
+</tbody>
+</table>
+<p>벡터 확장은 문서가 <code>CREATE EXTENSION IF NOT EXISTS lakebase_vector CASCADE;</code> 또는 pgvector만 쓸 때 <code>CREATE EXTENSION IF NOT EXISTS vector;</code>를 권장합니다.</p>
+<h2 id="3-어떻게-쓰는가">3. 어떻게 쓰는가<a class="headerlink" href="#3-어떻게-쓰는가" title="Permanent link">&para;</a></h2>
+<h3 id="원본-테이블-준비-sql">원본 테이블 준비 (SQL)<a class="headerlink" href="#원본-테이블-준비-sql" title="Permanent link">&para;</a></h3>
+<p>문서의 빠른 시작 예시입니다. SQL 웨어하우스나 노트북에서 실행합니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">main</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">user_segments</span><span class="w"> </span><span class="k">AS</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">VALUES</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'power_user'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">92</span><span class="p">),</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'casual'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">35</span><span class="p">),</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'power_user'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">88</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">segments</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="n">segment</span><span class="p">,</span><span class="w"> </span><span class="n">engagement_score</span><span class="p">);</span>
+</code></pre></div>
+<p>Triggered나 Continuous 모드를 쓸 원본은 변경 데이터 피드가 있어야 합니다. Delta 테이블이라면 다음을 설정합니다. Iceberg 같은 원본은 <strong>자동 변경 데이터 피드(automatic change data feed)</strong> 가 읽기 시점에 변경을 계산합니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">main</span><span class="p">.</span><span class="n">sales</span><span class="p">.</span><span class="n">orders</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">TBLPROPERTIES</span><span class="w"> </span><span class="p">(</span><span class="n">delta</span><span class="p">.</span><span class="n">enableChangeDataFeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="동기화-테이블-생성-ui">동기화 테이블 생성 (UI)<a class="headerlink" href="#동기화-테이블-생성-ui" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Catalog</strong> 에서 원본 테이블을 선택하고 <strong>Create</strong> &gt; <strong>Synced table</strong> 을 클릭합니다.</li>
+<li>대화 상자에서 대상 카탈로그, 스키마, 테이블 이름을 정하고, <strong>Database type</strong>(Autoscaling), 프로젝트, 브랜치, Postgres 데이터베이스를 고릅니다.</li>
+<li><strong>Sync mode</strong> 를 고릅니다. On-demand(고급 설정에서 Snapshot 또는 Triggered), 또는 Continuous.</li>
+<li>파이프라인은 <strong>Create new</strong> 또는 <strong>Use existing</strong> 을 고르고, 필요하면 서버리스 사용 정책을 지정합니다.</li>
+<li>스키마 탭에서 기본 키(기본값 <strong>Unique</strong>), 선택 사항인 <strong>Timeseries Key</strong>, <strong>Customize column types</strong> 를 설정합니다.</li>
+<li><strong>Create</strong> 를 누르고 <strong>Overview</strong> 탭에서 상태를 확인합니다. 수동 갱신은 <strong>Sync now</strong> 입니다.</li>
+</ol>
+<h3 id="동기화-테이블-생성-cli">동기화 테이블 생성 (CLI)<a class="headerlink" href="#동기화-테이블-생성-cli" title="Permanent link">&para;</a></h3>
+<p>문서의 CLI 예시입니다. 위치 인수는 <code>catalog.schema.table</code> 형식입니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>databricks<span class="w"> </span>postgres<span class="w"> </span>create-synced-table<span class="w"> </span>my-catalog.sales.orders<span class="w"> </span>--json<span class="w"> </span><span class="s1">'{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s1">  "spec": {</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s1">    "source_table_full_name": "main.sales.orders",</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s1">    "branch": "projects/my-project/branches/production",</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s1">    "primary_key_columns": ["order_id"],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s1">    "scheduling_policy": "SNAPSHOT",</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s1">    "postgres_database": "mydb",</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s1">    "create_database_objects_if_missing": true</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s1">  }</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s1">}'</span>
+</code></pre></div>
+<p>Python SDK는 <code>w.postgres.create_synced_table(...)</code>를 쓰고, 결과는 <code>.wait()</code>로 기다립니다. REST는 <code>POST /api/2.0/postgres/synced_tables?synced_table_id=...</code>이며 장기 실행 작업을 <code>done: true</code>가 될 때까지 폴링합니다.</p>
+<blockquote>
+<p><strong>주의</strong> 문서의 CLI·API 예시에서 <code>scheduling_policy</code> 값으로 확인된 것은 <code>SNAPSHOT</code>뿐입니다. Triggered와 Continuous를 API로 지정하는 값은 이 장의 근거 문서에 나타나지 않았으므로 여기에 쓰지 않습니다. API로 지정하기 전에 레퍼런스에서 값을 확인하십시오.</p>
+</blockquote>
+<h3 id="결과-조회-postgres">결과 조회 (Postgres)<a class="headerlink" href="#결과-조회-postgres" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">"default"</span><span class="p">.</span><span class="n">user_segments_synced</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+<p>스키마 이름 <code>default</code>는 Postgres 예약어이므로 큰따옴표로 감싸야 합니다.</p>
+<h3 id="주기적-갱신-설정">주기적 갱신 설정<a class="headerlink" href="#주기적-갱신-설정" title="Permanent link">&para;</a></h3>
+<p>Continuous는 자동으로 스트리밍합니다. Snapshot과 Triggered는 파이프라인을 <strong>Lakeflow Job</strong> 의 <strong>Database Table Sync pipeline</strong> 작업으로 넣고, 트리거를 정합니다.</p>
+<table>
+<thead>
+<tr>
+<th>트리거</th>
+<th>적합한 모드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Table update</strong> (원본 테이블 갱신 시)</td>
+<td>Triggered</td>
+</tr>
+<tr>
+<td><strong>Scheduled</strong> (cron 일정과 시간대)</td>
+<td>Snapshot</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-트레이드오프">4. 트레이드오프<a class="headerlink" href="#4-트레이드오프" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>방향</td>
+<td>단방향. Lakebase에서 바꾼 내용은 원본 Delta로 돌아가지 않음</td>
+</tr>
+<tr>
+<td>비용 구조</td>
+<td>모드에 따라 다름. Continuous가 가장 비싸고 지연이 가장 짧음. 단가는 이 장에서 다루지 않음</td>
+</tr>
+<tr>
+<td>용량</td>
+<td>아래 용량 계획 참조</td>
+</tr>
+<tr>
+<td>쓰기</td>
+<td>문서는 읽기 쿼리만 권장</td>
+</tr>
+</tbody>
+</table>
+<h3 id="용량-계획-문서-수치">용량 계획 (문서 수치)<a class="headerlink" href="#용량-계획-문서-수치" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>동기화 테이블당 연결</td>
+<td>최대 16개 (컴퓨트 크기에 따라 한도가 다름)</td>
+</tr>
+<tr>
+<td>처리량 (Continuous, Triggered 쓰기)</td>
+<td>CU당 약 150행/초</td>
+</tr>
+<tr>
+<td>처리량 (Snapshot 쓰기)</td>
+<td>CU당 최대 약 2,000행/초</td>
+</tr>
+<tr>
+<td>원본 1개당 동기화 테이블</td>
+<td>최대 20개</td>
+</tr>
+<tr>
+<td>테이블당 권장 크기</td>
+<td>새로 고침이 필요한 테이블은 1 TB 이하 권장</td>
+</tr>
+<tr>
+<td>스토리지</td>
+<td>동기화된 데이터는 브랜치의 데이터베이스 스토리지 쿼터에 포함. 전체 새로 고침 중에는 이전 버전과 새 버전이 모두 집계</td>
+</tr>
+</tbody>
+</table>
+<p>이름에 쓸 수 있는 문자는 <code>[A-Za-z0-9_]+</code>입니다(데이터베이스, 스키마, 테이블 이름).</p>
+<h2 id="5-제약과-동작">5. 제약과 동작<a class="headerlink" href="#5-제약과-동작" title="Permanent link">&para;</a></h2>
+<h3 id="스키마와-정의-변경">스키마와 정의 변경<a class="headerlink" href="#스키마와-정의-변경" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>변경</th>
+<th>Triggered·Continuous</th>
+<th>Snapshot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>열 추가 같은 추가형 변경</td>
+<td>지원</td>
+<td>전체 새로 고침으로 반영</td>
+</tr>
+<tr>
+<td>기본 키, Timeseries Key 등 비추가형 변경</td>
+<td>수정 불가. 동기화 테이블을 삭제하고 다시 만들어야 함</td>
+<td>같음</td>
+</tr>
+</tbody>
+</table>
+<h3 id="삭제-동작">삭제 동작<a class="headerlink" href="#삭제-동작" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Triggered는 각 새로 고침에서 삭제를 반영합니다.</li>
+<li>Snapshot은 전체 원본 복사본으로 다시 채웁니다.</li>
+<li>Continuous의 삭제 전파는 문서가 명시적으로 설명하지 않습니다. 운영 전에 테스트하십시오.</li>
+<li><strong>Unity Catalog에서 동기화 테이블을 삭제하면 Postgres 테이블도 함께 삭제</strong> 된다고 문서가 설명합니다. UI 메뉴, <code>w.postgres.delete_synced_table(...)</code>, <code>DELETE /api/2.0/postgres/synced_tables/{name}</code>으로 삭제할 수 있습니다.</li>
+</ul>
+<blockquote>
+<p><strong>주의</strong> 다른 자료에서 "동기화 테이블 삭제 시 Postgres 테이블은 남는다"는 설명을 본 적이 있다면, 그 설명은 현재 AWS 동기화 테이블 문서와 다릅니다. 현재 원문은 Unity Catalog 삭제 시 Postgres 테이블도 삭제된다는 것입니다. 실제 워크스페이스에서 삭제 후 Postgres 상태를 확인하십시오.</p>
+</blockquote>
+<h3 id="권한과-소유권">권한과 소유권<a class="headerlink" href="#권한과-소유권" title="Permanent link">&para;</a></h3>
+<ul>
+<li>동기화 테이블은 <code>databricks_writer_&lt;dbid&gt;</code> 역할이 소유합니다. 따라서 소유자만 실행할 수 있는 명령(예: 행 수준 보안)은 직접 실행할 수 없습니다.</li>
+<li>생성자는 테이블에 <code>SELECT</code>, <code>DELETE</code>, <code>TRUNCATE</code>를, 스키마에 <code>USAGE</code>와 <code>CREATE</code>를 받습니다. <code>INSERT</code>와 <code>UPDATE</code>는 받지 않습니다.</li>
+<li>접근 제어는 Unity Catalog로 관리합니다. Postgres의 <code>REVOKE</code>로 제어하지 않습니다. 파이프라인의 <strong>Run as</strong> 아이덴티티를 바꿔도 소유권은 재지정되지 않습니다.</li>
+<li><code>databricks_superuser</code>는 <code>pg_read_all_data</code>와 <code>pg_write_all_data</code>를 가지므로 동기화 테이블에 쓸 수 있습니다. 문서는 데이터 수정은 원본에서 하라고 권장합니다.</li>
+</ul>
+<h3 id="중복-키와-null-키">중복 키와 NULL 키<a class="headerlink" href="#중복-키와-null-키" title="Permanent link">&para;</a></h3>
+<ul>
+<li>중복 기본 키는 파이프라인을 실패시킵니다. Timeseries Key로 해결합니다.</li>
+<li>NULL 기본 키 행은 제외됩니다.</li>
+</ul>
+<h3 id="기타">기타<a class="headerlink" href="#기타" title="Permanent link">&para;</a></h3>
+<ul>
+<li>동기화 테이블 API는 멱등성이 있어서 일시 오류를 재시도해도 안전하다고 문서가 설명합니다.</li>
+<li>동기화 중 파이프라인 상태가 <code>INITIALIZING</code>으로 길게 보일 수 있으며, 큰 동기화에서는 정상이라고 설명합니다.</li>
+<li>식별자에 대문자나 특수 문자가 있으면 Postgres에서 참조할 때 따옴표로 감싸야 합니다.</li>
+</ul>
+<h2 id="6-타입-주의-널-문자와-벡터">6. 타입 주의: 널 문자와 벡터<a class="headerlink" href="#6-타입-주의-널-문자와-벡터" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Unity Catalog의 STRING, ARRAY, MAP, STRUCT 열에 널 바이트(0x00)가 있으면 Postgres의 TEXT나 JSONB에서 실패합니다. 문서는 <code>REPLACE(column, CAST(CHAR(0) AS STRING), '')</code>로 제거하거나 열을 BINARY로 바꾸라고 안내합니다.</li>
+<li>벡터 타입을 쓰려면 확장을 먼저 설치해야 합니다.</li>
+</ul>
+<h2 id="7-주의사항">7. 주의사항<a class="headerlink" href="#7-주의사항" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Snapshot으로 시작하고 필요할 때 모드를 올립니다.</strong> 빠른 시작 문서도 Snapshot으로 시작합니다. 원본 변경률을 보고 모드를 정하십시오.</li>
+<li><strong>Triggered와 Continuous는 원본에 변경 데이터 피드가 필요합니다.</strong> 설정하지 않으면 동기화를 설계대로 쓸 수 없습니다.</li>
+<li><strong>기본 키를 설계 단계에서 확정합니다.</strong> 기본 키를 바꾸려면 삭제 후 재생성해야 합니다.</li>
+<li><strong>삭제 순서를 확인합니다.</strong> 동기화 테이블 삭제는 Postgres 테이블 삭제로 이어집니다. 의존하는 뷰가 있다면 함께 영향을 받습니다.</li>
+<li><strong>재생성 전에 상태를 확인합니다.</strong> 실패한 동기화의 상태를 본 뒤 정리하십시오.</li>
+<li><strong>상태 라벨은 모드별로 확인합니다.</strong> 문서가 모드별 GA 라벨을 달지 않았으므로, LTAP Direct Writes(Beta)를 쓰는 경우에는 Beta 제약을 따로 확인하십시오. LTAP Direct Writes는 Postgres 16, 17, 18이 필요하고, 워크스페이스 관리자가 프리뷰를 켜야 할 수 있습니다.</li>
+</ul>
+<h3 id="관련-ai-기능-릴리즈-노트">관련 AI 기능 (릴리즈 노트)<a class="headerlink" href="#관련-ai-기능-릴리즈-노트" title="Permanent link">&para;</a></h3>
+<p>2026년 9월 릴리즈 노트는 <code>ai_search</code>가 Lakebase 동기화 테이블을 검색할 수 있다고 적고, 상태를 <strong>Beta</strong> 로 표기합니다(2026-09-24). 이 기능은 Lakebase Search를 켜야 합니다.</p>
+<h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/sync-tables">Sync tables (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/quickstart-synced-tables">Quickstart: Serve lakehouse data (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/september">Release notes, 2026년 9월 (AWS)</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../connection-pooling/" class="md-footer__link md-footer__link--prev" aria-label="이전: 커넥션 풀링">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                커넥션 풀링
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../change-data-out/" class="md-footer__link md-footer__link--next" aria-label="다음: 변경 데이터 반출">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                변경 데이터 반출
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

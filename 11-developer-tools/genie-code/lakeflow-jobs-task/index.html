@@ -1,0 +1,1900 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Databricks Data Intelligence Platform 한국어 교육 자료 (공식 문서 기반, 주기적 최신화)">
+      
+      
+      
+        <link rel="canonical" href="https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/lakeflow-jobs-task/">
+      
+      
+        <link rel="prev" href="../scheduled-tasks/">
+      
+      
+        <link rel="next" href="../cli/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://www.databricks.com/en-website-assets/favicon-32x32.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Lakeflow Jobs의 Genie Code 태스크 - Databricks 교육 자료</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lakeflow-jobs의-genie-code-태스크" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../../.." title="Databricks 교육 자료" class="md-header__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Databricks 교육 자료
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lakeflow Jobs의 Genie Code 태스크
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="다크 모드"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="라이트 모드"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  소개
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../updates/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  변경 이력
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../10-lakebase/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  10. Lakebase
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  11. 개발자 도구
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Databricks 교육 자료" class="md-nav__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    Databricks 교육 자료
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    소개
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../updates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 이력
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../10-lakebase/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Lakebase
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    10. Lakebase
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/what-is-lakebase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakebase 개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/deployment-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    배포 형태 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/connect-and-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    연결과 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/connection-pooling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    커넥션 풀링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/synced-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    동기화 테이블
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/change-data-out/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 데이터 반출
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/apps-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Databricks Apps와 함께 쓰기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/best-practices-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    베스트 프랙티스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. 개발자 도구
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    11. 개발자 도구
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Genie Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    모드·기능과 데이터 접근 권한
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instructions-and-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    인스트럭션과 스킬
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 연결
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scheduled-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    예약 작업
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakeflow Jobs의 Genie Code 태스크
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakeflow Jobs의 Genie Code 태스크
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#어떻게-동작하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        어떻게 동작하는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="어떻게 동작하는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#실행-흐름" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실행 흐름
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#실행-출력-화면" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실행 출력 화면
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#어떻게-쓰는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        어떻게 쓰는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="어떻게 쓰는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#태스크-추가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        태스크 추가
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#프롬프트-파라미터-문법" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        프롬프트 파라미터 문법
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#예시-프롬프트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예시 프롬프트
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#다음-태스크에서-응답-쓰기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        다음 태스크에서 응답 쓰기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#설계-패턴" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설계 패턴
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#예약-작업과의-차이" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예약 작업과의 차이
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        트레이드오프
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주의사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../governance-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    거버넌스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#어떻게-동작하는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        어떻게 동작하는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="어떻게 동작하는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#실행-흐름" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실행 흐름
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#실행-출력-화면" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실행 출력 화면
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#어떻게-쓰는가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        어떻게 쓰는가
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="어떻게 쓰는가">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#태스크-추가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        태스크 추가
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#프롬프트-파라미터-문법" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        프롬프트 파라미터 문법
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#예시-프롬프트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예시 프롬프트
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#다음-태스크에서-응답-쓰기" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        다음 태스크에서 응답 쓰기
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#설계-패턴" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설계 패턴
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#예약-작업과의-차이" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예약 작업과의 차이
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        트레이드오프
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주의사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/myPlatforms/databricks-training/edit/main/docs/11-developer-tools/genie-code/lakeflow-jobs-task.md" title="이 페이지를 편집" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="lakeflow-jobs의-genie-code-태스크">Lakeflow Jobs의 Genie Code 태스크<a class="headerlink" href="#lakeflow-jobs의-genie-code-태스크" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>기준일: 2026-10-28 · 근거: 공식 문서</p>
+</blockquote>
+<h2 id="왜-필요한가">왜 필요한가<a class="headerlink" href="#왜-필요한가" title="Permanent link">&para;</a></h2>
+<p>데이터 파이프라인은 대부분 결정적(deterministic)입니다. 같은 입력이면 같은 결과가 나와야 하고, 실패하면 재시도로 복구합니다. 그런데 운영에는 판단이 필요한 단계도 있습니다. 예를 들어 수집된 로그에서 이상 원인을 요약하거나, 새로 들어온 문서의 분류 근거를 설명하거나, 여러 지표를 보고 다음 조치를 고르는 일입니다.</p>
+<p>이런 단계를 노트북에 규칙으로 하드코딩하면 규칙이 금방 낡습니다. 예약 작업으로 따로 돌리면 Job의 실행 순서와 의존 관계에서 떨어져 나옵니다. <strong>Genie Code 태스크</strong> 는 Job의 한 태스크로 자율 에이전트를 실행해, 판단 단계를 같은 Job 흐름 안에 둡니다.</p>
+<p>문서는 이 태스크를 "Use the Genie Code task to run an autonomous agent as part of a job."이라고 소개합니다.</p>
+<h2 id="어떻게-동작하는가">어떻게 동작하는가<a class="headerlink" href="#어떻게-동작하는가" title="Permanent link">&para;</a></h2>
+<h3 id="실행-흐름">실행 흐름<a class="headerlink" href="#실행-흐름" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>동작</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Job이 실행되면 Genie Code 태스크가 프롬프트로 <strong>새 Genie Code 채팅</strong> 을 시작합니다.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>에이전트는 사용자 입력 없이 작업을 끝까지 수행합니다. 도구 호출은 자동 승인됩니다.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>결과 응답이 태스크 출력으로 남습니다. 대화 전체는 채팅에 남습니다.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>다음 태스크가 <code>{{tasks.&lt;task_name&gt;.output.response}}</code>로 응답을 참조하거나, 상위 태스크 값으로 조건을 만듭니다.</td>
+</tr>
+</tbody>
+</table>
+<p>실행 후에는 채팅을 열어 결과를 검토하거나, 그 채팅에서 이어서 작업할 수 있습니다.</p>
+<h3 id="실행-출력-화면">실행 출력 화면<a class="headerlink" href="#실행-출력-화면" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run output</td>
+<td>대화 링크, 프롬프트, 응답</td>
+</tr>
+<tr>
+<td>Final response</td>
+<td>성공한 실행의 최종 메시지</td>
+</tr>
+<tr>
+<td>Open conversation</td>
+<td>대화를 열어 검토하거나 이어 작업</td>
+</tr>
+</tbody>
+</table>
+<p>문서는 긴 응답이 Run output에서 잘린다고 설명합니다. 대화에는 전체 텍스트가 남습니다.</p>
+<h2 id="어떻게-쓰는가">어떻게 쓰는가<a class="headerlink" href="#어떻게-쓰는가" title="Permanent link">&para;</a></h2>
+<h3 id="태스크-추가">태스크 추가<a class="headerlink" href="#태스크-추가" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Job 화면의 <strong>Tasks</strong> 탭으로 이동합니다.</li>
+<li><strong>Add task</strong> 를 누릅니다.</li>
+<li><strong>Task name</strong> 에 이름을 입력합니다.</li>
+<li><strong>Type</strong> 드롭다운에서 <code>Genie Code</code>를 고릅니다.</li>
+<li><strong>Prompt</strong> 필드에 프롬프트를 입력합니다.</li>
+<li>필요하면 <strong>Advanced</strong> 설정에서 재시도, 실행 시간 또는 스트리밍 백로그 임계값, 알림을 정합니다.</li>
+<li><strong>Save task</strong> 를 누릅니다.</li>
+</ol>
+<h3 id="프롬프트-파라미터-문법">프롬프트 파라미터 문법<a class="headerlink" href="#프롬프트-파라미터-문법" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>문법</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{name}}</code></td>
+<td>Job 파라미터 <code>name</code>의 값. <strong>Job details</strong> 사이드바의 <strong>Edit parameters</strong> 에서 정의합니다.</td>
+</tr>
+<tr>
+<td><code>{{job.id}}</code></td>
+<td>Job ID</td>
+</tr>
+<tr>
+<td><code>{{job.start_time.iso_date}}</code></td>
+<td>실행 시작 날짜 (ISO 형식)</td>
+</tr>
+<tr>
+<td><code>{{tasks.&lt;task_name&gt;.values.&lt;key&gt;}}</code></td>
+<td>상위 태스크의 값 <code>&lt;key&gt;</code></td>
+</tr>
+<tr>
+<td><code>{{input}}</code></td>
+<td>For each 태스크 안에서 입력 항목</td>
+</tr>
+<tr>
+<td><code>{{tasks.&lt;task_name&gt;.output.response}}</code></td>
+<td>상위 태스크 Genie Code 실행의 최종 응답 (성공한 실행만)</td>
+</tr>
+</tbody>
+</table>
+<p>동작 규칙은 다음과 같습니다.</p>
+<ul>
+<li>대응하는 Job 파라미터가 없는 <code>{{name}}</code>은 <strong>그대로 남습니다.</strong></li>
+<li>태스크가 쓸 수 없는 참조는 경고가 뜨고 입력한 그대로 남습니다.</li>
+<li>실행 시점에 동적 값을 풀 수 없으면 <strong>태스크가 시작되기 전에 실패합니다.</strong></li>
+</ul>
+<h3 id="예시-프롬프트">예시 프롬프트<a class="headerlink" href="#예시-프롬프트" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>다음 데이터는 수집 단계의 결과입니다. 행 수는 {{tasks.collect_orders.values.row_count}}건입니다.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>기준일은 {{job.start_time.iso_date}}입니다.
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>1. sales.orders 테이블에서 기준일 전날 데이터의 행 수를 확인하세요.
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>2. 행 수가 수집 단계의 값과 다르면 차이 원인을 요약하세요.
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>3. 마지막 줄에 OK 또는 CHECK 중 하나만 적으세요.
+</code></pre></div>
+<p>이 예시에서 <code>collect_orders</code>는 상위 태스크 이름이고 <code>row_count</code>는 상위 태스크가 설정한 값의 키입니다. 값을 설정하는 방식은 Lakeflow Jobs의 태스크 값 기능을 따릅니다. 이 페이지는 그 설정 코드를 제시하지 않습니다.</p>
+<h3 id="다음-태스크에서-응답-쓰기">다음 태스크에서 응답 쓰기<a class="headerlink" href="#다음-태스크에서-응답-쓰기" title="Permanent link">&para;</a></h3>
+<ul>
+<li>다른 Genie Code 태스크의 프롬프트에 <code>{{tasks.&lt;task_name&gt;.output.response}}</code>를 넣습니다.</li>
+<li>조건 분기(If/else)의 조건에 응답 값을 씁니다.</li>
+<li>일반 태스크의 파라미터로 넘깁니다.</li>
+</ul>
+<h2 id="설계-패턴">설계 패턴<a class="headerlink" href="#설계-패턴" title="Permanent link">&para;</a></h2>
+<p>문서가 직접 정한 패턴은 아니며, 기능의 성격에 따른 설계 권고입니다.</p>
+<table>
+<thead>
+<tr>
+<th>패턴</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>결정적 수집은 코드 태스크로</td>
+<td>데이터 적재, 행 수 집계, 스키마 검사는 노트북이나 SQL 태스크로 둡니다. 결과를 태스크 값으로 남깁니다.</td>
+</tr>
+<tr>
+<td>판단은 Genie Code 태스크로</td>
+<td>요약, 원인 추정, 분류 근거처럼 판단이 필요한 단계만 Genie Code 태스크로 둡니다.</td>
+</tr>
+<tr>
+<td>쓰기 권한 최소화</td>
+<td>자동 승인을 끌 수 없으므로, 에이전트가 쓸 수 있는 범위를 Unity Catalog 권한으로 좁힙니다. 실행 주체 설정은 문서에 없으므로 권한 범위는 직접 확인합니다.</td>
+</tr>
+<tr>
+<td>응답 형식을 고정</td>
+<td>조건 분기에 쓰는 값은 마지막 줄 같은 짧은 토큰으로 요구합니다. 긴 응답 전체를 조건에 쓰면 해석이 흔들릴 수 있습니다.</td>
+</tr>
+<tr>
+<td>중요한 값은 태스크 값으로</td>
+<td>Final response는 Run output에서 잘릴 수 있으므로, 후속 처리에 필요한 값은 가능하면 상위 태스크 값으로 남깁니다.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="예약-작업과의-차이">예약 작업과의 차이<a class="headerlink" href="#예약-작업과의-차이" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>예약 작업 (Scheduled tasks)</th>
+<th>Lakeflow Jobs의 Genie Code 태스크</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>실행 단위</td>
+<td>반복 일정에 따른 하나의 Genie Code 세션</td>
+<td>Job 실행 안의 한 태스크</td>
+</tr>
+<tr>
+<td>입력</td>
+<td>Title, Prompt, Schedule, Timezone</td>
+<td>Prompt와 Job 파라미터, 상위 태스크 값</td>
+</tr>
+<tr>
+<td>실행 결과</td>
+<td>실행마다 새 채팅</td>
+<td>Run output의 대화 링크와 응답, 다음 태스크가 참조하는 출력</td>
+</tr>
+<tr>
+<td>다음 단계 연결</td>
+<td>문서상 없음</td>
+<td><code>{{tasks.&lt;t&gt;.output.response}}</code>, 조건 분기, 다른 태스크 파라미터</td>
+</tr>
+<tr>
+<td>자동 승인</td>
+<td>항상 켜짐, 끌 수 없음</td>
+<td>항상 켜짐, 끌 수 없음</td>
+</tr>
+<tr>
+<td>설정 상속</td>
+<td>문서에 명시 없음</td>
+<td>Genie Code 설정과 사용자 정의 MCP 연결을 상속</td>
+</tr>
+<tr>
+<td>재시도·알림</td>
+<td>문서에 명시 없음</td>
+<td>Advanced 설정에서 재시도, 임계값, 알림 설정</td>
+</tr>
+<tr>
+<td>실행 주체</td>
+<td>작업 생성자 권한 (Unity Catalog 권한 적용)</td>
+<td>문서에 run-as 명시 없음</td>
+</tr>
+<tr>
+<td>공유</td>
+<td>작업 공유 불가. 실행 채팅은 공유 가능</td>
+<td>문서에 명시 없음</td>
+</tr>
+<tr>
+<td>과금</td>
+<td>Genie 사용량에 포함</td>
+<td>문서에 명시 없음</td>
+</tr>
+<tr>
+<td>상태</td>
+<td>릴리즈 노트 2026-09-01 GA. 페이지 라벨 없음</td>
+<td>릴리즈 노트 2026-10-21 GA. 2026-08-27에는 Beta. 페이지 라벨 없음</td>
+</tr>
+</tbody>
+</table>
+<h2 id="트레이드오프">트레이드오프<a class="headerlink" href="#트레이드오프" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>장점</td>
+<td>판단 단계를 Job의 실행 순서, 재시도, 알림 체계 안에 둘 수 있습니다.</td>
+</tr>
+<tr>
+<td>비결정성</td>
+<td>같은 프롬프트라도 응답이 달라질 수 있습니다. 조건 분기에는 짧고 고정된 답을 쓰는 설계가 필요합니다.</td>
+</tr>
+<tr>
+<td>자동 승인</td>
+<td>끌 수 없어, 실행 전 검토 단계가 없습니다.</td>
+</tr>
+<tr>
+<td>과금</td>
+<td>문서에 명시가 없습니다. 비용 계획은 실제 실행으로 확인합니다.</td>
+</tr>
+<tr>
+<td>실행 주체</td>
+<td>문서에 명시가 없어, 권한 범위를 설계 시점에 확인해야 합니다.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="주의사항">주의사항<a class="headerlink" href="#주의사항" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>주의</strong> 자동 승인은 항상 켜져 있으며, 문서는 "you cannot disable it for a job task"라고 명시합니다. 에이전트가 할 수 있는 일의 상한은 Unity Catalog 권한과 프롬프트 설계로 정해야 합니다.</p>
+</blockquote>
+<ul>
+<li><strong>프롬프트 파라미터 실패는 실행 전에 드러납니다.</strong> 해석되지 않는 동적 값은 태스크를 시작하기 전에 실패하게 합니다. 파라미터 이름을 Job 설정과 맞춰 둡니다.</li>
+<li><strong><code>{{name}}</code>에 대응하는 파라미터가 없으면 문자 그대로 남습니다.</strong> 오타가 있어도 오류가 나지 않을 수 있으므로, 실행 결과의 Prompt 항목을 확인합니다.</li>
+<li><strong>Final response는 잘릴 수 있습니다.</strong> 전체 응답은 대화에 있습니다.</li>
+<li><strong>Genie Code 설정과 MCP 연결을 상속합니다.</strong> 태스크를 설계할 때 연결된 MCP 서버가 무엇인지 확인합니다. MCP 설정은 <a href="../mcp/">MCP 서버 연결</a>을 참고하십시오.</li>
+<li><strong>상태 확인</strong>: 릴리즈 노트 2026-10-21에 GA로 표기되어 있습니다. 같은 기능이 2026-08-27 릴리즈 노트에서는 Beta였습니다. 페이지 자체에는 라벨이 없습니다.</li>
+<li><strong>사전 요건</strong>: 워크스페이스가 Genie Code의 에이전트 기능에 접근할 수 있어야 하고, 프롬프트가 Genie Code 사용 정책을 따라야 한다고 문서가 명시합니다. 에이전트 기능을 켜는 방법은 <a href="../governance-and-cost/">거버넌스와 비용</a>을 참고하십시오.</li>
+<li><strong>문서에 없는 것</strong>: 컴퓨트·서버리스 요구사항, run-as 신원, 필요한 권한, 과금, 클라우드별 차이.</li>
+</ul>
+<h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.databricks.com/aws/en/jobs/tasks/genie-code">Genie Code task for Lakeflow Jobs</a></li>
+<li><a href="https://docs.databricks.com/aws/en/genie-code/scheduled-tasks">Scheduled tasks</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/august">Genie Code 릴리즈 노트 (2026년 8월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october">Genie Code 릴리즈 노트 (2026년 10월)</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../scheduled-tasks/" class="md-footer__link md-footer__link--prev" aria-label="이전: 예약 작업">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                예약 작업
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../cli/" class="md-footer__link md-footer__link--next" aria-label="다음: Genie Code CLI">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                Genie Code CLI
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

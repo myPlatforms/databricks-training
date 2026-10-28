@@ -1,0 +1,2146 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Databricks Data Intelligence Platform 한국어 교육 자료 (공식 문서 기반, 주기적 최신화)">
+      
+      
+      
+        <link rel="canonical" href="https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/governance-and-cost/">
+      
+      
+        <link rel="prev" href="../cli/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://www.databricks.com/en-website-assets/favicon-32x32.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>거버넌스와 비용 - Databricks 교육 자료</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#거버넌스와-비용" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../../.." title="Databricks 교육 자료" class="md-header__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Databricks 교육 자료
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              거버넌스와 비용
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="다크 모드"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="라이트 모드"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  소개
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../updates/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  변경 이력
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../10-lakebase/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  10. Lakebase
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  11. 개발자 도구
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Databricks 교육 자료" class="md-nav__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    Databricks 교육 자료
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    소개
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../updates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 이력
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../10-lakebase/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Lakebase
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    10. Lakebase
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/what-is-lakebase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakebase 개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/deployment-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    배포 형태 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/connect-and-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    연결과 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/connection-pooling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    커넥션 풀링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/synced-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    동기화 테이블
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/change-data-out/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 데이터 반출
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/apps-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Databricks Apps와 함께 쓰기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../10-lakebase/best-practices-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    베스트 프랙티스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. 개발자 도구
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    11. 개발자 도구
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Genie Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    모드·기능과 데이터 접근 권한
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instructions-and-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    인스트럭션과 스킬
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 연결
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scheduled-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    예약 작업
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lakeflow-jobs-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakeflow Jobs의 Genie Code 태스크
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    거버넌스와 비용
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    거버넌스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#과금-구조" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        과금 구조
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#예산-설정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예산 설정
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="예산 설정">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#설정-경로와-권한" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설정 경로와 권한
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#설정-값" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설정 값
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#임계값-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        임계값 (Thresholds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#정확도-한계" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정확도 한계
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#사용량-확인" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사용량 확인
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="사용량 확인">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#시스템-테이블-systemaccessassistant_events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        시스템 테이블: system.access.assistant_events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#이벤트-대시보드" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이벤트 대시보드
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#임팩트-지표" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        임팩트 지표
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#모델과-데이터-처리-범위" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모델과 데이터 처리 범위
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="모델과 데이터 처리 범위">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#파트너-ai-기능-partner-powered-ai-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        파트너 AI 기능 (Partner-powered AI features)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#지정-처리-지역-designated-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        지정 처리 지역 (Designated Services)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#컴플라이언스-보안-프로필-csp-워크스페이스" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        컴플라이언스 보안 프로필 (CSP) 워크스페이스
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#관리자-설정-체크리스트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관리자 설정 체크리스트
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        트레이드오프
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주의사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#과금-구조" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        과금 구조
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#예산-설정" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예산 설정
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="예산 설정">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#설정-경로와-권한" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설정 경로와 권한
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#설정-값" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설정 값
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#임계값-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        임계값 (Thresholds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#정확도-한계" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정확도 한계
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#사용량-확인" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사용량 확인
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="사용량 확인">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#시스템-테이블-systemaccessassistant_events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        시스템 테이블: system.access.assistant_events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#이벤트-대시보드" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이벤트 대시보드
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#임팩트-지표" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        임팩트 지표
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#모델과-데이터-처리-범위" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모델과 데이터 처리 범위
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="모델과 데이터 처리 범위">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#파트너-ai-기능-partner-powered-ai-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        파트너 AI 기능 (Partner-powered AI features)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#지정-처리-지역-designated-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        지정 처리 지역 (Designated Services)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#컴플라이언스-보안-프로필-csp-워크스페이스" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        컴플라이언스 보안 프로필 (CSP) 워크스페이스
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#관리자-설정-체크리스트" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관리자 설정 체크리스트
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        트레이드오프
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주의사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/myPlatforms/databricks-training/edit/main/docs/11-developer-tools/genie-code/governance-and-cost.md" title="이 페이지를 편집" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="거버넌스와-비용">거버넌스와 비용<a class="headerlink" href="#거버넌스와-비용" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>기준일: 2026-10-28 · 근거: 공식 문서</p>
+</blockquote>
+<p>이 페이지는 공식 문서에 근거한 관리자 설정, 과금 구조, 사용량 확인 방법, 데이터 처리 범위를 정리합니다. 문서에 없는 내용은 "문서에 명시 없음"으로 표기합니다.</p>
+<h2 id="왜-필요한가">왜 필요한가<a class="headerlink" href="#왜-필요한가" title="Permanent link">&para;</a></h2>
+<p>Genie Code는 워크스페이스 사용자가 바로 쓸 수 있어 사용량과 데이터 처리 위치를 관리자가 먼저 파악해야 합니다. 관리자가 답해야 하는 질문은 대략 다음과 같습니다.</p>
+<ul>
+<li>누가, 얼마나 쓰고 있는가?</li>
+<li>비용이 예산을 넘지 않게 어떻게 막는가?</li>
+<li>모델 호출과 데이터는 어느 지역에서 처리되는가?</li>
+<li>외부 도구 연결과 자동 승인은 어떻게 통제하는가?</li>
+</ul>
+<h2 id="과금-구조">과금 구조<a class="headerlink" href="#과금-구조" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>문서 내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>과금 모델</td>
+<td>Genie Code는 <strong>종량제(pay-as-you-go)</strong> 입니다. 무료 할당량을 넘는 사용량은 LLM 사용량에 근거해 DBU로 청구됩니다.</td>
+</tr>
+<tr>
+<td>과금 시작</td>
+<td>2026-07-08 00:00 UTC부터 무료 할당량을 넘는 사용량을 청구합니다.</td>
+</tr>
+<tr>
+<td>무료 할당량</td>
+<td>식별된 사용자마다 매월 무료 할당량이 있습니다.</td>
+</tr>
+<tr>
+<td>서비스 프린시펄</td>
+<td>무료 할당량이 없고, 모든 사용량이 청구됩니다.</td>
+</tr>
+<tr>
+<td>예산과 무료 할당량</td>
+<td>예산 설정으로 사용자의 월 무료 사용량을 없앨 수 없습니다.</td>
+</tr>
+<tr>
+<td>컴퓨트</td>
+<td>SQL 웨어하우스 같은 컴퓨트는 별도로 청구되며 Genie 예산에 포함되지 않습니다.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>참고</strong> 무료 할당량의 금액은 이 문서의 본문에 명시되어 있지 않습니다. 문서는 요금 페이지를 참고하도록 안내합니다. 2026-07-08 릴리즈 노트에는 Genie 제품의 월 무료 LLM 사용량 수치가 적혀 있으나, 이 장 작성 시점에 수치를 교차 확인하지 못했으므로 여기에 적지 않습니다. 실제 금액은 요금 페이지와 계정 콘솔에서 확인합니다.</p>
+</blockquote>
+<p>Genie One과 Genie Agents의 무료 사용은 2027-01-31까지 연장되었다고 릴리즈 노트에 나옵니다. 문서상 Genie Code는 이 무료 프로모션에 포함되지 않습니다. 2026-08-03 릴리즈 노트가 이를 명시합니다.</p>
+<h2 id="예산-설정">예산 설정<a class="headerlink" href="#예산-설정" title="Permanent link">&para;</a></h2>
+<p>Genie Code 사용량은 Genie 예산(Budgets)으로 제한할 수 있습니다.</p>
+<h3 id="설정-경로와-권한">설정 경로와 권한<a class="headerlink" href="#설정-경로와-권한" title="Permanent link">&para;</a></h3>
+<ul>
+<li>계정 관리자만 예산을 만들고 관리할 수 있습니다.</li>
+<li>계정 콘솔에서 <strong>Usage</strong> → <strong>Budgets</strong> 탭 → <strong>Create budget</strong>.</li>
+<li>예산 역할은 사용자, 그룹, 서비스 프린시펄에 부여해 위임할 수 있습니다.</li>
+</ul>
+<h3 id="설정-값">설정 값<a class="headerlink" href="#설정-값" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>범위 (Scope)</td>
+<td>이름을 정하고 워크스페이스를 고르거나, <strong>All</strong>(계정 전체)</td>
+</tr>
+<tr>
+<td>리소스 유형 (Resource type)</td>
+<td><strong>Unity Gateway</strong></td>
+</tr>
+<tr>
+<td>리소스 태그 (Resource tag)</td>
+<td>키 <code>databricks-product</code>, 값 <code>genie</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>주의</strong> 태그는 <code>databricks-product=genie</code> 하나만 씁니다. 문서는 다른 태그를 함께 붙이면 추적되지 않는다고 경고합니다.</p>
+</blockquote>
+<h3 id="임계값-thresholds">임계값 (Thresholds)<a class="headerlink" href="#임계값-thresholds" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shared threshold</td>
+<td>범위 안 모든 사용자와 워크스페이스가 함께 쓰는 월간 풀</td>
+</tr>
+<tr>
+<td>Per-user threshold</td>
+<td>범위 안 각 사용자에게 적용되는 월간 한도 (무료 할당량 이후)</td>
+</tr>
+<tr>
+<td>Per-user overrides</td>
+<td>특정 사용자나 그룹에 더 높은 한도를 줍니다. 공용 임계값은 바뀌지 않습니다. 여러 그룹에 속하면 가장 관대한 override가 적용됩니다.</td>
+</tr>
+</tbody>
+</table>
+<p>임계값에 도달했을 때 <strong>Send alert</strong>(알림)와 <strong>Block usage</strong>(차단)를 고를 수 있습니다. 문서는 공용 임계값에는 <strong>Send alert</strong> 만 쓰고, 차단은 사용자별 임계값과 override로 설정하는 것을 권장합니다. 알림은 입력한 이메일 주소로 가며, 수신자가 Databricks 사용자일 필요는 없습니다.</p>
+<table>
+<thead>
+<tr>
+<th>한도</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>예산 하나당 공용 임계값</td>
+<td>최대 4개</td>
+</tr>
+<tr>
+<td>예산 하나당 사용자별 override</td>
+<td>최대 100개</td>
+</tr>
+<tr>
+<td>계정당 예산</td>
+<td>최대 1,000개</td>
+</tr>
+</tbody>
+</table>
+<h3 id="정확도-한계">정확도 한계<a class="headerlink" href="#정확도-한계" title="Permanent link">&para;</a></h3>
+<ul>
+<li>사용량 추적은 <strong>거의 실시간 추정</strong> 이므로, 차단과 알림은 대략적으로 동작합니다.</li>
+<li>임계값에 도달하기 전에 차단되거나, 차단이 적용되기 전에 한도를 넘길 수 있습니다.</li>
+<li>알림이 잠시 늦게 갈 수 있습니다.</li>
+<li>문서는 "Do not use this feature as a way to ensure an absolute spend cap on final billed amounts."라고 경고합니다. 청구 금액의 상한선으로 쓰지 않습니다.</li>
+<li>청구 가능한 사용량의 원천은 <code>system.billing.usage</code>이며, 몇 시간 간격으로 갱신됩니다.</li>
+</ul>
+<h2 id="사용량-확인">사용량 확인<a class="headerlink" href="#사용량-확인" title="Permanent link">&para;</a></h2>
+<h3 id="시스템-테이블-systemaccessassistant_events">시스템 테이블: system.access.assistant_events<a class="headerlink" href="#시스템-테이블-systemaccessassistant_events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>테이블</td>
+<td><code>system.access.assistant_events</code></td>
+</tr>
+<tr>
+<td>상태</td>
+<td><strong>Public Preview</strong></td>
+</tr>
+<tr>
+<td>설명</td>
+<td>사용자가 Genie Code에 보낸 메시지를 추적합니다.</td>
+</tr>
+<tr>
+<td>주요 컬럼</td>
+<td>이 페이지에는 나열되어 있지 않습니다. 별도의 Genie Code 이벤트 참조 페이지를 가리킵니다. 컬럼 목록은 그 페이지에서 확인합니다.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="이벤트-대시보드">이벤트 대시보드<a class="headerlink" href="#이벤트-대시보드" title="Permanent link">&para;</a></h3>
+<p>문서는 Databricks가 <strong>Genie Code 이벤트 대시보드</strong> JSON 파일을 GitHub에 제공하며, 이를 내려받아 워크스페이스에 가져오기(import)할 수 있다고 설명합니다. 가져오기 절차는 문서의 대시보드 가져오기 안내를 따릅니다.</p>
+<h3 id="임팩트-지표">임팩트 지표<a class="headerlink" href="#임팩트-지표" title="Permanent link">&para;</a></h3>
+<p>문서 "Measure Genie Code impact"는 채택, 참여, 만족도의 세 축으로 지표를 나눕니다.</p>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>시스템 테이블 기반 지표</th>
+<th>설문 기반 지표</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>채택 (Adoption)</td>
+<td>Top users overall, Submissions data (워크스페이스별·전체)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>참여 (Engagement)</td>
+<td>Active users by day and month, Active users per workspace</td>
+<td>Top job roles, Top tasks, 사용 빈도, 사용 영역</td>
+</tr>
+<tr>
+<td>만족도 (User satisfaction)</td>
+<td>—</td>
+<td>도움 만족도 (1–5 척도), 생산성 향상 (1–5 척도), 절감 시간 (비율 구간)</td>
+</tr>
+</tbody>
+</table>
+<p>활성 사용자(active user)는 하루 동안 제안을 받아 수락했거나 채팅에 참여한 고유 사용자로 정의됩니다. 문서는 설문 문항 예시도 제시합니다.</p>
+<h2 id="모델과-데이터-처리-범위">모델과 데이터 처리 범위<a class="headerlink" href="#모델과-데이터-처리-범위" title="Permanent link">&para;</a></h2>
+<h3 id="파트너-ai-기능-partner-powered-ai-features">파트너 AI 기능 (Partner-powered AI features)<a class="headerlink" href="#파트너-ai-기능-partner-powered-ai-features" title="Permanent link">&para;</a></h3>
+<p>Genie Code의 에이전트 기능은 파트너 AI 기능 설정에 의존합니다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>계정에서 켜기</td>
+<td>계정 콘솔 → <strong>Settings</strong> → <strong>Feature enablement</strong> 탭 → <strong>Enable partner-powered AI features</strong> 를 <strong>On</strong>. 워크스페이스가 바꾸지 못하게 <strong>Enforce</strong> 를 쓸 수 있습니다. 변경은 감사 로그의 계정 이벤트로 기록됩니다.</td>
+</tr>
+<tr>
+<td>워크스페이스에서 켜기</td>
+<td>사용자 이름 → <strong>Settings</strong> → <strong>Workspace admin</strong> → <strong>Advanced</strong> 탭 → <strong>Partner-powered AI features</strong></td>
+</tr>
+<tr>
+<td>기본값</td>
+<td>컴플라이언스 보안 프로필(CSP)이 없는 워크스페이스는 기본 켜짐. CSP 워크스페이스는 기본 꺼짐.</td>
+</tr>
+<tr>
+<td>호스팅 제공자 (켠 경우)</td>
+<td>Azure OpenAI service, OpenAI on Databricks, Anthropic on Databricks</td>
+</tr>
+<tr>
+<td>Genie Code 자동완성</td>
+<td>항상 Databricks 호스팅 모델을 씁니다.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>주의</strong> 이 설정은 <strong>제거 예정</strong> 입니다. 2026-11-01까지 설정이 있는 워크스페이스에서는 토글이 비활성화되어 관리 화면에서 끌 수 없습니다. Settings API로는 바꿀 수 있습니다. 2026-11-01 이후에는 변경이 Databricks 계정 담당자에게 요청해야 합니다. 설정 제거 전후로 워크스페이스의 현재 값은 유지된다고 문서가 설명합니다.</p>
+</blockquote>
+<p>설정을 끄면 다음이 영향을 받습니다.</p>
+<table>
+<thead>
+<tr>
+<th>기능</th>
+<th>영향</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genie Code 에이전트 기능</td>
+<td>사용할 수 없습니다.</td>
+</tr>
+<tr>
+<td>Genie Code 비에이전트 기능</td>
+<td>비CSP 워크스페이스는 Databricks 호스팅 모델로 계속 쓸 수 있습니다. CSP는 컴플라이언스 기준에 따릅니다.</td>
+</tr>
+<tr>
+<td>Genie Agents (Chat, Agent 모드), AI/BI 대시보드 AI 시각화, Genie App Builder, 합성 데이터 생성</td>
+<td>사용할 수 없습니다.</td>
+</tr>
+<tr>
+<td>Genie One</td>
+<td>채팅이 안 되지만, 사용자는 Genie One과 데이터 자산에 접근할 수 있습니다.</td>
+</tr>
+<tr>
+<td>AI 생성 주석</td>
+<td>Azure OpenAI service 대신 Databricks 호스팅 모델로 바뀝니다.</td>
+</tr>
+<tr>
+<td>LLM as judge</td>
+<td>사용할 모델을 사용자가 지정해야 합니다.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="지정-처리-지역-designated-services">지정 처리 지역 (Designated Services)<a class="headerlink" href="#지정-처리-지역-designated-services" title="Permanent link">&para;</a></h3>
+<p>Genie Code는 Designated Service로 분류되어 있으며, 워크스페이스의 Geo 안에서 콘텐츠를 처리합니다.</p>
+<table>
+<thead>
+<tr>
+<th>기능</th>
+<th>제공자 (문서 표기)</th>
+<th>지역 가용성 (문서 표기)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genie Code agentic capabilities</td>
+<td>Azure AI Services, OpenAI on Databricks, Anthropic on Databricks</td>
+<td>Americas, Asia, Australia &amp; New Zealand, Europe, India. Mainland China와 Middle East &amp; Africa는 별표 표기</td>
+</tr>
+<tr>
+<td>Genie Code chat and cell actions</td>
+<td>Azure AI Services, OpenAI on Databricks</td>
+<td>같은 지역. 별표 표기 지역 있음</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>워크스페이스에서 <strong>cross-Geo 처리</strong> 를 켜면 다른 Geo에서도 처리될 수 있습니다.</li>
+<li>별표가 붙은 기능은 cross-Geo 처리를 켜야 쓸 수 있다고 문서가 명시합니다.</li>
+<li>cross-Geo가 꺼진 상태에서 Genie Code chat과 cell actions의 처리 위치는 국가별로 다릅니다. 문서 예시: 브라질, 캐나다, 일본, 한국, 싱가포르, 영국은 자국 또는 해당 지역에서 처리됩니다. 홍콩은 싱가포르에서 처리됩니다. 인도네시아는 Asia Geo에서 처리됩니다.</li>
+</ul>
+<blockquote>
+<p><strong>참고</strong> 위 표는 문서 원문을 요약한 것입니다. 한국 워크스페이스의 실제 처리 위치와 cross-Geo 설정이 필요한지는 계정 담당자와 최신 Designated Services 문서로 확인합니다.</p>
+</blockquote>
+<h3 id="컴플라이언스-보안-프로필-csp-워크스페이스">컴플라이언스 보안 프로필 (CSP) 워크스페이스<a class="headerlink" href="#컴플라이언스-보안-프로필-csp-워크스페이스" title="Permanent link">&para;</a></h3>
+<p>CSP 워크스페이스에서 Databricks 호스팅 Genie Code 모델을 쓸 수 있는 범위는 문서에 다음과 같이 나옵니다.</p>
+<table>
+<thead>
+<tr>
+<th>컴플라이언스 기준</th>
+<th>가용 지역</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HIPAA</td>
+<td>지원되는 모든 지역</td>
+</tr>
+<tr>
+<td>FedRAMP Moderate</td>
+<td>미국 지역</td>
+</tr>
+<tr>
+<td>PCI-DSS, HITRUST</td>
+<td>미국, 호주·뉴질랜드 지역</td>
+</tr>
+</tbody>
+</table>
+<p>다른 컴플라이언스 기준에는 Databricks 호스팅 Genie Code 모델이 없다고 문서가 설명합니다.</p>
+<h2 id="관리자-설정-체크리스트">관리자 설정 체크리스트<a class="headerlink" href="#관리자-설정-체크리스트" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>점검 항목</th>
+<th>확인 위치</th>
+<th>근거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>파트너 AI 기능 상태</td>
+<td>계정 콘솔 Feature enablement, 워크스페이스 Advanced</td>
+<td>파트너 AI 페이지</td>
+</tr>
+<tr>
+<td>예산 설정</td>
+<td>계정 콘솔 Usage → Budgets</td>
+<td>예산 페이지</td>
+</tr>
+<tr>
+<td>외부 MCP 서버 허용 목록</td>
+<td>워크스페이스 관리자 설정</td>
+<td>MCP 페이지</td>
+</tr>
+<tr>
+<td>자동 승인 사용 정책</td>
+<td>사용자 설정 안내 및 팀 정책</td>
+<td>기능 페이지</td>
+</tr>
+<tr>
+<td>예약 작업 사용 여부</td>
+<td>Compliance 프로필 기본값 확인</td>
+<td>2026-10-05 릴리즈 노트</td>
+</tr>
+<tr>
+<td>사용량 대시보드</td>
+<td>이벤트 대시보드 가져오기</td>
+<td>임팩트 페이지</td>
+</tr>
+</tbody>
+</table>
+<p>문서는 "Serverless usage policy"라는 설정 항목을 Genie Code 패널의 Settings 안에 있다고 언급하지만, 세부 동작은 설명하지 않습니다. 해당 설정의 의미는 문서에서 확인되지 않으므로 이 장에서는 설명하지 않습니다.</p>
+<h2 id="트레이드오프">트레이드오프<a class="headerlink" href="#트레이드오프" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>설정</th>
+<th>장점</th>
+<th>비용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>파트너 AI 기능 켜기</td>
+<td>에이전트 기능과 다수의 Genie 기능을 씁니다.</td>
+<td>파트너 제공자 모델 사용과 지역 처리 조건을 함께 검토해야 합니다.</td>
+</tr>
+<tr>
+<td>파트너 AI 기능 끄기</td>
+<td>파트너 제공자 의존을 줄입니다.</td>
+<td>에이전트와 여러 Genie 기능이 빠집니다. 설정은 2026-11-01 이후 계정 담당자에게 요청해야 바꿀 수 있습니다.</td>
+</tr>
+<tr>
+<td>예산 차단 (Block usage)</td>
+<td>사용자별 한도를 둘 수 있습니다.</td>
+<td>추적이 추정치라서 정확한 상한은 아닙니다.</td>
+</tr>
+<tr>
+<td>자동 승인 허용</td>
+<td>반복 작업이 빠릅니다.</td>
+<td>보안 경계가 아닙니다.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="주의사항">주의사항<a class="headerlink" href="#주의사항" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>예산은 청구 상한이 아닙니다.</strong> 문서 경고를 그대로 따릅니다.</li>
+<li><strong>태그는 <code>databricks-product=genie</code> 하나만 씁니다.</strong></li>
+<li><strong>파트너 AI 설정 제거 일정(2026-11-01)을 확인합니다.</strong> 설정 방식이 바뀌면 워크스페이스 운영 절차를 같이 바꿔야 합니다.</li>
+<li><strong>CLI 사용량은 별도 해석이 필요합니다.</strong> <a href="../cli/">Genie Code CLI</a>의 주의 항목을 참고하십시오.</li>
+<li><strong>상태 라벨</strong>: 시스템 테이블 <code>system.access.assistant_events</code>는 Public Preview입니다. 그 밖의 기능은 상태가 페이지마다 다릅니다. 각 페이지의 상태 표기를 따릅니다.</li>
+<li><strong>클라우드 차이</strong>: 이 장은 AWS 문서를 기준으로 합니다. Azure 문서는 Microsoft Learn에 있으며 이 장에서 확인하지 않았습니다.</li>
+</ul>
+<h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.databricks.com/aws/en/genie/budgets">Manage budgets and cost controls for Genie</a></li>
+<li><a href="https://docs.databricks.com/aws/en/databricks-ai/partner-powered">Partner-powered AI features</a></li>
+<li><a href="https://docs.databricks.com/aws/en/resources/designated-services">Designated Services</a></li>
+<li><a href="https://docs.databricks.com/aws/en/genie-code/impact">Measure Genie Code impact</a></li>
+<li><a href="https://docs.databricks.com/aws/en/genie-code/">Genie Code 개요</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/july">Genie Code 릴리즈 노트 (2026년 7월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/august">Genie Code 릴리즈 노트 (2026년 8월)</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../cli/" class="md-footer__link md-footer__link--prev" aria-label="이전: Genie Code CLI">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                Genie Code CLI
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

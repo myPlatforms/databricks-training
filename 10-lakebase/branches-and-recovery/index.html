@@ -1,0 +1,1700 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Databricks Data Intelligence Platform 한국어 교육 자료 (공식 문서 기반, 주기적 최신화)">
+      
+      
+      
+        <link rel="canonical" href="https://myplatforms.github.io/databricks-training/10-lakebase/branches-and-recovery/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://www.databricks.com/en-website-assets/favicon-32x32.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>브랜치와 복구 - Databricks 교육 자료</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans KR";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#브랜치와-복구" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../.." title="Databricks 교육 자료" class="md-header__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Databricks 교육 자료
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              브랜치와 복구
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="다크 모드"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="다크 모드" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="라이트 모드"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="라이트 모드" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="탭" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  소개
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../updates/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  변경 이력
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  10. Lakebase
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../11-developer-tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  11. 개발자 도구
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Databricks 교육 자료" class="md-nav__button md-logo" aria-label="Databricks 교육 자료" data-md-component="logo">
+      
+  <img src="https://www.databricks.com/en-website-assets/icons/icon-96x96.png" alt="logo">
+
+    </a>
+    Databricks 교육 자료
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/myPlatforms/databricks-training" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    myPlatforms/databricks-training
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    소개
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../updates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 이력
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Lakebase
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    10. Lakebase
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what-is-lakebase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakebase 개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    배포 형태 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connect-and-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    연결과 인증
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connection-pooling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    커넥션 풀링
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../synced-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    동기화 테이블
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../change-data-out/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    변경 데이터 반출
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Databricks Apps와 함께 쓰기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../best-practices-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    베스트 프랙티스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../11-developer-tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. 개발자 도구
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    11. 개발자 도구
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../11-developer-tools/genie-code/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Genie Code
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/features-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    모드·기능과 데이터 접근 권한
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/instructions-and-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    인스트럭션과 스킬
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 연결
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/scheduled-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    예약 작업
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/lakeflow-jobs-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lakeflow Jobs의 Genie Code 태스크
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genie Code CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11-developer-tools/genie-code/governance-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    거버넌스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-왜-필요한가" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 왜 필요한가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-브랜치-branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 브랜치 (Branches)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 브랜치 (Branches)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-동작-원리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 동작 원리
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-과금-구조-문서-원문" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 과금 구조 (문서 원문)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-브랜치-생성-예시" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 브랜치 생성 예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-인스턴트-복구-instant-restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 인스턴트 복구 (Instant restore)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 인스턴트 복구 (Instant restore)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-동작-원리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 동작 원리
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-복구-절차-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 복구 절차 (UI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-특정-시점-브랜치-querying-data-at-a-point-in-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 특정 시점 브랜치 (Querying data at a point in time)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-재해-복구-disaster-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 재해 복구 (Disaster recovery)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 재해 복구 (Disaster recovery)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-동작-원리" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 동작 원리
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-복구-브랜치-recovery-branch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 복구 브랜치 (Recovery branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-고가용성과의-차이" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 고가용성과의 차이
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-트레이드오프" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 트레이드오프
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-주의사항" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 주의사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#참고-문서" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고 문서
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/myPlatforms/databricks-training/edit/main/docs/10-lakebase/branches-and-recovery.md" title="이 페이지를 편집" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="브랜치와-복구">브랜치와 복구<a class="headerlink" href="#브랜치와-복구" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>기준일: 2026-10-28 · 근거: 공식 문서</p>
+</blockquote>
+<p>이 페이지는 Lakebase의 데이터 분기(Branches)와 데이터 복구 기능을 다룹니다. 복구는 세 가지로 나뉩니다. 인스턴트 복구(Instant restore), 특정 시점 브랜치(Querying data at a point in time), 재해 복구(Disaster recovery)입니다. 재해 복구는 Private Preview입니다.</p>
+<h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
+<p>운영 데이터를 바꾸기 전에 같은 데이터로 테스트하고 싶을 때, 또는 실수로 데이터를 지웠을 때 원래 상태가 필요합니다. 전통적인 방식은 다음과 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th>기존 방식</th>
+<th>한계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>운영 DB 전체 복제(dump &amp; restore)</td>
+<td>데이터가 클수록 오래 걸리고 저장 공간을 두 배로 씀</td>
+</tr>
+<tr>
+<td>백업 파일에서 복구</td>
+<td>복구 시점이 백업 주기에 묶임, 복구 시간이 김</td>
+</tr>
+<tr>
+<td>테스트 환경에 샘플 데이터만 적재</td>
+<td>운영과 같은 데이터 분포로 테스트할 수 없음</td>
+</tr>
+</tbody>
+</table>
+<p>Lakebase는 브랜치를 copy-on-write 방식으로 즉시 만들고, 기록 보존 기간 안의 임의 시점으로 복구하거나 그 시점을 브랜치로 엽니다. 재해 복구는 다른 리전의 보조 워크스페이스에 데이터를 주기적으로 복제합니다.</p>
+<h2 id="2-브랜치-branches">2. 브랜치 (Branches)<a class="headerlink" href="#2-브랜치-branches" title="Permanent link">&para;</a></h2>
+<h3 id="21-동작-원리">2.1 동작 원리<a class="headerlink" href="#21-동작-원리" title="Permanent link">&para;</a></h3>
+<p>문서 설명은 다음과 같습니다. 브랜치는 Git 브랜치와 비슷하게 동작합니다. 새 브랜치는 <strong>copy-on-write</strong>로 "in seconds" 만들어집니다. 부모의 스키마와 데이터를 상속하고 스토리지를 공유하며, 데이터가 바뀔 때만 변경분이 따로 저장됩니다. 브랜치 생성 시간은 데이터베이스 크기와 무관합니다.</p>
+<table>
+<thead>
+<tr>
+<th>개념</th>
+<th>문서 설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>루트 브랜치 (root branch)</td>
+<td>프로젝트 생성 시 만들어지는 기본 <code>production</code> 브랜치. 기본 브랜치를 다른 브랜치로 지정할 수 있음</td>
+</tr>
+<tr>
+<td>자식 브랜치 (child branch)</td>
+<td>"Every branch (except the root branch) has a parent." 부모의 변경은 자동으로 반영되지 않음</td>
+</tr>
+<tr>
+<td>격리 범위</td>
+<td>역할과 데이터베이스 상태도 브랜치별로 격리. 한 브랜치에서 만든 역할, 적용한 GRANT/REVOKE, 바꾼 역할 속성은 다른 브랜치에 영향 없음</td>
+</tr>
+<tr>
+<td>리셋 (Reset)</td>
+<td>자식을 부모의 현재 상태로 맞춤. 연결 정보는 그대로. <strong>부모 → 자식 방향만 가능</strong></td>
+</tr>
+<tr>
+<td>보호 브랜치 (Protected branch)</td>
+<td>실수로 바꾸는 것을 막는 장치. 삭제와 부모로부터의 리셋 불가, 비활성 자동 아카이브 제외, 프로젝트당 1개. 보호 브랜치가 있으면 프로젝트 삭제도 막힘</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>참고</strong> 문서는 자식 브랜치의 변경을 부모에 반영하는 방법으로 "표준 마이그레이션 도구"를 쓰라고 안내합니다. Lakebase 안에서 자동으로 합치는 기능은 문서에 없습니다.</p>
+</blockquote>
+<h3 id="22-과금-구조-문서-원문">2.2 과금 구조 (문서 원문)<a class="headerlink" href="#22-과금-구조-문서-원문" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>브랜치 종류</th>
+<th>과금</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>만료 설정 브랜치 (expiration 있음)</td>
+<td>브랜치에서 바뀐 데이터만 과금</td>
+</tr>
+<tr>
+<td>영구 브랜치 (만료 없음)</td>
+<td>데이터 전체 크기로 과금</td>
+</tr>
+</tbody>
+</table>
+<p>영구 브랜치는 의도적으로 설정해야 합니다. 단가는 이 페이지에서 다루지 않습니다(<a href="../best-practices-and-cost/">베스트 프랙티스와 비용</a> 참조).</p>
+<h3 id="23-브랜치-생성-예시">2.3 브랜치 생성 예시<a class="headerlink" href="#23-브랜치-생성-예시" title="Permanent link">&para;</a></h3>
+<p>이 장의 근거 문서에 있는 SDK 예시입니다. 브랜치 생성 CLI 명령은 확인하지 못했으므로 쓰지 않았습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">databricks.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkspaceClient</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">w</span> <span class="o">=</span> <span class="n">WorkspaceClient</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 프로젝트 목록 조회 (Postgres API)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">w</span><span class="o">.</span><span class="n">postgres</span><span class="o">.</span><span class="n">list_projects</span><span class="p">():</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p><strong>참고</strong> 브랜치 생성·리셋·삭제의 정확한 SDK 호출은 이 장 조사에서 원문으로 확인하지 못했습니다. 자동화하기 전에 <a href="https://docs.databricks.com/aws/en/oltp/projects/branches">Branches</a> 원문을 다시 확인하십시오.</p>
+</blockquote>
+<h2 id="3-인스턴트-복구-instant-restore">3. 인스턴트 복구 (Instant restore)<a class="headerlink" href="#3-인스턴트-복구-instant-restore" title="Permanent link">&para;</a></h2>
+<p>문서 페이지 제목은 <strong>Point-in-time restore</strong>이고, 랜딩 페이지의 기능 이름은 <strong>Instant restore</strong>입니다. 이 장은 두 이름을 모두 표기합니다. 기능 상태 라벨은 페이지에 없습니다.</p>
+<h3 id="31-동작-원리">3.1 동작 원리<a class="headerlink" href="#31-동작-원리" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값 (AWS 문서 원문)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>복구 기간 (restore window)</td>
+<td>"from 2 days up to 30 days, with a default of 7 days"</td>
+</tr>
+<tr>
+<td>적용 범위</td>
+<td>"The restore window setting affects all branches in your project."</td>
+</tr>
+<tr>
+<td>복구 결과</td>
+<td>"A new root branch is created" — 선택한 시점의 데이터를 가진 새 루트 브랜치</td>
+</tr>
+<tr>
+<td>원래 브랜치</td>
+<td>바뀌지 않고, 기존 연결도 그대로 동작</td>
+</tr>
+<tr>
+<td>루트 브랜치 한도</td>
+<td>"Projects have a maximum of 3 root branches"</td>
+</tr>
+<tr>
+<td>비용</td>
+<td>"Extending the restore window increases your storage."</td>
+</tr>
+</tbody>
+</table>
+<p>복구 범위는 <strong>브랜치의 모든 Postgres 데이터베이스</strong>입니다. 문제가 된 데이터베이스 하나만 되돌릴 수 없습니다.</p>
+<h3 id="32-복구-절차-ui">3.2 복구 절차 (UI)<a class="headerlink" href="#32-복구-절차-ui" title="Permanent link">&para;</a></h3>
+<p>문서가 설명하는 절차는 UI뿐입니다. CLI나 API 명령은 원문에 없습니다.</p>
+<ol>
+<li>Lakebase 앱에서 프로젝트를 열고 사이드바의 <strong>Backup &amp; Restore</strong>를 선택합니다.</li>
+<li><strong>Restore from history</strong>에서 원본 브랜치를 고르고, 날짜·시각 선택기로 복구 시점을 고릅니다. <strong>Preview data</strong>로 미리 볼 수 있습니다.</li>
+<li><strong>Restore</strong>를 클릭하고 확인 화면에서 <strong>Restore</strong>를 한 번 더 클릭합니다.</li>
+<li>복구된 데이터를 쓰려면 애플리케이션의 연결 설정을 새 브랜치로 바꿉니다.</li>
+</ol>
+<blockquote>
+<p><strong>주의</strong> 루트 브랜치는 최대 3개입니다. 복구 전에 쓰지 않는 루트 브랜치를 삭제해야 할 수 있습니다.</p>
+</blockquote>
+<h2 id="4-특정-시점-브랜치-querying-data-at-a-point-in-time">4. 특정 시점 브랜치 (Querying data at a point in time)<a class="headerlink" href="#4-특정-시점-브랜치-querying-data-at-a-point-in-time" title="Permanent link">&para;</a></h2>
+<p>문서 설명에 따르면, 보존 기간 안의 임의 시점 데이터를 <strong>별도 브랜치</strong>로 만들어 조회합니다. 운영은 영향을 받지 않습니다. 이 기능은 데이터 이슈를 조사하거나 과거 상태를 분석할 때 씁니다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용 (원문)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>생성 방법</td>
+<td>UI만 문서화됨. 프로젝트 대시보드에서 <strong>Create branch</strong> → 브랜치 이름 입력 → <strong>Branch data and schema from a past point in time</strong> 선택 → 날짜·시각 선택 → <strong>Create</strong></td>
+</tr>
+<tr>
+<td>조회</td>
+<td>연결 문자열을 복사해 외부 도구에서 쓰거나, 왼쪽 메뉴의 <strong>SQL Editor</strong> 사용</td>
+</tr>
+<tr>
+<td>제한</td>
+<td>"You can only query data from within your configured restore window."</td>
+</tr>
+<tr>
+<td>정리</td>
+<td>"Delete point-in-time branches when you're finished with your analysis to avoid unnecessary storage usage."</td>
+</tr>
+<tr>
+<td>포함 범위</td>
+<td>"The branch contains all databases and schemas as they existed at the selected point in time."</td>
+</tr>
+<tr>
+<td>상태 라벨</td>
+<td>원문에 없음</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>주의</strong> 인스턴트 복구와 특정 시점 브랜치는 둘 다 과거 시점의 데이터를 가진 브랜치를 만들지만, 문서상 절차와 정리 안내가 다릅니다. 두 기능을 같은 것으로 보지 말고 각 페이지의 절차를 따로 확인하십시오.</p>
+</blockquote>
+<h2 id="5-재해-복구-disaster-recovery">5. 재해 복구 (Disaster recovery)<a class="headerlink" href="#5-재해-복구-disaster-recovery" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>참고</strong> 재해 복구 상태는 <strong>Private Preview</strong>입니다. 원문은 "During the Private Preview, disaster recovery is not intended for production use."라고 명시합니다. 운영 설계에 넣지 마십시오.</p>
+</blockquote>
+<h3 id="51-동작-원리">5.1 동작 원리<a class="headerlink" href="#51-동작-원리" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용 (원문)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>복제 방식</td>
+<td>"Lakebase currently offers periodic replication, which synchronizes your data into another region" — 주기적 복제</td>
+</tr>
+<tr>
+<td>복제 대상</td>
+<td>"Lakebase periodically replicates committed data from the Primary to the Secondary."</td>
+</tr>
+<tr>
+<td>보조 워크스페이스</td>
+<td>"pairs your project's Primary Workspace with a Secondary Workspace in another region"</td>
+</tr>
+<tr>
+<td>보조 컴퓨트</td>
+<td>"The Secondary's compute stays idle until a failover."</td>
+</tr>
+<tr>
+<td>장애 조치</td>
+<td>"Failover is always manual." 프로젝트 관리자가 장애 조치를 실행. 자동화는 요구사항에 따라 선택 가능하다고 표에 적힘</td>
+</tr>
+<tr>
+<td>RPO·RTO 수치</td>
+<td>원문에 RTO 수치 없음. RPO는 "RPO windows in the minutes range" 표현만 있음</td>
+</tr>
+<tr>
+<td>리전 제약</td>
+<td>"The Primary and Secondary must be in different regions." 같은 리전 워크스페이스 간 복제는 미지원</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-복구-브랜치-recovery-branch">5.2 복구 브랜치 (Recovery branch)<a class="headerlink" href="#52-복구-브랜치-recovery-branch" title="Permanent link">&para;</a></h3>
+<ul>
+<li>장애 조치 후 원래 주(Primary)가 돌아와 <strong>페일백(failback)</strong> 되면 복구 브랜치가 접근 가능해집니다.</li>
+<li>복구 브랜치는 분기(divergence)가 감지되기 전까지 숨겨져 있다고 문서가 설명합니다.</li>
+<li>"Lakebase never automatically merges or deletes a recovery branch." 자동 병합이나 자동 삭제는 없습니다.</li>
+</ul>
+<h3 id="53-고가용성과의-차이">5.3 고가용성과의 차이<a class="headerlink" href="#53-고가용성과의-차이" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>고가용성 (HA)</th>
+<th>재해 복구 (DR)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>목적</td>
+<td>같은 리전 안에서 장애 대응</td>
+<td>다른 리전으로 복구</td>
+</tr>
+<tr>
+<td>구성</td>
+<td>보조 컴퓨트를 다른 가용 영역에 둠</td>
+<td>보조 워크스페이스를 다른 리전에 둠</td>
+</tr>
+<tr>
+<td>장애 조치</td>
+<td>HA 문서 설명 참조</td>
+<td>수동 (Always manual)</td>
+</tr>
+<tr>
+<td>상태</td>
+<td>원문에 상태 라벨 없음</td>
+<td>Private Preview</td>
+</tr>
+</tbody>
+</table>
+<p>HA 구성은 <a href="../compute-and-scaling/">컴퓨트와 스케일링</a>을 참조하십시오.</p>
+<h2 id="6-트레이드오프">6. 트레이드오프<a class="headerlink" href="#6-트레이드오프" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>기능</th>
+<th>장점</th>
+<th>비용·제약</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>브랜치</td>
+<td>즉시 생성, 격리</td>
+<td>영구 브랜치는 데이터 전체 크기만큼 과금</td>
+</tr>
+<tr>
+<td>인스턴트 복구</td>
+<td>보존 기간 안 임의 시점 복구</td>
+<td>루트 브랜치 3개 한도, 보존 기간만큼 스토리지 증가</td>
+</tr>
+<tr>
+<td>특정 시점 브랜치</td>
+<td>운영 영향 없이 과거 조회</td>
+<td>정리하지 않으면 스토리지 낭비</td>
+</tr>
+<tr>
+<td>재해 복구</td>
+<td>다른 리전으로 복구</td>
+<td>Private Preview, 수동 장애 조치, 운영 용도 아님</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-주의사항">7. 주의사항<a class="headerlink" href="#7-주의사항" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>보존 기간을 필요 이상으로 늘리지 않습니다.</strong> 기간을 늘리면 스토리지가 늘어납니다.</li>
+<li><strong>루트 브랜치 한도를 관리합니다.</strong> 복구를 반복하면 3개 한도에 빨리 닿습니다.</li>
+<li><strong>복구 후 연결을 바꿉니다.</strong> 복구는 새 브랜치를 만들 뿐이므로 애플리케이션 연결 문자열을 바꾸지 않으면 옛 데이터를 계속 봅니다.</li>
+<li><strong>재해 복구를 운영 설계에 넣지 않습니다.</strong> Private Preview 기간에는 운영 용도가 아니라고 문서가 명시합니다.</li>
+<li><strong>자식 브랜치 변경은 자동으로 부모에 가지 않습니다.</strong> 운영 반영 경로를 따로 설계하십시오.</li>
+</ul>
+<h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/branches">Branches (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore">Point-in-time restore (AWS, 인스턴트 복구)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/point-in-time-branching">Querying data at a point in time (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/disaster-recovery">Disaster recovery (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/projects/manage-high-availability">High availability (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/oltp/">Lakebase Postgres 개요 (AWS)</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
