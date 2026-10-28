@@ -5,7 +5,8 @@ Reads   <catalog>.<schema>.source_items (status new|error) and .pages
 The endpoint must support ai_query responseFormat (structured output). As of 2026-10,
 Claude 5.x endpoints reject it; GPT-5.x, Gemini and Claude Sonnet 4.6 accept it.
 Writes  <catalog>.<schema>.item_page_map, sets source_items.status to classified|error
-Sets task values for downstream tasks: relevant_count, classified_count
+Sets task values for downstream tasks: relevant_count, classified_count, review_pages
+Refreshes views review_queue and new_page_backlog
 
 Job usage (spark_python_task parameters):
   --catalog C --schema S --llm-endpoint E [--max-items N]
@@ -178,6 +179,42 @@ def classify(spark: SparkSession, fq: str, endpoint: str) -> dict:
     return row.asDict()
 
 
+def refresh_views(spark: SparkSession, fq: str) -> None:
+    """Queues read by the Genie Code review task.
+
+    review_queue      relevant items per existing page, deduplicated (the same note is often
+                      published on several release-notes pages), minus items already proposed
+    new_page_backlog  relevant items with no existing page — input for writing new chapters
+    """
+    spark.sql(f"""
+        CREATE OR REPLACE VIEW {fq}.review_queue
+        COMMENT 'Training refresh: relevant items per page awaiting a revision proposal' AS
+        WITH proposed AS (
+          SELECT DISTINCT explode(item_ids) AS item_id FROM {fq}.revision_proposals),
+        rel AS (
+          SELECT s.item_id, s.source, s.url, s.title, s.published_date, m.change_type, m.summary_ko,
+                 explode(m.pages) AS page_path
+          FROM {fq}.item_page_map m JOIN {fq}.source_items s USING (item_id)
+          LEFT ANTI JOIN proposed p ON p.item_id = s.item_id
+          WHERE m.relevant AND size(m.pages) > 0),
+        dedup AS (
+          SELECT *, row_number() OVER (
+                   PARTITION BY page_path, lower(trim(title)), published_date ORDER BY source, url) AS rn
+          FROM rel)
+        SELECT page_path, count(*) AS n_items, max(published_date) AS latest,
+               collect_list(named_struct('item_id', item_id, 'source', source, 'url', url,
+                 'title', title, 'published_date', published_date, 'change_type', change_type,
+                 'summary_ko', summary_ko)) AS items
+        FROM dedup WHERE rn = 1 GROUP BY page_path""")
+    spark.sql(f"""
+        CREATE OR REPLACE VIEW {fq}.new_page_backlog
+        COMMENT 'Training refresh: relevant items with no existing page (new page candidates)' AS
+        SELECT m.chapter, m.new_page_candidate, s.source, s.published_date, s.title, s.url,
+               m.change_type, m.summary_ko
+        FROM {fq}.item_page_map m JOIN {fq}.source_items s USING (item_id)
+        WHERE m.relevant AND size(m.pages) = 0""")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--catalog", required=True)
@@ -196,6 +233,8 @@ def main() -> None:
         stats["pending"] = build_prompts(spark, fq, args.max_items)
         if stats["pending"]:
             stats |= classify(spark, fq, args.llm_endpoint)
+        refresh_views(spark, fq)
+        stats["review_pages"] = spark.sql(f"SELECT count(*) c FROM {fq}.review_queue").first().c
         print("classify", stats)
         if stats["pending"] and stats.get("ok", 0) == 0:
             raise RuntimeError(f"all {stats['pending']} classifications failed: {stats.get('sample_error')}")
@@ -203,6 +242,7 @@ def main() -> None:
             from databricks.sdk.runtime import dbutils
 
             dbutils.jobs.taskValues.set(key="relevant_count", value=int(stats.get("relevant", 0)))
+            dbutils.jobs.taskValues.set(key="review_pages", value=int(stats["review_pages"]))
             dbutils.jobs.taskValues.set(key="classified_count", value=int(stats.get("ok", 0)))
         except Exception as e:  # noqa: BLE001 — not running inside a job
             print(f"task values not set: {e}")

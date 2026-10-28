@@ -1,6 +1,6 @@
 {
   "name": "training-content-refresh",
-  "description": "Weekly refresh for myPlatforms/databricks-training: collect release notes, blog posts and cited-doc changes into Delta, classify impact per page (ai_query). Genie Code review and PR tasks are added separately.",
+  "description": "Weekly refresh for myPlatforms/databricks-training: collect release notes, blog posts and cited-doc changes into Delta, classify impact per page (ai_query). The Genie Code review task (prompt: pipeline/review_prompt.md) is added in the Jobs UI after has_review_pages=true.",
   "max_concurrent_runs": 1,
   "timeout_seconds": 7200,
   "queue": {"enabled": true},
@@ -16,7 +16,9 @@
     {"name": "since", "default": "${SINCE}"},
     {"name": "llm_endpoint", "default": "databricks-gpt-5-5"},
     {"name": "blog_fetch_cap", "default": "40"},
-    {"name": "max_items", "default": "200"}
+    {"name": "max_items", "default": "200"},
+    {"name": "review_cap", "default": "5"},
+    {"name": "rules_path", "default": "${WS_ROOT}/CLAUDE.md"}
   ],
   "environments": [
     {"environment_key": "default", "spec": {"client": "3", "dependencies": ["httpx>=0.27"]}}
@@ -53,6 +55,11 @@
           "--job-run-id", "{{job.run_id}}"
         ]
       }
+    },
+    {
+      "task_key": "has_review_pages",
+      "depends_on": [{"task_key": "classify"}],
+      "condition_task": {"op": "GREATER_THAN", "left": "{{tasks.classify.values.review_pages}}", "right": "0"}
     }
   ]
 }
