@@ -41,13 +41,13 @@ Autoscaling 페이지 자체에는 상태 라벨이 없습니다. CU 구성은 "
 | 사용 가능 조건 | "Scale to zero is available for computes of 32 CU or smaller." 자동 확장의 경우 "the maximum size must be 32 CU or smaller" |
 | 조건 위반 시 | 32 CU 초과 컴퓨트에서 켜면 오류가 납니다 |
 
-**재접속 동작**: 일시 중지된 컴퓨트로 새 쿼리나 연결 요청이 오면 Lakebase가 자동으로 다시 활성화합니다. 재활성화는 "within a few hundred milliseconds"가 걸린다고 문서가 설명합니다. 문서는 애플리케이션이 이 짧은 재활성화 구간을 위해 **연결 재시도 로직**을 구현해야 한다고 권장합니다. 재활성화 후 세션 상태(임시 테이블, 프리페어드 문장, 커넥션 풀)는 초기화됩니다.
+**재접속 동작**: 일시 중지된 컴퓨트로 새 쿼리나 연결 요청이 오면 Lakebase가 자동으로 다시 활성화합니다. 재활성화는 "within a few hundred milliseconds"가 걸린다고 문서가 설명합니다. 문서는 애플리케이션이 이 짧은 재활성화 구간을 위해 ** 연결 재시도 로직**을 구현해야 한다고 권장합니다. 재활성화 후 세션 상태(임시 테이블, 프리페어드 문장, 커넥션 풀)는 초기화됩니다.
 
 > **주의** 스케일 투 제로와 연결 풀은 함께 설계해야 합니다. 세션 상태가 초기화되므로, 풀이 오래된 연결을 들고 있으면 첫 요청에서 실패할 수 있습니다. 재시도와 연결 검증을 넣으십시오.
 
 ### 2.3 읽기 복제본 (Read replica)
 
-문서 설명: 읽기 복제본은 주 읽기-쓰기 컴퓨트와 **같은 데이터에 대해 읽기 작업을 수행하는 독립된 읽기 전용 컴퓨트**입니다.
+문서 설명: 읽기 복제본은 주 읽기-쓰기 컴퓨트와 **같은 데이터에 대해 읽기 작업을 수행하는 독립된 읽기 전용 컴퓨트** 입니다.
 
 | 항목 | 값 (AWS 문서 원문) |
 |---|---|
@@ -66,7 +66,7 @@ Autoscaling 페이지 자체에는 상태 라벨이 없습니다. CU 구성은 "
 |---|---|
 | 컴퓨트 구성 | 총 2, 3, 4개 중 선택. "**2** (1 primary, 1 secondary)", "**3** (1 primary, 2 secondaries)", "**4** (1 primary, 3 secondaries)" |
 | 배치 | "Lakebase provisions secondary compute instances in different availability zones." |
-| 설정 방법 | 주 컴퓨트의 편집 창에서 **Compute type**을 **High availability**로 설정한 뒤 **Configuration** 선택 |
+| 설정 방법 | 주 컴퓨트의 편집 창에서 **Compute type** 을 **High availability** 로 설정한 뒤 **Configuration** 선택 |
 | 스케일 투 제로 | "Scale to zero must be disabled." |
 | 상태 표시 | Computes 탭의 Status 열에 "Starting, Active" 등 |
 
@@ -80,14 +80,14 @@ Autoscaling 페이지 자체에는 상태 라벨이 없습니다. CU 구성은 "
 
 1. Lakebase 앱에서 프로젝트를 열고 브랜치의 **Computes** 탭으로 갑니다.
 2. 컴퓨트를 편집해 크기 범위(최소·최대 CU)를 설정합니다. 최대 32 CU 이하에서만 스케일 투 제로를 켤 수 있습니다.
-3. 필요하면 **Add Read Replica**로 읽기 복제본을 추가합니다(브랜치당 최대 6개).
-4. 고가용성이 필요하면 **Compute type**을 **High availability**로 바꾸고 구성을 선택합니다. 이때 스케일 투 제로는 꺼야 합니다.
+3. 필요하면 **Add Read Replica** 로 읽기 복제본을 추가합니다(브랜치당 최대 6개).
+4. 고가용성이 필요하면 **Compute type** 을 **High availability** 로 바꾸고 구성을 선택합니다. 이때 스케일 투 제로는 꺼야 합니다.
 
 > **참고** 이 페이지의 근거 문서들은 컴퓨트 설정의 CLI나 SDK 예시를 제공하지 않았습니다. 자동화가 필요하면 Postgres API 레퍼런스를 확인하십시오.
 
 ### 3.2 프로젝트 기본 컴퓨트 설정
 
-새 프로젝트의 기본 컴퓨트 설정은 프로젝트 설정의 **Compute defaults**에서 바꿀 수 있습니다. 바꿔도 기존 컴퓨트 설정은 바뀌지 않고, 새로 만드는 주 컴퓨트와 읽기 복제본의 초기값에만 적용됩니다.
+새 프로젝트의 기본 컴퓨트 설정은 프로젝트 설정의 **Compute defaults** 에서 바꿀 수 있습니다. 바꿔도 기존 컴퓨트 설정은 바뀌지 않고, 새로 만드는 주 컴퓨트와 읽기 복제본의 초기값에만 적용됩니다.
 
 ## 4. 트레이드오프
 

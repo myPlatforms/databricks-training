@@ -9,27 +9,31 @@ Lakebase는 Databricks 플랫폼에 통합된 관리형 Postgres 데이터베이
 이 장을 마치면 다음을 할 수 있습니다.
 
 - OLTP 워크로드를 레이크하우스와 분리해서 운영할 때의 문제와 Lakebase가 해결하는 지점을 설명합니다.
-- Lakebase 배포 형태(Autoscaling, Provisioned)의 차이를 비교하고 신규 프로젝트에 맞는 형태를 고릅니다.
+- 컴퓨트의 자동 확장(Autoscaling), 스케일 투 제로, 읽기 복제본, 고가용성(HA) 구성을 설정하고 한도를 확인합니다.
 - OAuth 토큰을 Postgres 비밀번호로 사용하는 연결 방식과 토큰 만료, 연결 수명 제한을 이해하고 재발급 로직을 설계합니다.
 - 동기화 테이블(Synced Table)로 Unity Catalog의 Delta 테이블을 Lakebase로 옮기는 설정과 제약을 파악합니다.
 - 변경 데이터 피드(Change Data Feed, CDF)와 논리 복제(Logical replication)의 지원 범위와 상태를 구분합니다.
 - Databricks Apps에 Lakebase 리소스를 바인딩하고 주입되는 환경 변수를 확인합니다.
-- 브랜치, 포인트인타임 복구(Point-in-time restore), 과금 구조를 운영 관점에서 점검합니다.
+- 브랜치, 인스턴트 복구(Instant restore), 특정 시점 브랜치, 재해 복구(Private Preview)의 차이를 구분합니다.
+- 과금 구조를 문서 원문 범위에서 점검합니다.
 
 ## 페이지 안내
 
 | 순서 | 페이지 | 다루는 내용 |
 |---|---|---|
-| 1 | [Lakebase 개요](what-is-lakebase.md) | 왜 필요한가, 구성 요소(프로젝트·브랜치·컴퓨트·데이터베이스·역할), 스토리지·컴퓨트 분리, 브랜칭, 복구 |
-| 2 | [배포 형태 비교](deployment-types.md) | Autoscaling과 Provisioned의 차이, 현재 상태, 선택 기준 |
-| 3 | [연결과 인증](connect-and-auth.md) | OAuth 토큰을 비밀번호로 쓰는 방식, 토큰 만료, 연결 수명, 롤과 권한, 클라이언트 도구 |
-| 4 | [커넥션 풀링](connection-pooling.md) | 내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러와 OAuth의 배타 관계 |
-| 5 | [동기화 테이블](synced-tables.md) | Unity Catalog Delta를 Lakebase로 동기화, 동기화 모드, 타입 매핑, 제약 |
-| 6 | [변경 데이터 반출](change-data-out.md) | CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위 |
-| 7 | [Databricks Apps와 함께 쓰기](apps-integration.md) | 리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할 |
-| 8 | [베스트 프랙티스와 비용](best-practices-and-cost.md) | 운영 설정 기준, 연결 설계, 과금 구조(문서에 명시된 범위) |
+| 1 | [Lakebase 개요](what-is-lakebase.md) | 왜 필요한가, 구성 요소(프로젝트·브랜치·컴퓨트·데이터베이스·역할), 스토리지·컴퓨트 분리, 리전 가용성 |
+| 2 | [컴퓨트와 스케일링](compute-and-scaling.md) | Autoscaling(CU, 범위 제약), 스케일 투 제로, 읽기 복제본, 고가용성(HA) |
+| 3 | [브랜치와 복구](branches-and-recovery.md) | 브랜치, 인스턴트 복구, 특정 시점 브랜치, 재해 복구(Private Preview) |
+| 4 | [연결과 인증](connect-and-auth.md) | OAuth 토큰을 비밀번호로 쓰는 방식, 토큰 만료, 연결 수명, 롤과 권한, 클라이언트 도구 |
+| 5 | [커넥션 풀링](connection-pooling.md) | 내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러와 OAuth의 배타 관계 |
+| 6 | [동기화 테이블](synced-tables.md) | Unity Catalog Delta를 Lakebase로 동기화, 동기화 모드, 타입 매핑, 제약 |
+| 7 | [변경 데이터 반출](change-data-out.md) | CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위 |
+| 8 | [Databricks Apps와 함께 쓰기](apps-integration.md) | 리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할 |
+| 9 | [베스트 프랙티스와 비용](best-practices-and-cost.md) | 운영 설정 기준, 연결 설계, 과금 구조(문서에 명시된 범위) |
 
 권장 학습 순서는 위 표 순서입니다. 연결과 인증 페이지는 동기화 테이블, Apps 페이지의 전제가 되므로 건너뛰지 않는 것을 권장합니다.
+
+> **참고** 이전 버전 **Lakebase Provisioned** 에서 넘어온 경우: Provisioned 인스턴스는 2026년 7월에 Autoscaling 플랫폼으로 업그레이드가 완료되었다고 문서가 설명합니다. 업그레이드 과정에서 데이터, 연결 문자열, API 호출, Asset Bundle과 Terraform 구성은 보존되었다고 문서가 명시합니다. Provisioned UI는 2026년 9월 1일까지 제공되며, 이후에는 Lakebase UI에서 인스턴스를 관리하라고 안내합니다. 이 장은 Provisioned를 주제로 다루지 않습니다.
 
 ## 선수 지식
 

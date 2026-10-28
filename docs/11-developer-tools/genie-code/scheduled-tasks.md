@@ -8,7 +8,7 @@
 
 예약 작업은 **Genie Code 프롬프트를 정해진 시각에 자동 실행** 하는 기능입니다. 실행 한 번이 하나의 Genie Code 세션이며, 그 결과가 새 채팅으로 남습니다.
 
-> **참고** 문서는 이 기능이 **대화형 채팅** 을 다루며, Lakeflow Job 안에서 Genie Code를 실행하는 것은 별도 기능이라고 구분합니다. Job 안 실행은 [Lakeflow Jobs의 Genie Code 태스크](lakeflow-jobs-task.md)를 참고하십시오.
+> **참고** 문서는 이 기능이 ** 대화형 채팅** 을 다루며, Lakeflow Job 안에서 Genie Code를 실행하는 것은 별도 기능이라고 구분합니다. Job 안 실행은 [Lakeflow Jobs의 Genie Code 태스크](lakeflow-jobs-task.md)를 참고하십시오.
 
 ## 어떻게 동작하는가
 
