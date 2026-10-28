@@ -1,27 +1,76 @@
 {
   "name": "training-content-refresh",
-  "description": "Weekly refresh for myPlatforms/databricks-training: collect release notes, blog posts and cited-doc changes into Delta, classify impact per page (ai_query). The Genie Code review task (prompt: pipeline/review_prompt.md) is added in the Jobs UI after has_review_pages=true.",
+  "description": "Weekly refresh for myPlatforms/databricks-training: collect release notes, blog posts and cited-doc changes into Delta, classify impact per page (ai_query), Genie Code review writes revision proposals, publish opens a PR. The Genie Code task 'review' (genie_task, prompt = pipeline/review_prompt.md) must be added in the Jobs UI: its prompt lives in a per-user Genie Code configuration, not in job JSON. Edit this job via the REST API (api/2.2) — CLI 1.19 SDK drops genie_task on update/reset.",
   "max_concurrent_runs": 1,
   "timeout_seconds": 7200,
-  "queue": {"enabled": true},
+  "queue": {
+    "enabled": true
+  },
   "schedule": {
     "quartz_cron_expression": "0 0 7 ? * MON",
     "timezone_id": "Asia/Seoul",
     "pause_status": "PAUSED"
   },
   "parameters": [
-    {"name": "catalog", "default": "${CATALOG}"},
-    {"name": "schema", "default": "${SCHEMA}"},
-    {"name": "site_raw_base", "default": "https://raw.githubusercontent.com/myPlatforms/databricks-training/main/docs"},
-    {"name": "since", "default": "${SINCE}"},
-    {"name": "llm_endpoint", "default": "databricks-gpt-5-5"},
-    {"name": "blog_fetch_cap", "default": "40"},
-    {"name": "max_items", "default": "200"},
-    {"name": "review_cap", "default": "5"},
-    {"name": "rules_path", "default": "${WS_ROOT}/CLAUDE.md"}
+    {
+      "name": "catalog",
+      "default": "${CATALOG}"
+    },
+    {
+      "name": "schema",
+      "default": "${SCHEMA}"
+    },
+    {
+      "name": "site_raw_base",
+      "default": "https://raw.githubusercontent.com/myPlatforms/databricks-training/main/docs"
+    },
+    {
+      "name": "since",
+      "default": "${SINCE}"
+    },
+    {
+      "name": "llm_endpoint",
+      "default": "databricks-gpt-5-5"
+    },
+    {
+      "name": "blog_fetch_cap",
+      "default": "40"
+    },
+    {
+      "name": "max_items",
+      "default": "200"
+    },
+    {
+      "name": "review_cap",
+      "default": "5"
+    },
+    {
+      "name": "rules_path",
+      "default": "${WS_ROOT}/CLAUDE.md"
+    },
+    {
+      "name": "github_repo",
+      "default": "myPlatforms/databricks-training"
+    },
+    {
+      "name": "secret_scope",
+      "default": "training"
+    },
+    {
+      "name": "secret_key",
+      "default": "github_pat"
+    }
   ],
   "environments": [
-    {"environment_key": "default", "spec": {"client": "3", "dependencies": ["httpx>=0.27"]}}
+    {
+      "environment_key": "default",
+      "spec": {
+        "client": "3",
+        "dependencies": [
+          "httpx>=0.27"
+        ]
+      }
+    }
   ],
   "tasks": [
     {
@@ -31,35 +80,91 @@
       "spark_python_task": {
         "python_file": "${WS_DIR}/collect.py",
         "parameters": [
-          "--catalog", "{{job.parameters.catalog}}",
-          "--schema", "{{job.parameters.schema}}",
-          "--site-raw-base", "{{job.parameters.site_raw_base}}",
-          "--since", "{{job.parameters.since}}",
-          "--blog-fetch-cap", "{{job.parameters.blog_fetch_cap}}",
-          "--job-run-id", "{{job.run_id}}"
+          "--catalog",
+          "{{job.parameters.catalog}}",
+          "--schema",
+          "{{job.parameters.schema}}",
+          "--site-raw-base",
+          "{{job.parameters.site_raw_base}}",
+          "--since",
+          "{{job.parameters.since}}",
+          "--blog-fetch-cap",
+          "{{job.parameters.blog_fetch_cap}}",
+          "--job-run-id",
+          "{{job.run_id}}"
         ]
       }
     },
     {
       "task_key": "classify",
-      "depends_on": [{"task_key": "collect"}],
+      "depends_on": [
+        {
+          "task_key": "collect"
+        }
+      ],
       "environment_key": "default",
       "timeout_seconds": 3600,
       "spark_python_task": {
         "python_file": "${WS_DIR}/classify.py",
         "parameters": [
-          "--catalog", "{{job.parameters.catalog}}",
-          "--schema", "{{job.parameters.schema}}",
-          "--llm-endpoint", "{{job.parameters.llm_endpoint}}",
-          "--max-items", "{{job.parameters.max_items}}",
-          "--job-run-id", "{{job.run_id}}"
+          "--catalog",
+          "{{job.parameters.catalog}}",
+          "--schema",
+          "{{job.parameters.schema}}",
+          "--llm-endpoint",
+          "{{job.parameters.llm_endpoint}}",
+          "--max-items",
+          "{{job.parameters.max_items}}",
+          "--job-run-id",
+          "{{job.run_id}}"
         ]
       }
     },
     {
       "task_key": "has_review_pages",
-      "depends_on": [{"task_key": "classify"}],
-      "condition_task": {"op": "GREATER_THAN", "left": "{{tasks.classify.values.review_pages}}", "right": "0"}
+      "depends_on": [
+        {
+          "task_key": "classify"
+        }
+      ],
+      "condition_task": {
+        "op": "GREATER_THAN",
+        "left": "{{tasks.classify.values.review_pages}}",
+        "right": "0"
+      }
+    },
+    {
+      "task_key": "publish",
+      "environment_key": "default",
+      "timeout_seconds": 900,
+      "max_retries": 0,
+      "run_if": "AT_LEAST_ONE_SUCCESS",
+      "depends_on": [
+        {
+          "task_key": "review"
+        },
+        {
+          "task_key": "has_review_pages",
+          "outcome": "false"
+        }
+      ],
+      "spark_python_task": {
+        "python_file": "${WS_DIR}/publish.py",
+        "parameters": [
+          "--catalog",
+          "{{job.parameters.catalog}}",
+          "--schema",
+          "{{job.parameters.schema}}",
+          "--repo",
+          "{{job.parameters.github_repo}}",
+          "--secret-scope",
+          "{{job.parameters.secret_scope}}",
+          "--secret-key",
+          "{{job.parameters.secret_key}}",
+          "--job-run-id",
+          "{{job.run_id}}"
+        ]
+      }
     }
   ]
 }

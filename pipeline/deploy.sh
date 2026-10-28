@@ -10,7 +10,7 @@ WS_DIR="$WS_ROOT/pipeline"
 HERE=$(cd "$(dirname "$0")" && pwd)
 
 databricks workspace mkdirs "$WS_DIR" -p "$PROFILE"
-for f in sources.py collect.py classify.py; do
+for f in sources.py collect.py classify.py publish.py; do
   databricks workspace import "$WS_DIR/$f" --file "$HERE/$f" --format AUTO --overwrite -p "$PROFILE"
 done
 databricks workspace import "$WS_ROOT/CLAUDE.md" --file "$HERE/../CLAUDE.md" --format AUTO --overwrite -p "$PROFILE"
