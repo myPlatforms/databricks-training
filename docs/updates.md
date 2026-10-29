@@ -4,6 +4,7 @@
 
 | 날짜 | 페이지 | 변경 | 근거 |
 |---|---|---|---|
+| 2026-10-29 | 01·03·04·05·07·08·10·11·12장 19쪽 | 짧은 페이지 보강(원문 하위 문서 근거 추가, 원문과 어긋난 표현 정정), 용어 정리에 확인된 구 명칭 대응 추가, 전체 굵은 글씨 서식 손상 98곳 복구 | 각 페이지 참고 문서 |
 | 2026-10-29 | 11·12장 | 초판 공개 — 개발자 도구(Databricks CLI·Declarative Automation Bundles·직접 배포 엔진·Python SDK·REST·Databricks Connect·Apps·Git·CI/CD), 보안·운영(ID·인증·네트워크·암호화·감사 로그·시스템 테이블·비용 관리·운영 체크리스트) | 공식 문서 (각 페이지 참고 문서) |
 | 2026-10-29 | 07·08·09장 | 초판 공개 — AI/BI(대시보드·Genie Agents·메트릭 뷰 소비·알림·외부 BI), 머신러닝(MLflow 3·UC 모델·피처 스토어·Model Serving·Foundation Model APIs·Unity Gateway·데이터 품질 모니터링), AI 에이전트(Agent Bricks CLI·MCP·Databricks AI Search·평가·배포·가드레일) | 공식 문서 (각 페이지 참고 문서) |
 | 2026-10-29 | 04·05·06장 | 초판 공개 — 데이터 엔지니어링(Lakeflow Connect·Auto Loader·Lakeflow pipelines·Jobs·Structured Streaming), 데이터 웨어하우징(Databricks SQL·AI Functions·스크립팅), Unity Catalog 거버넌스(권한·ABAC·행/열 보안·볼륨·계보·공유) | 공식 문서 (각 페이지 참고 문서) |
