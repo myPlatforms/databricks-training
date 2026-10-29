@@ -1,6 +1,6 @@
 # 브랜치와 복구
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
 
 이 페이지는 Lakebase의 데이터 분기(Branches)와 데이터 복구 기능을 다룹니다. 복구는 세 가지로 나뉩니다. 인스턴트 복구(Instant restore), 특정 시점 브랜치(Querying data at a point in time), 재해 복구(Disaster recovery)입니다. 재해 복구는 Private Preview입니다.
 

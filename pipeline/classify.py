@@ -104,8 +104,14 @@ INSTRUCTIONS = """\
 """
 
 
+TARGET_PAGES = "path NOT LIKE '%quiz.md'"
+
+
 def build_prompts(spark: SparkSession, fq: str, max_items: int) -> int:
-    pages = spark.sql(f"SELECT path, title, basis_date FROM {fq}.pages ORDER BY path").collect()
+    # Quiz pages are derived from chapter bodies, so release items never target them directly.
+    pages = spark.sql(
+        f"SELECT path, title, basis_date FROM {fq}.pages WHERE {TARGET_PAGES} ORDER BY path"
+    ).collect()
     page_index = "\n".join(f"{p.path} | {p.title} | {p.basis_date}" for p in pages)
     header = INSTRUCTIONS.format(chapters=CHAPTERS, page_index=page_index)
     spark.sql(f"""
@@ -145,7 +151,9 @@ def classify(spark: SparkSession, fq: str, endpoint: str) -> dict:
                  pages ARRAY<STRING>, new_page_candidate STRING, summary_ko STRING, reason STRING') AS j
         FROM {fq}._classify_tmp""")
     # Higher-order functions cannot contain subqueries — pass valid paths as a literal array.
-    valid_paths = sorted(r.path for r in spark.sql(f"SELECT path FROM {fq}.pages").collect())
+    valid_paths = sorted(
+        r.path for r in spark.sql(f"SELECT path FROM {fq}.pages WHERE {TARGET_PAGES}").collect()
+    )
     valid_sql = "array(" + ", ".join("'" + p.replace("'", "''") + "'" for p in valid_paths) + ")"
     spark.sql(f"""
         MERGE INTO {fq}.item_page_map t

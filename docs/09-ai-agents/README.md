@@ -1,6 +1,6 @@
 # 09. AI 에이전트
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 AI 에이전트(AI Agent)는 언어 모델이 도구를 골라 호출하고, 그 결과를 보고 다음 행동을 정하는 반복 루프를 가진 애플리케이션입니다. Databricks는 에이전트를 만들고, 데이터에 접근하게 하고, 배포하고, 평가하고, 감시하는 도구를 한 플랫폼 안에 모아 두고 있습니다. 이 장은 데이터 엔지니어, ML 엔지니어, 애플리케이션 개발자를 대상으로, 에이전트 개념과 Databricks의 에이전트 제품 지도, 직접 개발하는 방법, 도구·검색·평가·배포·가드레일을 공식 문서 원문 기준으로 정리합니다.
 
@@ -19,18 +19,19 @@ AI 에이전트(AI Agent)는 언어 모델이 도구를 골라 호출하고, 그
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [AI 에이전트란 무엇인가](what-is-ai-agent.md) | 에이전트의 동작 원리, 단순 호출·RAG·에이전트의 선택 기준, Databricks 에이전트 구성 요소 |
-| 2 | [Databricks 에이전트 제품 지도](agent-product-map.md) | Agent Bricks, Genie Agents, 레거시 에이전트 제품, 각 제품의 상태 라벨 |
-| 3 | [Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md) | 퀵스타트, 프로젝트 구조, `agent.toml`, 로컬 실행·배포, 세션과 메모리 |
-| 4 | [도구: UC 함수와 MCP 서버](tools-uc-functions-and-mcp.md) | 관리형·외부·커스텀 MCP 서버, UC 함수 도구, 도구별 인증 주체 |
-| 5 | [AI Search와 검색 기반 에이전트](ai-search-and-retrieval.md) | 인덱스 유형, 소스 테이블 조건, 인덱스 생성·쿼리, 검색 모드 |
-| 6 | [트레이싱·평가·피드백](tracing-evaluation-feedback.md) | MLflow 트레이싱, 내장 스코어러, 리뷰 앱과 리뷰 큐, 프로덕션 모니터링 |
-| 7 | [배포와 인증](deploy-and-authentication.md) | Agent Runtime, Model Serving 레거시, Databricks Apps 사용자 권한, 호출 인증 |
-| 8 | [가드레일·거버넌스·모니터링](guardrails-governance-monitoring.md) | 서비스 정책(Beta), 속도 제한, 사용량 추적, 추론 테이블, 운영 체크리스트 |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [AI 에이전트란 무엇인가](what-is-ai-agent.md) | 100 | 에이전트의 동작 원리, 단순 호출·RAG·에이전트의 선택 기준, Databricks 에이전트 구성 요소 |
+| 2 | [Databricks 에이전트 제품 지도](agent-product-map.md) | 200 | Agent Bricks, Genie Agents, 레거시 에이전트 제품, 각 제품의 상태 라벨 |
+| 3 | [Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md) | 200 | 퀵스타트, 프로젝트 구조, `agent.toml`, 로컬 실행·배포, 세션과 메모리 |
+| 4 | [도구: UC 함수와 MCP 서버](tools-uc-functions-and-mcp.md) | 300 | 관리형·외부·커스텀 MCP 서버, UC 함수 도구, 도구별 인증 주체 |
+| 5 | [AI Search와 검색 기반 에이전트](ai-search-and-retrieval.md) | 200 | 인덱스 유형, 소스 테이블 조건, 인덱스 생성·쿼리, 검색 모드 |
+| 6 | [트레이싱·평가·피드백](tracing-evaluation-feedback.md) | 200 | MLflow 트레이싱, 내장 스코어러, 리뷰 앱과 리뷰 큐, 프로덕션 모니터링 |
+| 7 | [배포와 인증](deploy-and-authentication.md) | 300 | Agent Runtime, Model Serving 레거시, Databricks Apps 사용자 권한, 호출 인증 |
+| 8 | [가드레일·거버넌스·모니터링](guardrails-governance-monitoring.md) | 300 | 서비스 정책(Beta), 속도 제한, 사용량 추적, 추론 테이블, 운영 체크리스트 |
+| 9 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 9개와 실무 체크리스트 |
 
-권장 학습 순서는 위 표 순서입니다. 2장의 제품 지도에서 상태 라벨을 먼저 확인하면, 3장 이후의 설정 예시가 어떤 제품에 해당하는지 헷갈리지 않습니다.
+권장 학습 순서는 위 표 순서입니다. 「Databricks 에이전트 제품 지도」 페이지에서 상태 라벨을 먼저 확인하면, 그 뒤 페이지의 설정 예시가 어떤 제품에 해당하는지 헷갈리지 않습니다.
 
 ## 선수 지식
 

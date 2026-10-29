@@ -1,6 +1,6 @@
 # 3. 컴퓨트 (서버리스·클래식·SQL 웨어하우스)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 컴퓨트(Compute)는 Databricks에서 코드와 쿼리를 실제로 실행하는 연산 자원입니다. 노트북을 실행하고, Job을 돌리고, 파이프라인을 처리하고, SQL 쿼리에 답하는 모든 작업이 어딘가의 컴퓨트 위에서 일어납니다. 이 장은 데이터 엔지니어, 분석가, 플랫폼 관리자를 대상으로 하며, 컴퓨트 종류를 구분하고 워크로드에 맞는 것을 고르는 기준, 각 컴퓨트의 설정과 제약, 비용이 어떤 구조로 청구되는지를 다룹니다.
 
@@ -19,17 +19,18 @@
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [컴퓨트 종류와 선택 기준](compute-types-and-selection.md) | 세 가지 컴퓨트 분류, 워크로드별 선택 표, 평면(Plane) 개념, 선택 기준 체크리스트 |
-| 2 | [서버리스 컴퓨트](serverless-compute.md) | 노트북·Jobs·파이프라인용 서버리스, 환경 버전과 기본 환경, 성능 모드, 타임아웃 |
-| 3 | [서버리스 제약과 지원 기능](serverless-limitations.md) | 언어·API·UDF·스트리밍·캐싱 제약, DataFrame 캐싱(Public Preview), 데이터 소스 |
-| 4 | [클래식 컴퓨트](classic-compute.md) | 액세스 모드(Standard, Dedicated, Auto), Databricks Runtime 버전, 오토스케일링 |
-| 5 | [인스턴스 풀과 컴퓨트 정책](pools-and-policies.md) | 풀의 유휴 인스턴스 과금 규칙, 풀 권한, 컴퓨트 정책의 제한 범위 |
-| 6 | [SQL 웨어하우스](sql-warehouses.md) | Serverless·Pro·Classic 유형, 크기(T-shirt size), 클러스터 수, 자동 중지, 큐 |
-| 7 | [Photon](photon.md) | Photon의 가속 대상, 지원 컴퓨트, 활성화 방법, 적합하지 않은 워크로드 |
-| 8 | [비용 구조 비교](cost-structure.md) | DBU와 클라우드 인스턴스 청구 분리, 유형별 청구 구조 표, 청구 데이터 확인 방법 (단가 없음) |
-| 9 | [Spark 기초](spark-basics.md) | 드라이버와 익스큐터, 클러스터 매니저, 변환과 액션, 지연 실행 |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [컴퓨트 종류와 선택 기준](compute-types-and-selection.md) | 100 | 세 가지 컴퓨트 분류, 워크로드별 선택 표, 평면(Plane) 개념, 선택 기준 체크리스트 |
+| 2 | [서버리스 컴퓨트](serverless-compute.md) | 200 | 노트북·Jobs·파이프라인용 서버리스, 환경 버전과 기본 환경, 성능 모드, 타임아웃 |
+| 3 | [서버리스 제약과 지원 기능](serverless-limitations.md) | 300 | 언어·API·UDF·스트리밍·캐싱 제약, DataFrame 캐싱(Public Preview), 데이터 소스 |
+| 4 | [클래식 컴퓨트](classic-compute.md) | 200 | 액세스 모드(Standard, Dedicated, Auto), Databricks Runtime 버전, 오토스케일링 |
+| 5 | [인스턴스 풀과 컴퓨트 정책](pools-and-policies.md) | 300 | 풀의 유휴 인스턴스 과금 규칙, 풀 권한, 컴퓨트 정책의 제한 범위 |
+| 6 | [SQL 웨어하우스](sql-warehouses.md) | 200 | Serverless·Pro·Classic 유형, 크기(T-shirt size), 클러스터 수, 자동 중지, 큐 |
+| 7 | [Photon](photon.md) | 200 | Photon의 가속 대상, 지원 컴퓨트, 활성화 방법, 적합하지 않은 워크로드 |
+| 8 | [비용 구조 비교](cost-structure.md) | 300 | DBU와 클라우드 인스턴스 청구 분리, 유형별 청구 구조 표, 청구 데이터 확인 방법 (단가 없음) |
+| 9 | [Spark 기초](spark-basics.md) | 100 | 드라이버와 익스큐터, 클러스터 매니저, 변환과 액션, 지연 실행 |
+| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 1번 페이지의 선택 기준을 먼저 잡은 뒤 서버리스 페이지(2·3번)와 클래식 페이지(4·5번)를 읽고, SQL 웨어하우스(6번)와 Photon(7번)으로 넘어가는 흐름을 권장합니다. 비용 구조(8번)는 모든 유형을 본 뒤에 읽으면 비교가 쉽습니다. Spark 기초(9번)는 Spark 경험이 없는 독자라면 2번 페이지 전에 읽어도 됩니다.
 

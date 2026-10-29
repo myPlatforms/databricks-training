@@ -1,6 +1,6 @@
 # 07. AI/BI (대시보드·Genie)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 AI/BI는 Databricks의 분석·소비 계층입니다. 정해진 질문에 답하는 **AI/BI 대시보드**(AI/BI dashboards)와 자연어로 데이터를 묻는 **Genie Agents** 가 같은 Unity Catalog 데이터 위에서 동작합니다. 여기에 비즈니스 사용자용 진입점인 **Genie One** 이 더해집니다. 이 장은 이 제품들을 어떻게 구성하고, 어떻게 게시하고, 어떻게 신뢰도를 높이고, 메트릭 뷰와 외부 BI 도구를 어떻게 함께 쓰는지를 다룹니다.
 
@@ -22,17 +22,18 @@ AI/BI는 Databricks의 분석·소비 계층입니다. 정해진 질문에 답�
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [AI/BI 개요와 제품 구분](what-is-ai-bi.md) | AI/BI가 무엇이고 왜 쓰는지, 대시보드·Genie Agents·Genie One·Ask Genie의 역할 구분 |
-| 2 | [대시보드 작성](dashboard-authoring.md) | 데이터셋, 위젯, 필터, 파라미터, 주요 한도 |
-| 3 | [게시와 데이터 권한](publish-and-permissions.md) | 게시 개념, 공유 데이터 권한과 개별 데이터 권한, 사용자 유형, 소유권 이전 |
-| 4 | [예약·구독과 임베딩](schedule-subscribe-embed.md) | 예약 실행, 구독 수신자, 첨부 한도, 임베딩 방식과 자격 증명 |
-| 5 | [Genie Agents 만들기](genie-agents-setup.md) | 데이터 소스 연결, 인스트럭션, 예제 SQL, 공유, 한도 |
-| 6 | [Genie Agents 신뢰도 높이기](genie-agents-quality.md) | 인스트럭션 설계, 신뢰 자산, 지식 저장소, 벤치마크, 모니터링 |
-| 7 | [메트릭 뷰 소비하기](metric-views-in-ai-bi.md) | `MEASURE()` 쿼리, 대시보드·Genie Agent에서 메트릭 뷰 쓰기. 정의와 거버넌스는 06장 |
-| 8 | [알림](alerts.md) | 알림 쿼리·조건·스케줄, 상태(OK·TRIGGERED·ERROR), 알림 대상 |
-| 9 | [외부 BI 도구와 병행](external-bi-tools.md) | Power BI·Tableau 연결 패턴, 메트릭 뷰 연동 제약, 가져오기(`/importBI`) |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [AI/BI 개요와 제품 구분](what-is-ai-bi.md) | 100 | AI/BI가 무엇이고 왜 쓰는지, 대시보드·Genie Agents·Genie One·Ask Genie의 역할 구분 |
+| 2 | [대시보드 작성](dashboard-authoring.md) | 200 | 데이터셋, 위젯, 필터, 파라미터, 주요 한도 |
+| 3 | [게시와 데이터 권한](publish-and-permissions.md) | 200 | 게시 개념, 공유 데이터 권한과 개별 데이터 권한, 사용자 유형, 소유권 이전 |
+| 4 | [예약·구독과 임베딩](schedule-subscribe-embed.md) | 200 | 예약 실행, 구독 수신자, 첨부 한도, 임베딩 방식과 자격 증명 |
+| 5 | [Genie Agents 만들기](genie-agents-setup.md) | 200 | 데이터 소스 연결, 인스트럭션, 예제 SQL, 공유, 한도 |
+| 6 | [Genie Agents 신뢰도 높이기](genie-agents-quality.md) | 300 | 인스트럭션 설계, 신뢰 자산, 지식 저장소, 벤치마크, 모니터링 |
+| 7 | [메트릭 뷰 소비하기](metric-views-in-ai-bi.md) | 200 | `MEASURE()` 쿼리, 대시보드·Genie Agent에서 메트릭 뷰 쓰기. 정의와 거버넌스는 06장 |
+| 8 | [알림](alerts.md) | 200 | 알림 쿼리·조건·스케줄, 상태(OK·TRIGGERED·ERROR), 알림 대상 |
+| 9 | [외부 BI 도구와 병행](external-bi-tools.md) | 300 | Power BI·Tableau 연결 패턴, 메트릭 뷰 연동 제약, 가져오기(`/importBI`) |
+| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 9개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 1~3페이지는 나머지 페이지의 전제이므로 먼저 읽는 것을 권장합니다. 7페이지는 06장의 메트릭 뷰 정의 페이지를 먼저 읽으면 이해가 빠릅니다.
 
@@ -76,7 +77,7 @@ AI/BI는 Databricks의 분석·소비 계층입니다. 정해진 질문에 답�
 - **SQL 기초**: `SELECT`, `GROUP BY`, `WHERE`, 집계 함수를 알고 있어야 합니다. 메트릭 뷰 쿼리는 이 문법을 기반으로 합니다.
 - **Unity Catalog 기초**: 3단계 이름(`카탈로그.스키마.객체`)과 `SELECT` 권한의 의미를 알고 있어야 합니다. 06장 1~2페이지를 먼저 보면 좋습니다.
 - **BI 기초**: 차원(dimension)과 측정값(measure), 필터, 대시보드 게시의 개념을 알고 있으면 빠르게 이해할 수 있습니다.
-- **SQL 웨어하우스 기초**: 대시보드와 Genie Agent가 쿼리를 실행하는 컴퓨트가 SQL 웨어하우스라는 점을 알고 있어야 합니다. 5장 2·3페이지를 참고하십시오.
+- **SQL 웨어하우스 기초**: 대시보드와 Genie Agent가 쿼리를 실행하는 컴퓨트가 SQL 웨어하우스라는 점을 알고 있어야 합니다. 03장의 [SQL 웨어하우스](../03-compute/sql-warehouses.md) 페이지를 참고하십시오.
 
 ## 이 장의 읽는 법
 

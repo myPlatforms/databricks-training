@@ -1,6 +1,6 @@
 # Python SDK: WorkspaceClient와 AccountClient
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
 
 Databricks SDK for Python(`databricks-sdk`)은 Python 코드에서 워크스페이스와 계정의 REST API를 타입이 있는 객체로 호출하게 해 주는 라이브러리입니다. 이 페이지는 설치, 두 클라이언트(`WorkspaceClient`, `AccountClient`), 인증 체인, 그리고 운영 코드에서 주의할 점을 다룹니다. REST API 직접 호출과 Databricks Connect는 [REST API와 Databricks Connect](rest-api-and-connect.md)에서 다룹니다.
 

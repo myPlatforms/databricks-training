@@ -1,6 +1,6 @@
 # Genie Code
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 ## Genie Code란
 
@@ -34,15 +34,15 @@ Genie Code를 쓰면 데이터 엔지니어와 분석가가 노트북이나 SQL 
 
 ## 이 장의 구성
 
-| 페이지 | 다루는 내용 |
-|--------|-------------|
-| [모드·기능과 데이터 접근 권한](features-and-permissions.md) | 진입점, 프롬프트 박스, 승인 모드, 기능 목록, 메모리, 권한 모델 |
-| [인스트럭션과 스킬](instructions-and-skills.md) | 사용자·워크스페이스 인스트럭션 경로와 우선순위, AGENTS.md·CLAUDE.md 자동 로드, SKILL.md 구조 |
-| [MCP 서버 연결](mcp.md) | 기본 제공 커넥터, 외부 서버, 사용자 정의 Databricks App 연결 |
-| [예약 작업](scheduled-tasks.md) | 반복 실행 프롬프트, 자동 승인 항상 켜짐 |
-| [Lakeflow Jobs의 Genie Code 태스크](lakeflow-jobs-task.md) | 프롬프트 파라미터, 상위 태스크 값, 출력, 설계 패턴, 예약 작업과의 차이 |
-| [Genie Code CLI](cli.md) | 설치, 명령, MCP 추가, 로컬 파일 권한 범위, 제약 |
-| [거버넌스와 비용](governance-and-cost.md) | 과금 구조, 예산, 사용량 확인, 파트너 AI 설정, 데이터 처리 지역 |
+| 페이지 | 수준 | 다루는 내용 |
+|--------|------|-------------|
+| [모드·기능과 데이터 접근 권한](features-and-permissions.md) | 100 | 진입점, 프롬프트 박스, 승인 모드, 기능 목록, 메모리, 권한 모델 |
+| [인스트럭션과 스킬](instructions-and-skills.md) | 200 | 사용자·워크스페이스 인스트럭션 경로와 우선순위, AGENTS.md·CLAUDE.md 자동 로드, SKILL.md 구조 |
+| [MCP 서버 연결](mcp.md) | 200 | 기본 제공 커넥터, 외부 서버, 사용자 정의 Databricks App 연결 |
+| [예약 작업](scheduled-tasks.md) | 200 | 반복 실행 프롬프트, 자동 승인 항상 켜짐 |
+| [Lakeflow Jobs의 Genie Code 태스크](lakeflow-jobs-task.md) | 200 | 프롬프트 파라미터, 상위 태스크 값, 출력, 설계 패턴, 예약 작업과의 차이 |
+| [Genie Code CLI](cli.md) | 200 | 설치, 명령, MCP 추가, 로컬 파일 권한 범위, 제약 |
+| [거버넌스와 비용](governance-and-cost.md) | 300 | 과금 구조, 예산, 사용량 확인, 파트너 AI 설정, 데이터 처리 지역 |
 
 ## 상태 요약
 

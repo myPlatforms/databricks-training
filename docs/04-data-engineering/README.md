@@ -1,6 +1,6 @@
 # 4. 데이터 엔지니어링 (Lakeflow)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 데이터 엔지니어링은 원천 시스템의 데이터를 레이크하우스로 가져와(수집, Ingestion), 테이블 단위로 변환하고(파이프라인), 정해진 시점이나 이벤트에 맞춰 실행하는(오케스트레이션, Jobs) 일입니다. Databricks는 이 세 가지를 **Lakeflow** 라는 이름 아래 묶어 제공합니다. 이 장은 데이터 엔지니어, 분석 엔지니어, 플랫폼 담당자를 대상으로 하며, 수집 방법을 고르는 기준부터 파이프라인 정의, 잡 운영, 스트리밍 기초까지 실제 설정 단위로 설명합니다.
 
@@ -19,18 +19,19 @@
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [수집 방법 선택 기준](choose-ingestion-method.md) | 원천별 권장 경로, Lakeflow Connect·Auto Loader·Lakeflow 파이프라인·Jobs의 역할 구분 |
-| 2 | [Lakeflow Connect](lakeflow-connect.md) | 커넥터 분류, 상태 라벨, 관리형 커넥터의 과금 구조와 비용 추적 |
-| 3 | [Auto Loader](auto-loader.md) | `cloudFiles` 소스, 파일 감지 모드, 스키마 추론·진화, 운영 설정 |
-| 4 | [스트리밍 테이블과 구체화된 뷰](pipelines-streaming-tables-and-mvs.md) | Lakeflow 파이프라인의 흐름(flow), 스트리밍 테이블, 구체화된 뷰, 선택 기준 |
-| 5 | [Expectations와 AUTO CDC](pipelines-expectations-and-cdc.md) | 데이터 품질 규칙 3가지 동작, 변경 데이터 반영(SCD Type 1·2), 스냅샷 변형 |
-| 6 | [파이프라인 이벤트 로그](pipelines-event-log.md) | `event_log()`, 주요 열과 이벤트 유형, `pipeline_events` 시스템 테이블 |
-| 7 | [Lakeflow Jobs 태스크와 트리거](jobs-tasks-and-triggers.md) | 태스크 유형, 트리거 종류와 제한, 스케줄의 최소 간격과 시간대 |
-| 8 | [파라미터·태스크 값·조건 분기](jobs-parameters-and-control-flow.md) | 잡 파라미터, 태스크 값, 동적 값 참조, Run if, If/else, For each |
-| 9 | [재시도·알림·Repair run](jobs-retries-notifications-repair.md) | 재시도와 타임아웃, 알림 이벤트, 실패 실행 복구와 멱등성 |
-| 10 | [Structured Streaming 기초](structured-streaming-basics.md) | 트리거, 체크포인트, 워터마크, 출력 모드, Auto Loader와의 결합 |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [수집 방법 선택 기준](choose-ingestion-method.md) | 100 | 원천별 권장 경로, Lakeflow Connect·Auto Loader·Lakeflow 파이프라인·Jobs의 역할 구분 |
+| 2 | [Lakeflow Connect](lakeflow-connect.md) | 100 | 커넥터 분류, 상태 라벨, 관리형 커넥터의 과금 구조와 비용 추적 |
+| 3 | [Auto Loader](auto-loader.md) | 200 | `cloudFiles` 소스, 파일 감지 모드, 스키마 추론·진화, 운영 설정 |
+| 4 | [스트리밍 테이블과 구체화된 뷰](pipelines-streaming-tables-and-mvs.md) | 200 | Lakeflow 파이프라인의 흐름(flow), 스트리밍 테이블, 구체화된 뷰, 선택 기준 |
+| 5 | [Expectations와 AUTO CDC](pipelines-expectations-and-cdc.md) | 200 | 데이터 품질 규칙 3가지 동작, 변경 데이터 반영(SCD Type 1·2), 스냅샷 변형 |
+| 6 | [파이프라인 이벤트 로그](pipelines-event-log.md) | 200 | `event_log()`, 주요 열과 이벤트 유형, `pipeline_events` 시스템 테이블 |
+| 7 | [Lakeflow Jobs 태스크와 트리거](jobs-tasks-and-triggers.md) | 200 | 태스크 유형, 트리거 종류와 제한, 스케줄의 최소 간격과 시간대 |
+| 8 | [파라미터·태스크 값·조건 분기](jobs-parameters-and-control-flow.md) | 200 | 잡 파라미터, 태스크 값, 동적 값 참조, Run if, If/else, For each |
+| 9 | [재시도·알림·Repair run](jobs-retries-notifications-repair.md) | 300 | 재시도와 타임아웃, 알림 이벤트, 실패 실행 복구와 멱등성 |
+| 10 | [Structured Streaming 기초](structured-streaming-basics.md) | 300 | 트리거, 체크포인트, 워터마크, 출력 모드, Auto Loader와의 결합 |
+| 11 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 수집(1~3) → 파이프라인(4~6) → 오케스트레이션(7~9) 순서로 읽으면 데이터 흐름과 잡 구성을 자연스럽게 연결할 수 있습니다. 10번 페이지는 1~9번 페이지의 스트리밍 개념을 뒷받침하므로 파이프라인과 함께 읽는 것을 권장합니다.
 
@@ -42,9 +43,9 @@ Databricks 공식 문서는 파이프라인 제품을 **Spark Declarative Pipeli
 
 - **SQL 기초**: `SELECT`, `CREATE TABLE`, 집계와 조인을 읽을 수 있어야 합니다. 파이프라인 정의는 SQL과 Python 두 가지로 가능합니다.
 - **Python 기초**: 노트북 태스크와 `spark.readStream` 예제를 읽을 수 있어야 합니다.
-- **Delta Lake 기초**: 스트리밍 테이블과 구체화된 뷰는 Delta 테이블입니다. 2장(레이크하우스 스토리지)에서 다룹니다.
-- **Unity Catalog 기초**: 카탈로그·스키마·테이블 3단계 이름, 볼륨(Volume), 외부 위치(External location), 권한 모델을 알고 있어야 합니다. 거버넌스 세부는 6장(Unity Catalog 거버넌스)에서 다룹니다.
-- **컴퓨트 개념**: 서버리스와 클래식 컴퓨트의 차이는 3장(컴퓨트)에서 다룹니다. 이 장의 여러 기능은 컴퓨트 종류에 따라 지원 범위가 다르므로, 각 페이지의 주의 항목을 함께 확인하십시오.
+- **Delta Lake 기초**: 스트리밍 테이블과 구체화된 뷰는 Delta 테이블입니다. [02장 레이크하우스 스토리지](../02-lakehouse-storage/README.md)에서 다룹니다.
+- **Unity Catalog 기초**: 카탈로그·스키마·테이블 3단계 이름, 볼륨(Volume), 외부 위치(External location), 권한 모델을 알고 있어야 합니다. 거버넌스 세부는 [06장 Unity Catalog 거버넌스](../06-unity-catalog/README.md)에서 다룹니다.
+- **컴퓨트 개념**: 서버리스와 클래식 컴퓨트의 차이는 [03장 컴퓨트](../03-compute/README.md)에서 다룹니다. 이 장의 여러 기능은 컴퓨트 종류에 따라 지원 범위가 다르므로, 각 페이지의 주의 항목을 함께 확인하십시오.
 
 ## 이 장의 읽는 법
 

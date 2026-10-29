@@ -1,6 +1,6 @@
 # Apache Iceberg 지원
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
 
 Apache Iceberg는 Delta Lake와 같은 오픈 테이블 포맷이지만, 여러 엔진이 같은 테이블을 읽고 쓰는 시나리오에 더 초점을 둔 포맷입니다. Databricks는 Unity Catalog 안에서 Iceberg 테이블을 **관리형(Managed)** 으로 만들 수 있고, Iceberg REST 카탈로그 API를 통해 외부 Iceberg 엔진이 접근하게 할 수 있습니다. 또한 Delta 테이블에 Iceberg 메타데이터를 덧붙여 Iceberg 클라이언트가 읽게 하는 방법도 있습니다. 이 페이지는 세 가지 경로를 구분하고, 외부 클라이언트가 할 수 있는 작업을 표로 정리합니다.
 

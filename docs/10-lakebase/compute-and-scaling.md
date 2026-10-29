@@ -1,6 +1,6 @@
 # 컴퓨트와 스케일링
 
-> 기준일: 2026-10-29 · 근거: 공식 문서
+> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 300
 
 Lakebase의 컴퓨트(Compute)는 브랜치의 Postgres 엔드포인트를 실행하는 자원입니다. 이 페이지는 자동 확장(Autoscaling), 스케일 투 제로(Scale to zero), 읽기 복제본(Read replica), 고가용성(High availability, HA)을 다룹니다. 모든 수치는 AWS 공식 문서 원문 기준입니다.
 

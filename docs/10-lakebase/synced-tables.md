@@ -1,6 +1,6 @@
 # 동기화 테이블 (Synced Tables)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
 
 동기화 테이블(Synced Table)은 Unity Catalog의 Delta 테이블을 Lakebase Postgres 데이터베이스에 복사해 **저지연 읽기** 를 제공하는 기능입니다. 방향은 레이크하우스 → Lakebase입니다. 반대 방향(Lakebase 변경을 Delta로 옮기는 기능)은 [변경 데이터 반출](change-data-out.md)에서 다룹니다.
 
