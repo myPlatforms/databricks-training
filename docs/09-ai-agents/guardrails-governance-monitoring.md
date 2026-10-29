@@ -1,6 +1,6 @@
 # 가드레일·거버넌스·모니터링
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
 
 ## 왜 필요한가
 
@@ -34,7 +34,7 @@ Databricks 공식 문서의 AI 거버넌스 페이지는 다음 기능을 나열
 
 ### 1. 권한으로 먼저 막기
 
-가장 확실한 통제는 권한입니다. 도구와 모델의 접근은 Unity Catalog 권한과 Unity Gateway 정책으로 정합니다. 에이전트가 쓰는 함수, 테이블, MCP 서비스에 대해 필요한 사용자와 서비스 프린시펄에만 권한을 주십시오. 권한 모델은 [6장 권한 모델과 소유권](../06-unity-catalog/privileges-and-ownership.md)과 [거버넌스 태그와 ABAC 정책](../06-unity-catalog/governed-tags-and-abac.md)에서 다룹니다.
+가장 확실한 통제는 권한입니다. 도구와 모델의 접근은 Unity Catalog 권한과 Unity Gateway 정책으로 정합니다. 에이전트가 쓰는 함수, 테이블, MCP 서비스에 대해 필요한 사용자와 서비스 프린시펄에만 권한을 주십시오. 권한 모델은 06장의 [권한 모델과 소유권](../06-unity-catalog/privileges-and-ownership.md)과 [거버넌스 태그와 ABAC 정책](../06-unity-catalog/governed-tags-and-abac.md)에서 다룹니다.
 
 MCP 서비스는 호출자별로 접근을 정합니다. 호출자는 MCP 호출을 위해 Consumer access가 있어야 하고, 서비스 자체에는 CAN USE 같은 권한이 필요합니다. 자세한 조건은 [도구: UC 함수와 MCP 서버](tools-uc-functions-and-mcp.md)과 [배포와 인증](deploy-and-authentication.md)에 있습니다.
 

@@ -1,6 +1,6 @@
 # 06. Unity Catalog 거버넌스
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 Unity Catalog(UC)는 Databricks의 데이터와 AI 자산을 한곳에서 관리하는 거버넌스 계층입니다. 테이블, 뷰, 볼륨, 함수, 모델이 모두 같은 3단계 이름(`카탈로그.스키마.객체`) 아래에 놓이고, 누가 무엇을 읽고 쓰고 실행할 수 있는지를 이 계층에서 결정합니다. 이 장은 데이터 엔지니어, 데이터 거버넌스 담당자, 플랫폼 관리자를 대상으로 합니다. UC의 객체 모델과 권한 체계를 이해하고, 태그 기반 접근 제어(ABAC), 행 필터와 열 마스크, 볼륨과 외부 스토리지, 계보, 데이터 분류, 공유, 메트릭 뷰의 정의와 거버넌스 측면까지 설정 단위로 익히는 것이 목표입니다.
 
@@ -20,17 +20,18 @@ Unity Catalog(UC)는 Databricks의 데이터와 AI 자산을 한곳에서 관리
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [Unity Catalog 개요](what-is-unity-catalog.md) | 왜 필요한가, 3단계 이름 체계, 메타스토어, securable 객체 종류와 계층 |
-| 2 | [권한 모델과 소유권](privileges-and-ownership.md) | 소유권, 상속, GRANT·REVOKE, 권한 종류(MANAGE·BROWSE 등), 사용자·그룹·서비스 프린시펄 |
-| 3 | [거버넌스 태그와 ABAC 정책](governed-tags-and-abac.md) | Governed tags, 태그 한도, ABAC 정책 종류와 적용 범위, 상태 라벨 |
-| 4 | [행 필터와 열 마스크](row-filters-and-column-masks.md) | 테이블 단위 행 필터·열 마스크, ABAC 정책 예시, 선택 기준 |
-| 5 | [볼륨과 외부 스토리지](volumes-and-storage.md) | 관리형·외부 볼륨, 파일 경로, 스토리지 자격 증명, 외부 위치 |
-| 6 | [계보와 데이터 분류](lineage-and-classification.md) | 열 단위 계보, 계보 제약과 보존 기간, 자동 민감 데이터 분류 |
-| 7 | [데이터 공유와 Clean Rooms](sharing-and-clean-rooms.md) | OpenSharing, Databricks-to-Databricks와 Databricks-to-Open, Clean Rooms |
-| 8 | [메트릭 뷰의 거버넌스](metric-views-governance.md) | 메트릭 뷰 정의 방식, 거버넌스·공유 적용 범위(정의 측면만) |
-| 9 | [베스트 프랙티스와 한도](best-practices-and-limits.md) | 설계 원칙, 리소스 한도 표, 상태 라벨 요약, 권한 회수 전 점검 |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [Unity Catalog 개요](what-is-unity-catalog.md) | 100 | 왜 필요한가, 3단계 이름 체계, 메타스토어, securable 객체 종류와 계층 |
+| 2 | [권한 모델과 소유권](privileges-and-ownership.md) | 200 | 소유권, 상속, GRANT·REVOKE, 권한 종류(MANAGE·BROWSE 등), 사용자·그룹·서비스 프린시펄 |
+| 3 | [거버넌스 태그와 ABAC 정책](governed-tags-and-abac.md) | 300 | Governed tags, 태그 한도, ABAC 정책 종류와 적용 범위, 상태 라벨 |
+| 4 | [행 필터와 열 마스크](row-filters-and-column-masks.md) | 200 | 테이블 단위 행 필터·열 마스크, ABAC 정책 예시, 선택 기준 |
+| 5 | [볼륨과 외부 스토리지](volumes-and-storage.md) | 200 | 관리형·외부 볼륨, 파일 경로, 스토리지 자격 증명, 외부 위치 |
+| 6 | [계보와 데이터 분류](lineage-and-classification.md) | 200 | 열 단위 계보, 계보 제약과 보존 기간, 자동 민감 데이터 분류 |
+| 7 | [데이터 공유와 Clean Rooms](sharing-and-clean-rooms.md) | 200 | OpenSharing, Databricks-to-Databricks와 Databricks-to-Open, Clean Rooms |
+| 8 | [메트릭 뷰의 거버넌스](metric-views-governance.md) | 200 | 메트릭 뷰 정의 방식, 거버넌스·공유 적용 범위(정의 측면만) |
+| 9 | [베스트 프랙티스와 한도](best-practices-and-limits.md) | 300 | 설계 원칙, 리소스 한도 표, 상태 라벨 요약, 권한 회수 전 점검 |
+| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 1~3페이지는 나머지 페이지의 전제이므로 건너뛰지 않는 것을 권장합니다.
 

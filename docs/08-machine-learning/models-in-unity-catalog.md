@@ -1,6 +1,6 @@
 # Unity Catalog의 모델
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
 
 Unity Catalog의 모델 레지스트리(Model Registry)는 MLflow 모델을 `catalog.schema.model` 3단계 이름으로 등록하고, 버전과 별칭(alias)으로 배포 대상을 관리하는 저장소입니다. 권한, 계보(lineage), 검색을 다른 데이터 자산과 같은 체계로 묶습니다.
 

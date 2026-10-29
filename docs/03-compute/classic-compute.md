@@ -1,6 +1,6 @@
 # 클래식 컴퓨트
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
 
 클래식 컴퓨트(Classic compute)는 올-퍼포즈(All-purpose), Job, Lakeflow 파이프라인용 자원으로, 사용자가 직접 만들고 설정하고 관리합니다. 자원은 고객 클라우드 계정에서 실행됩니다. 이 페이지는 클래식 컴퓨트를 설정할 때 가장 먼저 정하는 항목인 액세스 모드(Access mode), Databricks Runtime(DBR) 버전, 오토스케일링(Autoscaling), 자동 종료(Auto termination)를 다룹니다. 풀과 정책은 [인스턴스 풀과 컴퓨트 정책](pools-and-policies.md) 페이지에서 다룹니다.
 

@@ -1,6 +1,6 @@
 # Foundation Model APIs
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
 
 Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(foundation model)을 엔드포인트로 호출하는 기능입니다. 모델을 직접 배포하지 않고 쓸 수 있으며, 과금 방식은 **pay-per-token**, **우선순위 pay-per-token**, **provisioned throughput** 세 가지입니다. 문서는 Foundation Model APIs를 Databricks 지정 서비스(Databricks Designated Service)로 분류하며, 데이터 거주를 위해 Databricks Geo를 사용한다고 설명합니다.
 

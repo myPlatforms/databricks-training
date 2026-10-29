@@ -1,6 +1,6 @@
 # Model Serving 커스텀 모델
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
 
 Model Serving은 등록된 모델을 REST 엔드포인트로 노출하는 관리형 서빙 기능입니다. 이 페이지는 **커스텀 모델**(MLflow 형식의 Python 모델)의 엔드포인트를 다룹니다. Foundation Model APIs와 외부 모델은 [Foundation Model APIs](foundation-model-apis.md)에서, 게이트웨이 거버넌스는 [Unity Gateway](unity-gateway.md)에서 다룹니다.
 

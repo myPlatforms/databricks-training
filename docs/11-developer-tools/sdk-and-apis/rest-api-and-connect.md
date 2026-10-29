@@ -1,6 +1,6 @@
 # REST API와 Databricks Connect
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 200
 
 이 페이지는 두 가지 접근 방식을 다룹니다. 하나는 모든 기능에 접근할 수 있는 **REST API** 이고, 다른 하나는 로컬 IDE나 Python 프로세스에서 Databricks 컴퓨트에 Spark 코드를 실행하는 **Databricks Connect** 입니다. SDK와 CLI로 충분하지 않을 때 어떤 방식을 고를지 판단하는 기준도 함께 정리합니다.
 
@@ -97,16 +97,18 @@ databricks auth login --host <workspace-url>
 export DATABRICKS_SERVERLESS_COMPUTE_ID=auto
 ```
 
-세션 생성 코드는 다음과 같습니다. 튜토리얼 원문에서는 `DatabricksSession` 임포트 행이 추출 텍스트에 없었습니다. 임포트 경로는 튜토리얼 원문에서 확인하십시오.
+세션 생성 코드는 다음과 같습니다.
 
 ```python
+from databricks.connect import DatabricksSession
+
 spark = DatabricksSession.builder.serverless().profile("<profile-name>").getOrCreate()
 
 df = spark.range(10)
 df.show()
 ```
 
-환경 변수를 설정했다면 프로필 인수 없이도 쓸 수 있는 형태가 튜토리얼에 나옵니다.
+튜토리얼은 운영 코드에서는 Spark 세션에 파라미터를 넣지 않는 형태를 씁니다.
 
 ```python
 spark = DatabricksSession.builder.getOrCreate()

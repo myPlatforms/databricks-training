@@ -1,6 +1,6 @@
 # 08. 머신러닝 (MLflow·Model Serving)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 이 장은 Databricks에서 머신러닝 모델을 **만들고(학습), 추적하고(MLflow), 등록하고(Unity Catalog 모델), 서빙하는** 흐름을 다룹니다. 대상은 데이터 사이언티스트, ML 엔지니어, 그리고 모델을 애플리케이션에 붙이는 플랫폼 담당자입니다.
 
@@ -22,17 +22,18 @@
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [ML 개요](ml-overview.md) | Databricks의 ML 구성 요소 지도, ML 런타임, AI Runtime(서버리스 GPU), 전체 흐름 |
-| 2 | [MLflow 실험 추적](mlflow-tracking.md) | 실험(Experiment)과 런(Run), 자동 로깅, MLflow 3의 로깅 모델과 평가 |
-| 3 | [Unity Catalog의 모델](models-in-unity-catalog.md) | 등록 모델·버전, 별칭(Champion 등), 권한 모델, 제약 사항 |
-| 4 | [피처 스토어](feature-store.md) | 피처 테이블, 피처 뷰, 학습 시 point-in-time 조인, 온라인 피처 스토어 |
-| 5 | [모델 학습 도구](model-training.md) | AutoML의 런타임별 지원, 하이퍼파라미터 튜닝, 분산 학습 옵션 |
-| 6 | [Model Serving 커스텀 모델](model-serving.md) | 엔드포인트 생성·업데이트·중지·삭제, 스케일 투 제로, 상태 값 |
-| 7 | [Foundation Model APIs](foundation-model-apis.md) | pay-per-token, 우선순위 모드, provisioned throughput(온디맨드·예약) |
-| 8 | [Unity Gateway](unity-gateway.md) | 모델·MCP 서버 거버넌스, 사용량 추적, 한도, 가드레일, 서비스 정책 |
-| 9 | [데이터 품질 모니터링](data-quality-monitoring.md) | 이상 탐지, 데이터 프로파일링, 구 명칭 Lakehouse Monitoring과의 관계 |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [ML 개요](ml-overview.md) | 100 | Databricks의 ML 구성 요소 지도, ML 런타임, AI Runtime(서버리스 GPU), 전체 흐름 |
+| 2 | [MLflow 실험 추적](mlflow-tracking.md) | 200 | 실험(Experiment)과 런(Run), 자동 로깅, MLflow 3의 로깅 모델과 평가 |
+| 3 | [Unity Catalog의 모델](models-in-unity-catalog.md) | 200 | 등록 모델·버전, 별칭(Champion 등), 권한 모델, 제약 사항 |
+| 4 | [피처 스토어](feature-store.md) | 300 | 피처 테이블, 피처 뷰, 학습 시 point-in-time 조인, 온라인 피처 스토어 |
+| 5 | [모델 학습 도구](model-training.md) | 200 | AutoML의 런타임별 지원, 하이퍼파라미터 튜닝, 분산 학습 옵션 |
+| 6 | [Model Serving 커스텀 모델](model-serving.md) | 200 | 엔드포인트 생성·업데이트·중지·삭제, 스케일 투 제로, 상태 값 |
+| 7 | [Foundation Model APIs](foundation-model-apis.md) | 300 | pay-per-token, 우선순위 모드, provisioned throughput(온디맨드·예약) |
+| 8 | [Unity Gateway](unity-gateway.md) | 300 | 모델·MCP 서버 거버넌스, 사용량 추적, 한도, 가드레일, 서비스 정책 |
+| 9 | [데이터 품질 모니터링](data-quality-monitoring.md) | 200 | 이상 탐지, 데이터 프로파일링, 구 명칭 Lakehouse Monitoring과의 관계 |
+| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 9개와 실무 체크리스트 |
 
 권장 순서는 위 표와 같습니다. 1~3페이지(추적과 등록)를 먼저 익히면, 4~6페이지(피처, 학습, 서빙)가 같은 모델 이름 체계 위에서 이해됩니다.
 

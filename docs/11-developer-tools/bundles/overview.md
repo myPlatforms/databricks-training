@@ -1,6 +1,6 @@
 # Declarative Automation Bundles 개요
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100
 
 Declarative Automation Bundles(구 Databricks Asset Bundles)는 잡, 파이프라인, 앱 같은 Databricks 리소스와 소스 코드를 **YAML 파일로 선언** 하고, 그 선언을 여러 워크스페이스와 환경에 배포하는 도구입니다. 이 페이지는 번들이 해결하는 문제, `databricks.yml`의 구조, 타깃과 변수의 역할을 다룹니다. 명령 실행과 기존 리소스 연결은 [수명 주기와 bind](lifecycle-and-bind.md)에서, 배포 엔진은 [배포 엔진](deployment-engine.md)에서 다룹니다.
 

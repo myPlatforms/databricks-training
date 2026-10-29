@@ -1,6 +1,6 @@
 # 10. Lakebase
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 Lakebase는 Databricks 플랫폼에 통합된 관리형 Postgres 데이터베이스입니다. 이 장은 트랜잭션 워크로드를 레이크하우스와 함께 설계하려는 데이터 엔지니어, 애플리케이션 개발자, 데이터 아키텍트를 대상으로 합니다. Lakebase의 개념과 배포 형태를 이해하고, 연결·인증, 레이크하우스와의 데이터 이동(동기화 테이블, 변경 데이터 반출), Databricks Apps 연동, 운영 비용 기준까지 실제 설정 단위로 익히는 것이 목표입니다.
 
@@ -19,17 +19,18 @@ Lakebase는 Databricks 플랫폼에 통합된 관리형 Postgres 데이터베이
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [Lakebase 개요](what-is-lakebase.md) | 왜 필요한가, 구성 요소(프로젝트·브랜치·컴퓨트·데이터베이스·역할), 스토리지·컴퓨트 분리, 리전 가용성 |
-| 2 | [컴퓨트와 스케일링](compute-and-scaling.md) | Autoscaling(CU, 범위 제약), 스케일 투 제로, 읽기 복제본, 고가용성(HA) |
-| 3 | [브랜치와 복구](branches-and-recovery.md) | 브랜치, 인스턴트 복구, 특정 시점 브랜치, 재해 복구(Private Preview) |
-| 4 | [연결과 인증](connect-and-auth.md) | OAuth 토큰을 비밀번호로 쓰는 방식, 토큰 만료, 연결 수명, 롤과 권한, 클라이언트 도구 |
-| 5 | [커넥션 풀링](connection-pooling.md) | 내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러와 OAuth의 배타 관계 |
-| 6 | [동기화 테이블](synced-tables.md) | Unity Catalog Delta를 Lakebase로 동기화, 동기화 모드, 타입 매핑, 제약 |
-| 7 | [변경 데이터 반출](change-data-out.md) | CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위 |
-| 8 | [Databricks Apps와 함께 쓰기](apps-integration.md) | 리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할 |
-| 9 | [베스트 프랙티스와 비용](best-practices-and-cost.md) | 운영 설정 기준, 연결 설계, 과금 구조(문서에 명시된 범위) |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [Lakebase 개요](what-is-lakebase.md) | 100 | 왜 필요한가, 구성 요소(프로젝트·브랜치·컴퓨트·데이터베이스·역할), 스토리지·컴퓨트 분리, 리전 가용성 |
+| 2 | [컴퓨트와 스케일링](compute-and-scaling.md) | 300 | Autoscaling(CU, 범위 제약), 스케일 투 제로, 읽기 복제본, 고가용성(HA) |
+| 3 | [브랜치와 복구](branches-and-recovery.md) | 300 | 브랜치, 인스턴트 복구, 특정 시점 브랜치, 재해 복구(Private Preview) |
+| 4 | [연결과 인증](connect-and-auth.md) | 200 | OAuth 토큰을 비밀번호로 쓰는 방식, 토큰 만료, 연결 수명, 롤과 권한, 클라이언트 도구 |
+| 5 | [커넥션 풀링](connection-pooling.md) | 300 | 내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러와 OAuth의 배타 관계 |
+| 6 | [동기화 테이블](synced-tables.md) | 200 | Unity Catalog Delta를 Lakebase로 동기화, 동기화 모드, 타입 매핑, 제약 |
+| 7 | [변경 데이터 반출](change-data-out.md) | 300 | CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위 |
+| 8 | [Databricks Apps와 함께 쓰기](apps-integration.md) | 200 | 리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할 |
+| 9 | [베스트 프랙티스와 비용](best-practices-and-cost.md) | 300 | 운영 설정 기준, 연결 설계, 과금 구조(문서에 명시된 범위) |
+| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 연결과 인증 페이지는 동기화 테이블, Apps 페이지의 전제가 되므로 건너뛰지 않는 것을 권장합니다.
 

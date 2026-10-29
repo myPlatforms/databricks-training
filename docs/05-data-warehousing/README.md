@@ -1,6 +1,6 @@
 # 5. 데이터 웨어하우징 (Databricks SQL)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서
+> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
 Databricks SQL(Databricks SQL)은 레이크하우스 위에서 SQL로 데이터를 조회·가공·공유하는 서비스입니다. 이 장은 BI 분석가, 데이터 엔지니어, 분석 엔지니어를 대상으로 합니다. SQL 에디터에서 쿼리를 작성하고, 쿼리 기록과 쿼리 프로필로 실행을 점검하며, 윈도 함수·PIVOT·QUALIFY 같은 SQL 기능을 익힙니다. 이어서 SQL 스크립팅과 저장 프로시저, AI Functions, 구체화 뷰와 스트리밍 테이블을 다루고, 마지막으로 쿼리 성능과 데이터 모델링 기초를 정리합니다.
 
@@ -20,17 +20,18 @@ Databricks SQL(Databricks SQL)은 레이크하우스 위에서 SQL로 데이터�
 
 ## 페이지 안내
 
-| 순서 | 페이지 | 다루는 내용 |
-|---|---|---|
-| 1 | [Databricks SQL 개요](what-is-databricks-sql.md) | 무엇이고 왜 쓰는가, 메달리온 구조에서의 위치, 주요 인터페이스 |
-| 2 | [SQL 에디터와 쿼리 기록](sql-editor-and-query-history.md) | SQL 에디터 기능, 쿼리 기록의 상태·필터·권한, `system.query.history` |
-| 3 | [쿼리 프로필 읽기](query-profile.md) | 쿼리 프로필 열기, DAG와 연산자, 병목 찾기 절차 |
-| 4 | [SQL 언어 기능](sql-language-features.md) | 윈도 함수, PIVOT·UNPIVOT, QUALIFY, 파라미터 마커 |
-| 5 | [SQL 스크립팅과 저장 프로시저](scripting-and-procedures.md) | 스크립팅 문장, `CREATE PROCEDURE`, 실행 권한 모델 |
-| 6 | [AI Functions](ai-functions.md) | 함수 분류, 상태 라벨, `ai_query`·`ai_extract`·`ai_parse_document`의 요구 사항 |
-| 7 | [구체화 뷰와 스트리밍 테이블](materialized-views-and-streaming-tables.md) | 생성 구문, 실행 주체, 새로 고침, 상태 |
-| 8 | [쿼리 성능 최적화](query-performance.md) | 성능 인사이트 항목, 쿼리 측면 점검 순서 (웨어하우스 선택은 03장) |
-| 9 | [데이터 모델링 기초](data-modeling-basics.md) | 스타·스노우플레이크 스키마, PK/FK 제약의 성격과 한계 |
+| 순서 | 페이지 | 수준 | 다루는 내용 |
+|---|---|---|---|
+| 1 | [Databricks SQL 개요](what-is-databricks-sql.md) | 100 | 무엇이고 왜 쓰는가, 메달리온 구조에서의 위치, 주요 인터페이스 |
+| 2 | [SQL 에디터와 쿼리 기록](sql-editor-and-query-history.md) | 200 | SQL 에디터 기능, 쿼리 기록의 상태·필터·권한, `system.query.history` |
+| 3 | [쿼리 프로필 읽기](query-profile.md) | 200 | 쿼리 프로필 열기, DAG와 연산자, 병목 찾기 절차 |
+| 4 | [SQL 언어 기능](sql-language-features.md) | 200 | 윈도 함수, PIVOT·UNPIVOT, QUALIFY, 파라미터 마커 |
+| 5 | [SQL 스크립팅과 저장 프로시저](scripting-and-procedures.md) | 200 | 스크립팅 문장, `CREATE PROCEDURE`, 실행 권한 모델 |
+| 6 | [AI Functions](ai-functions.md) | 200 | 함수 분류, 상태 라벨, `ai_query`·`ai_extract`·`ai_parse_document`의 요구 사항 |
+| 7 | [구체화 뷰와 스트리밍 테이블](materialized-views-and-streaming-tables.md) | 200 | 생성 구문, 실행 주체, 새로 고침, 상태 |
+| 8 | [쿼리 성능 최적화](query-performance.md) | 300 | 성능 인사이트 항목, 쿼리 측면 점검 순서 (웨어하우스 선택은 03장) |
+| 9 | [데이터 모델링 기초](data-modeling-basics.md) | 100 | 스타·스노우플레이크 스키마, PK/FK 제약의 성격과 한계 |
+| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 페이지 2와 3은 이후 성능 관련 페이지의 전제가 되므로 순서대로 읽는 것을 권장합니다.
 
