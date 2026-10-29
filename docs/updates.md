@@ -4,6 +4,7 @@
 
 | 날짜 | 페이지 | 변경 | 근거 |
 |---|---|---|---|
+| 2026-10-30 | 02·05·08·10·12장 7쪽 | 원문 재확인 정정 — VACUUM LITE의 30일은 트랜잭션 로그 보존 기간(데이터 파일 보존 7일과 구분), PK·FK는 DBR 13.3 LTS부터 사용·15.2부터 GA, 컨텍스트 기반 인그레스와 서버리스→AWS 관리형 자원 사설 연결 GA(2026-10-12) 반영, lakeflow `pipelines`·`pipeline_update_timeline` GA 표기, 모델 버전 삭제 행의 근거 없는 참조 제거, 동기화 테이블 삭제 설명의 문서 내 불일치 명시. 사이트: 변경 이력을 목차 맨 아래로, 오른쪽 목차와 제목 서체 정리 | [VACUUM](https://docs.databricks.com/aws/en/tables/operations/vacuum) [Constraints](https://docs.databricks.com/aws/en/tables/constraints) [2026년 10월 릴리즈 노트](https://docs.databricks.com/aws/en/release-notes/product/2026/october) [Synced tables](https://docs.databricks.com/aws/en/oltp/projects/sync-tables) [Manage model lifecycle](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/) |
 | 2026-10-29 | 전체 | 모든 페이지에 수준(100·200·300) 표시, 장마다 퀴즈와 체크리스트 페이지 추가(12쪽), 홈에 수준 안내와 역할별 학습 경로 추가, 장 안내 문구의 장 번호 표기를 페이지 제목으로 정리, Databricks Connect 세션 예시에 import 줄 추가 | 각 장 본문, [Databricks Connect 서버리스 튜토리얼](https://docs.databricks.com/aws/en/dev-tools/databricks-connect/python/tutorial-serverless) |
 | 2026-10-29 | 01·03·04·05·07·08·10·11·12장 19쪽 | 짧은 페이지 보강(원문 하위 문서 근거 추가, 원문과 어긋난 표현 정정), 용어 정리에 확인된 구 명칭 대응 추가, 전체 굵은 글씨 서식 손상 98곳 복구 | 각 페이지 참고 문서 |
 | 2026-10-29 | 11·12장 | 초판 공개 — 개발자 도구(Databricks CLI·Declarative Automation Bundles·직접 배포 엔진·Python SDK·REST·Databricks Connect·Apps·Git·CI/CD), 보안·운영(ID·인증·네트워크·암호화·감사 로그·시스템 테이블·비용 관리·운영 체크리스트) | 공식 문서 (각 페이지 참고 문서) |

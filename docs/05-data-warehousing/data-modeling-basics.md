@@ -1,6 +1,6 @@
 # 데이터 모델링 기초
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 100
 
 데이터 모델링은 분석에 쓸 테이블을 어떤 구조로 나눌지 정하는 작업입니다. 이 페이지는 웨어하우스에서 가장 많이 쓰는 **스타 스키마(Star schema)** 와 **스노우플레이크 스키마(Snowflake schema)** 를 설명하고, Unity Catalog에서 **PK/FK 제약(Primary key·Foreign key constraint)** 을 어떻게 선언하는지, 그리고 그 제약이 무엇을 보장하지 않는지를 정리합니다.
 
@@ -105,7 +105,7 @@ ALTER TABLE main.default.S ADD CONSTRAINT s_t_fk FOREIGN KEY(fk1, fk2) REFERENCE
 
 | 제약 | 적용 대상 | 상태 |
 |---|---|---|
-| PRIMARY KEY, FOREIGN KEY | Unity Catalog와 Delta Lake 테이블, Databricks Runtime 13.3 LTS 이상 | 문서: "GA in Databricks Runtime 15.2 and above" |
+| PRIMARY KEY, FOREIGN KEY | Unity Catalog와 Delta Lake 테이블, Databricks Runtime 13.3 LTS 이상에서 사용 가능 | Databricks Runtime 15.2 이상에서 GA (문서는 두 버전을 함께 적음) |
 | UNIQUE | Unity Catalog와 Delta Lake 테이블, Databricks SQL과 Databricks Runtime 18.2 이상 | Public Preview |
 
 ### 제약의 성격
