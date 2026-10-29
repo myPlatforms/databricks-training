@@ -4,7 +4,7 @@
 
 ## 한눈에 보기
 
-인바운드 접근이 "들어오는 길"이라면, 이 페이지의 주제는 "나가는 길"입니다. 서버리스 컴퓨트(노트북, 잡, SQL 웨어하우스, Lakeflow pipelines, Model Serving 등)가 외부 인터넷이나 다른 자원에 연결할 때의 통제 수단은 세 가지입니다. **서버리스 이그레스 제어**(Serverless egress control)는 아웃바운드 연결 정책을 정하고, ** 네트워크 정책**(Network policy)은 그 정책의 실체이며, ** 네트워크 연결 구성**(Network connectivity configuration, NCC)은 사설 엔드포인트를 만드는 계정 수준 객체입니다.
+인바운드 접근이 "들어오는 길"이라면, 이 페이지의 주제는 "나가는 길"입니다. 서버리스 컴퓨트(노트북, 잡, SQL 웨어하우스, Lakeflow pipelines, Model Serving 등)가 외부 인터넷이나 다른 자원에 연결할 때의 통제 수단은 세 가지입니다. **서버리스 이그레스 제어**(Serverless egress control)는 아웃바운드 연결 정책을 정하고, **네트워크 정책**(Network policy)은 그 정책의 실체이며, **네트워크 연결 구성**(Network connectivity configuration, NCC)은 사설 엔드포인트를 만드는 계정 수준 객체입니다.
 
 ## 1. 왜 필요한가
 

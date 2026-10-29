@@ -30,8 +30,6 @@ theme:
         icon: material/weather-sunny
         name: 라이트 모드
   features:
-    - navigation.tabs
-    - navigation.sections
     - navigation.indexes
     - navigation.top
     - navigation.footer

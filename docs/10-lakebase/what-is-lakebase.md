@@ -66,7 +66,7 @@ Azure 문서는 프로젝트 구조를 같은 방식으로 설명합니다. 프�
 
 ### 스토리지와 컴퓨트 분리
 
-공식 문서는 Lakebase 아키텍처가 **상태가 없는(stateless) Postgres 컴퓨트** 와 ** 내구성 있는 스토리지 계층** 을 분리한다고 설명합니다. 스토리지 계층은 세이프키퍼(safekeeper), 페이지서버(pageserver), 클라우드 오브젝트 스토리지로 구성됩니다. 스토리지는 영역 중복(zone-redundant)이며, 컴퓨트가 실행 중이든, 일시 중지되었든, 장애 조치 중이든 데이터는 유지됩니다.
+공식 문서는 Lakebase 아키텍처가 **상태가 없는(stateless) Postgres 컴퓨트** 와 **내구성 있는 스토리지 계층** 을 분리한다고 설명합니다. 스토리지 계층은 세이프키퍼(safekeeper), 페이지서버(pageserver), 클라우드 오브젝트 스토리지로 구성됩니다. 스토리지는 영역 중복(zone-redundant)이며, 컴퓨트가 실행 중이든, 일시 중지되었든, 장애 조치 중이든 데이터는 유지됩니다.
 
 이 분리의 결과는 다음과 같습니다.
 
@@ -159,7 +159,7 @@ psql 'postgresql://user@example.com@ep-abc-123.databricks.com/databricks_postgre
 
 ### 언제 Lakebase가 맞는가
 
-Lakebase는 **애플리케이션의 트랜잭션 저장소** 와 ** 레이크하우스 데이터의 서빙 계층** 이 필요할 때 적합합니다. 예를 들어 다음 경우입니다.
+Lakebase는 **애플리케이션의 트랜잭션 저장소** 와 **레이크하우스 데이터의 서빙 계층** 이 필요할 때 적합합니다. 예를 들어 다음 경우입니다.
 
 - 사용자 요청마다 행을 읽고 쓰는 웹·모바일 백엔드
 - 분석 테이블의 결과를 애플리케이션이 저지연으로 조회해야 하는 경우(동기화 테이블)
@@ -179,7 +179,7 @@ Lakebase는 **애플리케이션의 트랜잭션 저장소** 와 ** 레이크하
 
 > **참고** 재해 복구는 **Private Preview** 입니다. 문서는 "During the Private Preview, disaster recovery is not intended for production use."라고 명시합니다.
 
-랜딩 페이지 설명에 따르면 재해 복구는 **보조 워크스페이스(Secondary Workspace)** 를 다른 리전에 두고 주기적으로 복제합니다. 장애 조치는 ** 수동(Failover is always manual)** 입니다. 상세 동작과 복구 브랜치는 [브랜치와 복구](branches-and-recovery.md)를 참조하십시오.
+랜딩 페이지 설명에 따르면 재해 복구는 **보조 워크스페이스(Secondary Workspace)** 를 다른 리전에 두고 주기적으로 복제합니다. 장애 조치는 **수동(Failover is always manual)** 입니다. 상세 동작과 복구 브랜치는 [브랜치와 복구](branches-and-recovery.md)를 참조하십시오.
 
 ### 리전 가용성 (Region availability)
 

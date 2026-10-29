@@ -4,7 +4,7 @@
 
 ## 한눈에 보기
 
-Databricks 비용을 관리하는 도구는 네 가지입니다. **사용량 대시보드**(Usage dashboard)로 전체 추세를 보고, ** 예산**(Budgets)으로 한도를 넘기 전에 알림을 받고, ** 태그**(Tags)로 팀과 프로젝트에 비용을 귀속하며, ** 서버리스 사용량 정책**(Serverless usage policies)으로 서버리스 사용량에 태그를 자동으로 붙입니다. 원자료는 `system.billing.usage` 시스템 테이블에 있습니다. 이 페이지는 단가 숫자를 다루지 않습니다.
+Databricks 비용을 관리하는 도구는 네 가지입니다. **사용량 대시보드**(Usage dashboard)로 전체 추세를 보고, **예산**(Budgets)으로 한도를 넘기 전에 알림을 받고, **태그**(Tags)로 팀과 프로젝트에 비용을 귀속하며, **서버리스 사용량 정책**(Serverless usage policies)으로 서버리스 사용량에 태그를 자동으로 붙입니다. 원자료는 `system.billing.usage` 시스템 테이블에 있습니다. 이 페이지는 단가 숫자를 다루지 않습니다.
 
 ## 1. 왜 필요한가
 
