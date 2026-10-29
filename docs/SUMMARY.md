@@ -1,6 +1,5 @@
 # Table of contents
 * [소개](README.md)
-* [변경 이력](updates.md)
 * [01. 플랫폼 개요](01-platform-overview/README.md)
     * [플랫폼이란 무엇인가](01-platform-overview/what-is-databricks.md)
     * [플랫폼 아키텍처](01-platform-overview/architecture.md)
@@ -140,3 +139,4 @@
     * [비용 관리](12-security-operations/cost-management.md)
     * [워크스페이스 운영 체크리스트](12-security-operations/operations-checklist.md)
     * [퀴즈와 체크리스트](12-security-operations/quiz.md)
+* [변경 이력](updates.md)
