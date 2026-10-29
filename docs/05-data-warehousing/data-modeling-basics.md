@@ -2,7 +2,7 @@
 
 > 기준일: 2026-10-28 · 근거: 공식 문서
 
-데이터 모델링은 분석에 쓸 테이블을 어떤 구조로 나눌지 정하는 작업입니다. 이 페이지는 웨어하우스에서 가장 많이 쓰는 **스타 스키마(Star schema)** 와 ** 스노우플레이크 스키마(Snowflake schema)** 를 설명하고, Unity Catalog에서 **PK/FK 제약(Primary key·Foreign key constraint)** 을 어떻게 선언하는지, 그리고 그 제약이 무엇을 보장하지 않는지를 정리합니다.
+데이터 모델링은 분석에 쓸 테이블을 어떤 구조로 나눌지 정하는 작업입니다. 이 페이지는 웨어하우스에서 가장 많이 쓰는 **스타 스키마(Star schema)** 와 **스노우플레이크 스키마(Snowflake schema)** 를 설명하고, Unity Catalog에서 **PK/FK 제약(Primary key·Foreign key constraint)** 을 어떻게 선언하는지, 그리고 그 제약이 무엇을 보장하지 않는지를 정리합니다.
 
 > **참고** 공식 Databricks 문서는 골드 계층의 데이터 마트가 차원 모델(dimensional model)이라고 설명합니다. 스타와 스노우플레이크라는 이름과 구조 비교는 문서의 특정 페이지가 아니라 일반 모델링 지식입니다. 이 페이지는 두 방식을 일반 지식으로 설명하고, PK/FK 문법과 상태만 공식 문서 근거로 씁니다.
 
@@ -110,7 +110,7 @@ ALTER TABLE main.default.S ADD CONSTRAINT s_t_fk FOREIGN KEY(fk1, fk2) REFERENCE
 
 ### 제약의 성격
 
-공식 문서는 PK, FK, UNIQUE 제약을 **정보성(informational only)** 으로 설명하며, ** 강제되지 않는다(aren't enforced)** 고 명시합니다. 즉 제약을 선언해도 중복 키 삽입이나 참조 무결성 위반을 막지 않습니다. 대신 제약은 다음 목적으로 쓰입니다.
+공식 문서는 PK, FK, UNIQUE 제약을 **정보성(informational only)** 으로 설명하며, **강제되지 않는다(aren't enforced)** 고 명시합니다. 즉 제약을 선언해도 중복 키 삽입이나 참조 무결성 위반을 막지 않습니다. 대신 제약은 다음 목적으로 쓰입니다.
 
 - Unity Catalog에서 테이블 사이의 관계를 사용자가 이해하도록 돕습니다. 문서는 실버 계층 설명에서 이 점을 근거로 PK/FK 지정을 권장합니다.
 - 관계 정보를 BI 도구와 메타데이터 탐색에 전달합니다.

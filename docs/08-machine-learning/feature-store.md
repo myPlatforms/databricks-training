@@ -2,7 +2,7 @@
 
 > 기준일: 2026-10-28 · 근거: 공식 문서
 
-Databricks 피처 스토어(Databricks Feature Store)는 모델 학습과 서빙에 쓰는 피처(feature)를 Unity Catalog에 등록하고, 같은 정의를 학습과 실시간 서빙에서 재사용하게 하는 기능입니다. 피처를 담는 기본 단위는 **피처 테이블(Feature Table)** 이며, 문서는 신규 작업에 ** 피처 뷰(Feature View)** 를 권장합니다. 실시간 조회용 저장소는 **Databricks Online Feature Stores** 로, Lakebase 기반입니다.
+Databricks 피처 스토어(Databricks Feature Store)는 모델 학습과 서빙에 쓰는 피처(feature)를 Unity Catalog에 등록하고, 같은 정의를 학습과 실시간 서빙에서 재사용하게 하는 기능입니다. 피처를 담는 기본 단위는 **피처 테이블(Feature Table)** 이며, 문서는 신규 작업에 **피처 뷰(Feature View)** 를 권장합니다. 실시간 조회용 저장소는 **Databricks Online Feature Stores** 로, Lakebase 기반입니다.
 
 ## 왜 필요한가
 

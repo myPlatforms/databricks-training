@@ -4,7 +4,7 @@
 
 ## 한눈에 보기
 
-Lakeflow 파이프라인(Lakeflow pipelines)은 **무엇을 만들지** 만 선언하면 실행 순서, 증분 처리, 의존성을 엔진이 관리하는 방식입니다. 공식 문서는 이 제품을 "Spark Declarative Pipelines on Lakeflow"라는 제목으로 소개하며, 본문에서는 Lakeflow 파이프라인이 Apache Spark Declarative Pipelines와 호환된다고 설명합니다. 이전 이름인 Delta Live Tables(DLT)는 공식 문서가 별도 페이지로 설명하는 구 명칭입니다. 이 페이지는 파이프라인의 세 가지 핵심 개념인 ** 흐름(flow)**, ** 스트리밍 테이블(streaming table)**, ** 구체화된 뷰(materialized view)** 를 다룹니다.
+Lakeflow 파이프라인(Lakeflow pipelines)은 **무엇을 만들지** 만 선언하면 실행 순서, 증분 처리, 의존성을 엔진이 관리하는 방식입니다. 공식 문서는 이 제품을 "Spark Declarative Pipelines on Lakeflow"라는 제목으로 소개하며, 본문에서는 Lakeflow 파이프라인이 Apache Spark Declarative Pipelines와 호환된다고 설명합니다. 이전 이름인 Delta Live Tables(DLT)는 공식 문서가 별도 페이지로 설명하는 구 명칭입니다. 이 페이지는 파이프라인의 세 가지 핵심 개념인 **흐름(flow)**, **스트리밍 테이블(streaming table)**, **구체화된 뷰(materialized view)** 를 다룹니다.
 
 ## 왜 필요한가
 

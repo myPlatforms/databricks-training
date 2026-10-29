@@ -106,7 +106,7 @@ Iceberg v3 테이블의 주요 특징과 제한은 다음과 같습니다.
 
 - 외부 클라이언트는 `UUID`, `Fixed(L)`, `TIME`, 필수 필드를 가진 중첩 `STRUCT` 타입으로 관리형 Iceberg 테이블을 만들 수 없습니다.
 - 외부 클라이언트는 스냅샷 만료(expire snapshots)나 고아 파일 제거(remove orphan files) 같은 테이블 유지보수를 실행할 수 없습니다.
-- 관리형 Iceberg v3 테이블에서 `DELETE`, `UPDATE`, `MERGE`를 실행하려면 클라이언트가 **Copy-on-write** 모드를 쓰거나, 삭제된 행을 ** 삭제 벡터** 로 기록해야 합니다.
+- 관리형 Iceberg v3 테이블에서 `DELETE`, `UPDATE`, `MERGE`를 실행하려면 클라이언트가 **Copy-on-write** 모드를 쓰거나, 삭제된 행을 **삭제 벡터** 로 기록해야 합니다.
 - 클라이언트가 Equality delete 파일을 쓰면 Unity Catalog가 커밋을 거부하며, 클라이언트는 `Can not create a Path from a null string [ErrorCode: 2015]` 오류를 받습니다.
 - 공식 문서는 Iceberg 사양상 한 스냅샷에 중복 데이터 파일을 둘 수 없으며, Unity Catalog는 외부 엔진이 중복 데이터 파일을 커밋하는 것을 막는다고 설명합니다.
 

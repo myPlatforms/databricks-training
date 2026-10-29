@@ -2,7 +2,7 @@
 
 > 기준일: 2026-10-28 · 근거: 공식 문서
 
-데이터 품질 모니터링(Data quality monitoring)은 Unity Catalog의 데이터 자산 품질을 감시하는 기능입니다. 두 가지 기능으로 구성됩니다. **이상 탐지(Anomaly detection)** 는 테이블의 신선도(freshness)와 완전성(completeness)을 과거 패턴과 비교합니다. ** 데이터 프로파일링(Data profiling)** 은 요약 통계를 계산하고, 시간에 따른 분포 변화(드리프트)를 비교합니다. 프로파일링은 추론 테이블(inference table)을 감시해 ML 모델과 모델 서빙 엔드포인트도 추적합니다.
+데이터 품질 모니터링(Data quality monitoring)은 Unity Catalog의 데이터 자산 품질을 감시하는 기능입니다. 두 가지 기능으로 구성됩니다. **이상 탐지(Anomaly detection)** 는 테이블의 신선도(freshness)와 완전성(completeness)을 과거 패턴과 비교합니다. **데이터 프로파일링(Data profiling)** 은 요약 통계를 계산하고, 시간에 따른 분포 변화(드리프트)를 비교합니다. 프로파일링은 추론 테이블(inference table)을 감시해 ML 모델과 모델 서빙 엔드포인트도 추적합니다.
 
 > **참고** 문서는 데이터 프로파일링이 구 명칭 **Lakehouse Monitoring** 의 후속이라고 명시합니다. 검색 시에는 현재 명칭 "Data quality monitoring"을 쓰십시오.
 
