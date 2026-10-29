@@ -24,7 +24,7 @@ Databricks 한국어 교육 자료. 공개 리포 `myPlatforms/databricks-traini
 - 페이지 맨 위 메타 줄: `> 기준일: YYYY-MM-DD · 근거: 공식 문서` 형식.
 - 기능마다 **상태(GA / Public Preview / Beta / Private Preview)** 를 표기한다. 클라우드별로 다르면 나눠 쓴다.
 - 날짜·한도·수치는 문서 원문에서 확인한 것만 쓴다. 확인 못 한 것은 쓰지 않거나 "문서에 명시 없음"이라고 쓴다.
-- **제품명은 학습 지식으로 고치지 않는다.** 리브랜딩이 잦으므로 현재 문서 표기를 따른다. 구 명칭은 처음 한 번 괄호로 병기(예: "Lakeflow Spark Declarative Pipelines(구 DLT)").
+- **제품명은 학습 지식으로 고치지 않는다.** 리브랜딩이 잦으므로 현재 문서 표기를 따른다. 구 명칭은 처음 한 번 괄호로 병기(예: "Lakeflow pipelines(구 DLT)" — docs 제목은 "Spark Declarative Pipelines on Lakeflow", 본문 표기는 "Lakeflow pipelines").
 - 각 페이지 끝에 `## 참고 문서` — 근거로 쓴 공식 문서 링크 목록.
 - 페이지를 고치면 기준일을 갱신하고 `docs/updates.md`에 한 줄 추가한다.
 

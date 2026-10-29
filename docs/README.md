@@ -18,9 +18,9 @@ Databricks Data + AI Platform을 기능별로 정리한 한국어 교육 자료�
 | 01 | [플랫폼 개요](01-platform-overview/README.md) | 공개 |
 | 02 | [레이크하우스 스토리지 (Delta Lake·Iceberg)](02-lakehouse-storage/README.md) | 공개 |
 | 03 | [컴퓨트 (서버리스·클래식·SQL 웨어하우스)](03-compute/README.md) | 공개 |
-| 04 | 데이터 엔지니어링 (Lakeflow) | 준비 중 |
-| 05 | 데이터 웨어하우징 (Databricks SQL) | 준비 중 |
-| 06 | Unity Catalog 거버넌스 | 준비 중 |
+| 04 | [데이터 엔지니어링 (Lakeflow)](04-data-engineering/README.md) | 공개 |
+| 05 | [데이터 웨어하우징 (Databricks SQL)](05-data-warehousing/README.md) | 공개 |
+| 06 | [Unity Catalog 거버넌스](06-unity-catalog/README.md) | 공개 |
 | 07 | AI/BI (대시보드·Genie) | 준비 중 |
 | 08 | 머신러닝 (MLflow·Model Serving) | 준비 중 |
 | 09 | AI 에이전트 | 준비 중 |
