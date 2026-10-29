@@ -4,6 +4,7 @@
 
 | 날짜 | 페이지 | 변경 | 근거 |
 |---|---|---|---|
+| 2026-10-29 | 전체 | 모든 페이지에 수준(100·200·300) 표시, 장마다 퀴즈와 체크리스트 페이지 추가(12쪽), 홈에 수준 안내와 역할별 학습 경로 추가, 장 안내 문구의 장 번호 표기를 페이지 제목으로 정리, Databricks Connect 세션 예시에 import 줄 추가 | 각 장 본문, [Databricks Connect 서버리스 튜토리얼](https://docs.databricks.com/aws/en/dev-tools/databricks-connect/python/tutorial-serverless) |
 | 2026-10-29 | 01·03·04·05·07·08·10·11·12장 19쪽 | 짧은 페이지 보강(원문 하위 문서 근거 추가, 원문과 어긋난 표현 정정), 용어 정리에 확인된 구 명칭 대응 추가, 전체 굵은 글씨 서식 손상 98곳 복구 | 각 페이지 참고 문서 |
 | 2026-10-29 | 11·12장 | 초판 공개 — 개발자 도구(Databricks CLI·Declarative Automation Bundles·직접 배포 엔진·Python SDK·REST·Databricks Connect·Apps·Git·CI/CD), 보안·운영(ID·인증·네트워크·암호화·감사 로그·시스템 테이블·비용 관리·운영 체크리스트) | 공식 문서 (각 페이지 참고 문서) |
 | 2026-10-29 | 07·08·09장 | 초판 공개 — AI/BI(대시보드·Genie Agents·메트릭 뷰 소비·알림·외부 BI), 머신러닝(MLflow 3·UC 모델·피처 스토어·Model Serving·Foundation Model APIs·Unity Gateway·데이터 품질 모니터링), AI 에이전트(Agent Bricks CLI·MCP·Databricks AI Search·평가·배포·가드레일) | 공식 문서 (각 페이지 참고 문서) |
