@@ -25,8 +25,8 @@ Databricks Data + AI Platform을 기능별로 정리한 한국어 교육 자료�
 | 08 | [머신러닝 (MLflow·Model Serving)](08-machine-learning/README.md) | 공개 |
 | 09 | [AI 에이전트](09-ai-agents/README.md) | 공개 |
 | 10 | [Lakebase](10-lakebase/README.md) | 공개 |
-| 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code 공개, CLI·Bundles·SDK·Apps 준비 중 | 일부 공개 |
-| 12 | 보안·운영 (시스템 테이블·비용) | 준비 중 |
+| 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code, Databricks CLI, Declarative Automation Bundles, SDK·REST API, Databricks Apps, Git·CI/CD | 공개 |
+| 12 | [보안·운영 (시스템 테이블·비용)](12-security-operations/README.md) | 공개 |
 
 ## 참고 문서
 
