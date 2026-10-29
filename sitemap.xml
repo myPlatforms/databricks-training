@@ -41,6 +41,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/quiz/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/what-is-databricks/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -70,6 +74,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/medallion-architecture/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -106,6 +114,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/03-compute/pools-and-policies/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -165,6 +177,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://myplatforms.github.io/databricks-training/04-data-engineering/quiz/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://myplatforms.github.io/databricks-training/04-data-engineering/structured-streaming-basics/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -190,6 +206,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/05-data-warehousing/query-profile/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/05-data-warehousing/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -230,6 +250,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/06-unity-catalog/privileges-and-ownership/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/06-unity-catalog/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -281,6 +305,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://myplatforms.github.io/databricks-training/07-ai-bi/quiz/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://myplatforms.github.io/databricks-training/07-ai-bi/schedule-subscribe-embed/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -325,6 +353,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://myplatforms.github.io/databricks-training/08-machine-learning/quiz/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://myplatforms.github.io/databricks-training/08-machine-learning/unity-gateway/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -350,6 +382,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/09-ai-agents/guardrails-governance-monitoring/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/09-ai-agents/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -397,6 +433,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://myplatforms.github.io/databricks-training/10-lakebase/quiz/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/synced-tables/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -406,6 +446,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -510,6 +554,10 @@
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/12-security-operations/operations-checklist/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/12-security-operations/quiz/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
