@@ -2,90 +2,202 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://myplatforms.github.io/databricks-training/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/SUMMARY/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/updates/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/account-workspace-metastore/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/architecture/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/billing-basics/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/getting-started/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/glossary/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/notebooks-basics/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/what-is-databricks/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/01-platform-overview/workspace-ui/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/deletion-vectors/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/delta-lake-internals/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/iceberg-support/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/managed-vs-external-tables/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/medallion-architecture/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/table-layout-optimization/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/time-travel-and-cdf/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/02-lakehouse-storage/why-lakehouse/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/classic-compute/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/compute-types-and-selection/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/cost-structure/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/photon/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/pools-and-policies/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/serverless-compute/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/serverless-limitations/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/spark-basics/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://myplatforms.github.io/databricks-training/03-compute/sql-warehouses/</loc>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/apps-integration/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/best-practices-and-cost/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/branches-and-recovery/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/change-data-out/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/compute-and-scaling/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/connect-and-auth/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/connection-pooling/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/synced-tables/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/10-lakebase/what-is-lakebase/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/cli/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/features-and-permissions/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/governance-and-cost/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/instructions-and-skills/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/lakeflow-jobs-task/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/mcp/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://myplatforms.github.io/databricks-training/11-developer-tools/genie-code/scheduled-tasks/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
 </urlset>
