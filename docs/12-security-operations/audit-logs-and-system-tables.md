@@ -1,6 +1,6 @@
 # 감사 로그와 시스템 테이블
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -49,7 +49,7 @@ GRANT SELECT ON SCHEMA system.access TO `audit-team`;
 | `billing` | `usage`, `list_prices` | 라벨 없음 | `usage`: 365일. `list_prices`: 무기한 |
 | `compute` | `clusters`, `instance_events`, `instance_pools`, `node_timeline`, `node_types`, `warehouse_events`, `warehouses` | `instance_events`, `instance_pools`: Public Preview | 대부분 365일. `node_timeline`: 90일. `node_types`: 무기한 |
 | `query` | `history` | 라벨 없음 | 365일 |
-| `lakeflow` | `job_run_timeline`, `job_task_run_timeline`, `job_tasks`, `jobs`, `pipeline_update_timeline`, `pipelines`, `zerobus_stream`, `zerobus_ingest` | `zerobus_stream`, `zerobus_ingest`: Beta. 나머지는 라벨 없음 | 365일 |
+| `lakeflow` | `job_run_timeline`, `job_task_run_timeline`, `job_tasks`, `jobs`, `pipeline_update_timeline`, `pipelines`, `zerobus_stream`, `zerobus_ingest` | `zerobus_stream`, `zerobus_ingest`: Beta. 나머지는 라벨 없음 (`pipelines`, `pipeline_update_timeline`은 릴리즈 노트 2026-10-21 GA) | 365일 |
 | `lakeflow_pipeline_events_preview` | `pipeline_events` | Beta | 365일 |
 | `alert` | `alerts`, `alert_evaluation_history` | Public Preview | 365일 |
 | `lakebase` | `*` | Beta | 7일 |
@@ -65,9 +65,7 @@ GRANT SELECT ON SCHEMA system.access TO `audit-team`;
 | `marketplace` | `listing_funnel_events`, `listing_access_events` | Public Preview | 365일 |
 | `lineage` | (지원 중단) | 라벨 없음 | 빈 테이블 |
 
-> **참고** `access.audit`의 상태 표기는 페이지마다 다릅니다. 시스템 테이블 목록 페이지는 Public Preview로, 감사 로그 페이지는 "Public Preview"로 표기합니다. 같은 상태이므로 충돌은 아니지만, 최신 상태는 원문에서 다시 확인하십시오.
-
-> **참고** 릴리즈 노트에 따르면 2026년 10월 21일부터 `lakeflow`의 `pipelines`와 `pipeline_update_timeline` 테이블이 GA입니다. 위 표는 시스템 테이블 목록 페이지의 라벨을 옮긴 것이므로, GA 표기는 릴리즈 노트 기준으로 따로 확인하십시오.
+> **참고** 위 표의 상태는 시스템 테이블 목록 페이지의 라벨을 옮긴 것입니다. 목록 페이지에 라벨이 없는 `lakeflow`의 `pipelines`와 `pipeline_update_timeline`은 릴리즈 노트(2026-10-21)에서 GA로 발표되었습니다.
 
 > **참고** `system.information_schema`는 다른 시스템 테이블과 동작 방식이 달라 별도 페이지에서 다룹니다.
 

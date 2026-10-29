@@ -1,6 +1,6 @@
 # 동기화 테이블 (Synced Tables)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 200
 
 동기화 테이블(Synced Table)은 Unity Catalog의 Delta 테이블을 Lakebase Postgres 데이터베이스에 복사해 **저지연 읽기** 를 제공하는 기능입니다. 방향은 레이크하우스 → Lakebase입니다. 반대 방향(Lakebase 변경을 Delta로 옮기는 기능)은 [변경 데이터 반출](change-data-out.md)에서 다룹니다.
 
@@ -184,7 +184,7 @@ Continuous는 자동으로 스트리밍합니다. Snapshot과 Triggered는 파�
 - Continuous의 삭제 전파는 문서가 명시적으로 설명하지 않습니다. 운영 전에 테스트하십시오.
 - **Unity Catalog에서 동기화 테이블을 삭제하면 Postgres 테이블도 함께 삭제** 된다고 문서가 설명합니다. UI 메뉴, `w.postgres.delete_synced_table(...)`, `DELETE /api/2.0/postgres/synced_tables/{name}`으로 삭제할 수 있습니다.
 
-> **주의** 다른 자료에서 "동기화 테이블 삭제 시 Postgres 테이블은 남는다"는 설명을 본 적이 있다면, 그 설명은 현재 AWS 동기화 테이블 문서와 다릅니다. 현재 원문은 Unity Catalog 삭제 시 Postgres 테이블도 삭제된다는 것입니다. 실제 워크스페이스에서 삭제 후 Postgres 상태를 확인하십시오.
+> **주의** 같은 문서의 "Postgres에서 허용되는 작업" 목록에는 "Unity Catalog에서 동기화 테이블을 제거한 뒤 공간을 비우려고 테이블을 삭제(DROP)"하는 작업도 있습니다. 두 설명이 어떻게 맞물리는지 문서는 설명하지 않습니다. 삭제한 뒤에는 Postgres에 테이블이 남아 있는지 확인하고, 남아 있으면 직접 `DROP TABLE`로 정리하십시오.
 
 ### 권한과 소유권
 

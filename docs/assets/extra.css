@@ -29,3 +29,76 @@
 .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:not(.md-nav__link--active) {
   color: var(--md-default-fg-color);
 }
+
+/* Pretendard first (Noto Sans KR stays as the configured fallback) */
+:root, body {
+  --md-text-font: "Pretendard Variable", Pretendard, "Noto Sans KR";
+}
+
+/* Wrap Korean text at word boundaries */
+.md-typeset, .md-nav {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* Headings: solid weights, hairline above sections */
+.md-typeset h1 {
+  font-weight: 700;
+  color: var(--md-default-fg-color);
+  letter-spacing: -0.01em;
+}
+.md-typeset h2 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2em;
+  padding-top: 0.8em;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+.md-typeset h3 { font-weight: 600; }
+
+/* Right-hand table of contents: thin rail, compact entries, two-line clamp */
+.md-sidebar--secondary .md-nav__title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--md-default-fg-color--light);
+}
+.md-nav--secondary > .md-nav__list {
+  border-left: 1px solid var(--md-default-fg-color--lightest);
+  margin-left: 0.6rem;
+}
+[dir] .md-nav--secondary .md-nav__list { padding-left: 0; }
+.md-nav--secondary .md-nav__item { padding: 0; }
+.md-nav--secondary .md-nav__link {
+  margin: 0 0 0 -1px;
+  padding: 0.2rem 0 0.2rem 0.6rem;
+  border-left: 2px solid transparent;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  color: var(--md-default-fg-color--light);
+}
+.md-nav--secondary .md-nav__link .md-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.md-nav--secondary .md-nav .md-nav__link {
+  padding-left: 1.2rem;
+  font-size: 0.6rem;
+}
+.md-nav--secondary .md-nav .md-nav .md-nav__link { padding-left: 1.8rem; }
+.md-nav--secondary .md-nav__link:hover { color: var(--md-default-fg-color); }
+.md-nav--secondary .md-nav__link--active {
+  color: var(--md-default-fg-color);
+  border-left-color: var(--md-accent-fg-color);
+  font-weight: 600;
+}
+
+/* Left navigation: soft highlight for the current page */
+.md-nav--primary .md-nav__item .md-nav__link--active:not(.md-nav__container) {
+  background: var(--md-accent-fg-color--transparent);
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.4rem;
+  margin-left: -0.4rem;
+}
