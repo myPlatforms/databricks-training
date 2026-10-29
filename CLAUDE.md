@@ -24,7 +24,7 @@ Databricks 한국어 교육 자료. 공개 리포 `myPlatforms/databricks-traini
 - 페이지 맨 위 메타 줄: `> 기준일: YYYY-MM-DD · 근거: 공식 문서` 형식.
 - 기능마다 **상태(GA / Public Preview / Beta / Private Preview)** 를 표기한다. 클라우드별로 다르면 나눠 쓴다.
 - 날짜·한도·수치는 문서 원문에서 확인한 것만 쓴다. 확인 못 한 것은 쓰지 않거나 "문서에 명시 없음"이라고 쓴다.
-- **제품명은 학습 지식으로 고치지 않는다.** 리브랜딩이 잦으므로 현재 문서 표기를 따른다. 구 명칭은 처음 한 번 괄호로 병기(예: "Lakeflow Spark Declarative Pipelines(구 DLT)").
+- **제품명은 학습 지식으로 고치지 않는다.** 리브랜딩이 잦으므로 현재 문서 표기를 따른다. 구 명칭은 처음 한 번 괄호로 병기(예: "Lakeflow pipelines(구 DLT)" — docs 제목은 "Spark Declarative Pipelines on Lakeflow", 본문 표기는 "Lakeflow pipelines").
 - 각 페이지 끝에 `## 참고 문서` — 근거로 쓴 공식 문서 링크 목록.
 - 페이지를 고치면 기준일을 갱신하고 `docs/updates.md`에 한 줄 추가한다.
 
@@ -32,6 +32,7 @@ Databricks 한국어 교육 자료. 공개 리포 `myPlatforms/databricks-traini
 
 - 합니다체. 기술 용어는 첫 등장 때 영문 병기(예: "동기화 테이블(Synced Table)").
 - 볼드 뒤에 한글 조사가 바로 오면 렌더링이 깨질 수 있다 → `**용어** 는`처럼 닫는 `**` 뒤에 공백.
+  일괄 보정은 **정규식으로 `**…**`를 짝짓지 말고** `python3 -I tools/fix_bold.py docs`를 쓴다 (한 줄에 굵은 글씨가 둘이면 정규식이 '닫는 ** ~ 여는 **'를 짝지어 `** 텍스트**`로 깨뜨린다. 2026-10-29 98줄 손상 사례).
 - 다이어그램: Mermaid·ASCII 아트 금지. 표로 표현하거나 공식 문서 이미지를 링크.
 - 주의·참고 박스는 MkDocs/GitBook 양쪽에서 읽히도록 인용문으로 쓴다: `> **주의** ...`, `> **참고** ...` (`!!!` admonition, `{% hint %}` 금지).
 - 코드 블록에는 언어 지정(```python, ```sql, ```bash, ```yaml).

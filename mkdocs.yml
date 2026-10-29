@@ -1,5 +1,5 @@
 site_name: Databricks 교육 자료
-site_description: Databricks Data Intelligence Platform 한국어 교육 자료 (공식 문서 기반, 주기적 최신화)
+site_description: Databricks Data + AI Platform 한국어 교육 자료 (공식 문서 기반, 주기적 최신화)
 site_url: https://myplatforms.github.io/databricks-training/
 repo_url: https://github.com/myPlatforms/databricks-training
 repo_name: myPlatforms/databricks-training
@@ -30,8 +30,6 @@ theme:
         icon: material/weather-sunny
         name: 라이트 모드
   features:
-    - navigation.tabs
-    - navigation.sections
     - navigation.indexes
     - navigation.top
     - navigation.footer

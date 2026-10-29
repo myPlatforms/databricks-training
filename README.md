@@ -2,7 +2,7 @@
 
 사이트: https://myplatforms.github.io/databricks-training/
 
-Databricks Data Intelligence Platform 한국어 교육 자료입니다. 공식 문서를 근거로 작성하며,
+Databricks Data + AI Platform 한국어 교육 자료입니다. 공식 문서를 근거로 작성하며,
 릴리즈 노트·블로그를 주기적으로 수집해 영향받는 페이지를 갱신합니다.
 
 - 본문: `docs/` (목차 = `docs/SUMMARY.md`)

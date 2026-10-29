@@ -2,7 +2,7 @@
 
 > 기준일: 2026-10-28 · 근거: 공식 문서
 
-Databricks Data Intelligence Platform을 기능별로 정리한 한국어 교육 자료입니다.
+Databricks Data + AI Platform을 기능별로 정리한 한국어 교육 자료입니다.
 각 기능을 **왜 필요한가 → 어떻게 동작하는가 → 어떻게 쓰는가 → 트레이드오프 → 주의사항** 순서로 설명합니다.
 
 ## 이 자료의 특징
@@ -15,18 +15,18 @@ Databricks Data Intelligence Platform을 기능별로 정리한 한국어 교육
 
 | 장 | 주제 | 상태 |
 |---|---|---|
-| 01 | 플랫폼 개요 | 준비 중 |
-| 02 | 레이크하우스 스토리지 (Delta Lake·Iceberg) | 준비 중 |
-| 03 | 컴퓨트 (서버리스·클래식·SQL 웨어하우스) | 준비 중 |
-| 04 | 데이터 엔지니어링 (Lakeflow) | 준비 중 |
-| 05 | 데이터 웨어하우징 (Databricks SQL) | 준비 중 |
-| 06 | Unity Catalog 거버넌스 | 준비 중 |
-| 07 | AI/BI (대시보드·Genie) | 준비 중 |
-| 08 | 머신러닝 (MLflow·Model Serving) | 준비 중 |
-| 09 | AI 에이전트 | 준비 중 |
+| 01 | [플랫폼 개요](01-platform-overview/README.md) | 공개 |
+| 02 | [레이크하우스 스토리지 (Delta Lake·Iceberg)](02-lakehouse-storage/README.md) | 공개 |
+| 03 | [컴퓨트 (서버리스·클래식·SQL 웨어하우스)](03-compute/README.md) | 공개 |
+| 04 | [데이터 엔지니어링 (Lakeflow)](04-data-engineering/README.md) | 공개 |
+| 05 | [데이터 웨어하우징 (Databricks SQL)](05-data-warehousing/README.md) | 공개 |
+| 06 | [Unity Catalog 거버넌스](06-unity-catalog/README.md) | 공개 |
+| 07 | [AI/BI (대시보드·Genie)](07-ai-bi/README.md) | 공개 |
+| 08 | [머신러닝 (MLflow·Model Serving)](08-machine-learning/README.md) | 공개 |
+| 09 | [AI 에이전트](09-ai-agents/README.md) | 공개 |
 | 10 | [Lakebase](10-lakebase/README.md) | 공개 |
-| 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code 공개, CLI·Bundles·SDK·Apps 준비 중 | 일부 공개 |
-| 12 | 보안·운영 (시스템 테이블·비용) | 준비 중 |
+| 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code, Databricks CLI, Declarative Automation Bundles, SDK·REST API, Databricks Apps, Git·CI/CD | 공개 |
+| 12 | [보안·운영 (시스템 테이블·비용)](12-security-operations/README.md) | 공개 |
 
 ## 참고 문서
 

@@ -2,15 +2,18 @@
 
 > 기준일: 2026-10-28 · 근거: 공식 문서
 
-이 장은 Databricks 워크스페이스에서 코드를 작성하고, 실행을 자동화하고, 외부 도구와 연결하는 **개발자 도구** 를 다룹니다. 현재는 **Genie Code** 한 가지 주제만 수록되어 있습니다. 이후 아래 주제가 추가될 예정이며, 추가 시 이 페이지의 표를 갱신합니다.
+이 장은 Databricks 워크스페이스에서 코드를 작성하고, 배포를 자동화하고, 외부 도구와 연결하는 **개발자 도구** 를 다룹니다. Genie Code 외에 CLI, Declarative Automation Bundles, SDK와 REST API, Databricks Apps, Git 폴더와 CI/CD를 함께 수록합니다.
 
 | 주제 | 상태 | 위치 |
 |------|------|------|
 | Genie Code | 수록됨 | [genie-code/README.md](genie-code/README.md) |
-| Databricks CLI | 예정 | — |
-| Declarative Automation Bundles | 예정 | — |
-| Databricks SDK | 예정 | — |
-| Databricks Apps | 예정 | — |
+| Databricks CLI | 수록됨 | [설치와 인증](cli/install-and-auth.md), [명령 그룹과 출력 형식](cli/commands-and-output.md) |
+| Declarative Automation Bundles | 수록됨 | [개요](bundles/overview.md), [수명 주기와 bind](bundles/lifecycle-and-bind.md), [배포 엔진](bundles/deployment-engine.md) |
+| Python SDK, REST API, Databricks Connect | 수록됨 | [Python SDK](sdk-and-apis/python-sdk.md), [REST API와 Databricks Connect](sdk-and-apis/rest-api-and-connect.md) |
+| Databricks Apps | 수록됨 | [개요와 리소스 바인딩](apps/overview-and-resources.md), [설정과 배포](apps/configure-and-deploy.md) |
+| Git 폴더와 CI/CD | 수록됨 | [Git 폴더와 CI/CD 패턴](git-and-cicd/git-folders-and-cicd.md) |
+
+Apps와 Lakebase를 함께 쓰는 연동은 [Databricks Apps와 함께 쓰기](../10-lakebase/apps-integration.md)에서 다룹니다. Lakeflow Jobs와 파이프라인, Unity Catalog의 권한 관리는 각각 04장과 06장에서 다룹니다.
 
 ## 이 장의 범위
 
@@ -26,6 +29,11 @@
 3. Lakeflow Jobs의 Genie Code 태스크와 예약 작업의 차이를 설명하고 설계에 맞게 고릅니다.
 4. 자동 승인(auto-approve)의 의미와 운영 환경에서의 위험을 이해합니다.
 5. 예산, 사용량 테이블, 파트너 AI 설정으로 사용량과 데이터 처리 범위를 관리합니다.
+6. Databricks CLI를 설치하고, OAuth 프로필로 워크스페이스를 전환하며, 출력 형식을 맞춰 스크립트에 씁니다.
+7. Declarative Automation Bundles로 리소스를 선언하고 `validate`, `plan`, `deploy`, `run`, `destroy` 흐름으로 배포합니다. 기존 리소스를 `bind`로 연결하는 전후 확인 절차를 설명합니다.
+8. Python SDK의 인증 체인과 `WorkspaceClient`, `AccountClient`의 차이를 설명하고, 상황에 맞게 REST API나 Databricks Connect를 고릅니다.
+9. Databricks Apps의 리소스 바인딩, 앱 권한과 사용자 권한의 차이, `app.yaml` 설정을 이해하고 앱을 배포합니다.
+10. Git 폴더로 협업하고, 운영 폴더를 자동화로 갱신하는 CI/CD 패턴을 설계합니다.
 
 ## 작성 원칙
 
