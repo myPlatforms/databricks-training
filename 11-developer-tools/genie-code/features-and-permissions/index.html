@@ -5287,7 +5287,7 @@
 <tr>
 <td>문서 처리</td>
 <td>Document processing</td>
-<td>비정형 문서를 파싱·분류·추출하는 파이프라인 구축과 점검 (릴리즈 노트 2026-09-25)</td>
+<td>비정형 문서를 파싱·분류·추출하는 파이프라인 구축과 점검 (릴리즈 노트 2026-09-25). <code>ai_parse_document</code>, <code>ai_classify</code>, 인용(citation)과 신뢰도 점수(confidence score)를 포함한 <code>ai_extract</code>로 Lakeflow job을 만들고, 라벨 테이블 기준 필드별 평가(Measure), 수정안 제시(Improve), 재평가(Re-evaluate) 루프를 자동화합니다. 수정안은 승인 후 적용되는 diff로 제시됩니다 (블로그 2026-10-27)</td>
 </tr>
 <tr>
 <td>AI/BI 대시보드</td>
@@ -5295,9 +5295,19 @@
 <td>대시보드 계획·생성과 데이터 분석</td>
 </tr>
 <tr>
+<td>AI/BI 대시보드</td>
+<td>Bulk import from Power BI and Tableau</td>
+<td>Power BI 또는 Tableau 파일을 한 번에 최대 100개까지 AI/BI 대시보드와 메트릭 뷰(metric view)로 가져오기 (릴리즈 노트 2026-10-22)</td>
+</tr>
+<tr>
 <td>MLflow</td>
 <td>Observability and evaluation in MLflow</td>
 <td>AI 애플리케이션 관찰·평가·개선</td>
+</tr>
+<tr>
+<td>Lakeflow Jobs</td>
+<td>Improved Lakeflow Performance Observability</td>
+<td>지원되는 태스크의 Job 수준 쿼리 성능 지표·인사이트에서 <strong>Optimize</strong> 버튼으로 Genie Code를 열어 쿼리 개선을 돕습니다. 쿼리 프로파일링은 서버리스 컴퓨트, SQL Warehouses, Lakeflow Pipelines를 지원합니다. compliance security profile 워크스페이스에는 2026-11-25 이후 기본 제공 예정 (What's coming)</td>
 </tr>
 <tr>
 <td>전체 공통</td>
@@ -5391,6 +5401,9 @@
 <li><a href="https://docs.databricks.com/aws/en/genie-code/memory">Remember context across sessions</a></li>
 <li><a href="https://docs.databricks.com/aws/en/genie-code/tips">Improve Genie Code responses</a></li>
 <li><a href="https://docs.databricks.com/aws/en/genie-code/">Genie Code 개요</a></li>
+<li><a href="https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#dashboard-enhancements">AI/BI 릴리즈 노트 (2026) — Dashboard enhancements</a></li>
+<li><a href="https://www.databricks.com/blog/spot-fixes-measured-gains-improving-document-extraction-accuracy-aiextract-and-mlflow-prompt">From spot fixes to measured gains: improving document extraction accuracy with ai_extract and MLflow Prompt Registry</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/whats-coming#improved-lakeflow-performance-observability-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled">What's coming — Improved Lakeflow Performance Observability</a></li>
 </ul>
 
 
