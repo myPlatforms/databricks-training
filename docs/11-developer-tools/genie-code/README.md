@@ -21,11 +21,12 @@ Genie Code를 쓰면 데이터 엔지니어와 분석가가 노트북이나 SQL 
 | 전체 화면 모드 | "full page command center" | 워크스페이스 홈 프롬프트 또는 패널의 Maximize 버튼 |
 | 노트북·파일 | 셀 디버깅, 코드 편집 | 편집한 자산은 채팅 옆 탭으로 열립니다. |
 | Unity Catalog 테이블 | 테이블·컬럼 탐색 | |
-| AI/BI 대시보드 | "Data analysis in dashboards" | 필요 시 대시보드 페이지로 이동해 편집합니다. |
+| AI/BI 대시보드 | "Data analysis in dashboards" | 필요 시 대시보드 페이지로 이동해 편집합니다. Power BI·Tableau 파일을 한 번에 최대 100개까지 AI/BI 대시보드와 메트릭 뷰로 가져올 수 있습니다 (릴리즈 노트 2026-10-22). |
 | Lakeflow Pipelines 에디터 | "Pipeline development in Lakeflow" | 기능 페이지에 명시됩니다. |
 | SQL 에디터 | SQL 정확도 개선, 샘플 데이터 탐색 | 기능 페이지에 명시됩니다. |
 | MLflow | "Observability and evaluation in MLflow" | |
 | Lakeflow Jobs | Genie Code 태스크 | Job 안에서 자율 실행합니다. [상세](lakeflow-jobs-task.md) |
+| Lakeflow Jobs 쿼리 성능 지표 | Optimize 버튼 | 성능 인사이트로 쿼리 개선을 돕도록 Genie Code를 엽니다. compliance security profile 워크스페이스에는 2026-11-25 이후 기본 제공 예정 (What's coming) |
 | 예약 작업 | Scheduled tasks | 반복 실행하며 실행마다 새 채팅을 만듭니다. [상세](scheduled-tasks.md) |
 | 터미널 | Genie Code CLI (Beta) | 로컬 파일과 워크스페이스 데이터를 함께 다룹니다. [상세](cli.md) |
 
@@ -69,3 +70,5 @@ Genie Code를 쓰면 데이터 엔지니어와 분석가가 노트북이나 SQL 
 - [Features and capabilities](https://docs.databricks.com/aws/en/genie-code/features-capabilities)
 - [Genie Code 릴리즈 노트 (2026년 8월)](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
 - [Genie Code 릴리즈 노트 (2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [AI/BI 릴리즈 노트 (2026) — Dashboard enhancements](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#dashboard-enhancements)
+- [What's coming — Improved Lakeflow Performance Observability](https://docs.databricks.com/aws/en/release-notes/whats-coming#improved-lakeflow-performance-observability-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)

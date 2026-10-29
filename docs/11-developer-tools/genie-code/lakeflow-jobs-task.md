@@ -107,7 +107,7 @@
 | 실행 주체 | 작업 생성자 권한 (Unity Catalog 권한 적용) | 문서에 run-as 명시 없음 |
 | 공유 | 작업 공유 불가. 실행 채팅은 공유 가능 | 문서에 명시 없음 |
 | 과금 | Genie 사용량에 포함 | 문서에 명시 없음 |
-| 상태 | 릴리즈 노트 2026-09-01 GA. 페이지 라벨 없음 | 릴리즈 노트 2026-10-21 GA. 2026-08-27에는 Beta. 페이지 라벨 없음 |
+| 상태 | 릴리즈 노트 2026-09-01 GA. 페이지 라벨 없음 | 릴리즈 노트 2026-10-21 GA. 2026-08-27에는 Beta. 페이지 라벨 없음. compliance security profile 워크스페이스는 2026년 11월부터 기본 제공 (What's coming) |
 
 ## 트레이드오프
 
@@ -127,7 +127,7 @@
 - **`{{name}}`에 대응하는 파라미터가 없으면 문자 그대로 남습니다.** 오타가 있어도 오류가 나지 않을 수 있으므로, 실행 결과의 Prompt 항목을 확인합니다.
 - **Final response는 잘릴 수 있습니다.** 전체 응답은 대화에 있습니다.
 - **Genie Code 설정과 MCP 연결을 상속합니다.** 태스크를 설계할 때 연결된 MCP 서버가 무엇인지 확인합니다. MCP 설정은 [MCP 서버 연결](mcp.md)을 참고하십시오.
-- **상태 확인**: 릴리즈 노트 2026-10-21에 GA로 표기되어 있습니다. 같은 기능이 2026-08-27 릴리즈 노트에서는 Beta였습니다. 페이지 자체에는 라벨이 없습니다.
+- **상태 확인**: 릴리즈 노트 2026-10-21에 GA로 표기되어 있습니다. 같은 기능이 2026-08-27 릴리즈 노트에서는 Beta였습니다. 페이지 자체에는 라벨이 없습니다. compliance security profile이 켜진 워크스페이스에서는 2026년 11월부터 기본 제공된다고 What's coming에 나옵니다.
 - **사전 요건**: 워크스페이스가 Genie Code의 에이전트 기능에 접근할 수 있어야 하고, 프롬프트가 Genie Code 사용 정책을 따라야 한다고 문서가 명시합니다. 에이전트 기능을 켜는 방법은 [거버넌스와 비용](governance-and-cost.md)을 참고하십시오.
 - **문서에 없는 것**: 컴퓨트·서버리스 요구사항, run-as 신원, 필요한 권한, 과금, 클라우드별 차이.
 
@@ -137,3 +137,4 @@
 - [Scheduled tasks](https://docs.databricks.com/aws/en/genie-code/scheduled-tasks)
 - [Genie Code 릴리즈 노트 (2026년 8월)](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
 - [Genie Code 릴리즈 노트 (2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [What's coming — Genie Code tasks in Lakeflow Jobs (compliance security profile)](https://docs.databricks.com/aws/en/release-notes/whats-coming#genie-code-tasks-in-lakeflow-jobs-are-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled-starting-in-november-2026)

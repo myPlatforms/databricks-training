@@ -44,6 +44,7 @@ MCP(Model Context Protocol)는 AI 에이전트가 외부 도구와 데이터 원
 |------|-----------|
 | 기본 제공 커넥터 | 사용자마다 개별 인증합니다. OAuth 토큰은 사용자 사이에서 공유되지 않습니다. |
 | 도구 호출 통제 | Unity Catalog와 Unity Gateway가 연결을 통제합니다. 게이트웨이는 호출마다 Unity Catalog 권한을 확인하고, 정책과 승인 요구를 적용하며, 사용량을 시스템 테이블에 기록합니다. |
+| Jailbreak 검사 (Beta) | Unity Gateway에서 MCP 도구 호출과 그 결과를 jailbreak·prompt injection 시도로부터 검사할 수 있습니다. Jailbreak guardrail을 입력(input), 출력(output), 또는 둘 다에 적용합니다. |
 | 연결 권한 관리 | 메타스토어 관리자와 연결 소유자가 사용자 권한을 관리하거나 철회할 수 있습니다. |
 | 서버 선택 | 워크스페이스 관리자가 사용할 수 있는 서버를 통제하고, 사용자는 승인된 원천에서 고릅니다. |
 | 연결 권한 변경 | 사용자가 다시 인증해야 합니다. 그 전까지 예약 작업은 실패합니다. |
@@ -99,3 +100,4 @@ GitHub 커넥터는 쓰기가 파일 내용, 이슈, 풀 리퀘스트로 제한�
 - [Connect to MCP servers](https://docs.databricks.com/aws/en/genie-code/mcp)
 - [Genie Code 릴리즈 노트 (2026년 8월)](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
 - [Genie Code 릴리즈 노트 (2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Screen MCP tool calls and results for jailbreaks (Beta)](https://docs.databricks.com/aws/en/release-notes/unity-gateway#screen-mcp-tool-calls-and-results-for-jailbreaks-beta)
