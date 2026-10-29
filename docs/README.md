@@ -21,9 +21,9 @@ Databricks Data + AI Platform을 기능별로 정리한 한국어 교육 자료�
 | 04 | [데이터 엔지니어링 (Lakeflow)](04-data-engineering/README.md) | 공개 |
 | 05 | [데이터 웨어하우징 (Databricks SQL)](05-data-warehousing/README.md) | 공개 |
 | 06 | [Unity Catalog 거버넌스](06-unity-catalog/README.md) | 공개 |
-| 07 | AI/BI (대시보드·Genie) | 준비 중 |
-| 08 | 머신러닝 (MLflow·Model Serving) | 준비 중 |
-| 09 | AI 에이전트 | 준비 중 |
+| 07 | [AI/BI (대시보드·Genie)](07-ai-bi/README.md) | 공개 |
+| 08 | [머신러닝 (MLflow·Model Serving)](08-machine-learning/README.md) | 공개 |
+| 09 | [AI 에이전트](09-ai-agents/README.md) | 공개 |
 | 10 | [Lakebase](10-lakebase/README.md) | 공개 |
 | 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code 공개, CLI·Bundles·SDK·Apps 준비 중 | 일부 공개 |
 | 12 | 보안·운영 (시스템 테이블·비용) | 준비 중 |
