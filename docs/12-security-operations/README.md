@@ -1,4 +1,4 @@
-# 12. 보안·운영 (시스템 테이블·비용)
+# <img src="https://www.databricks.com/sites/default/files/2024-07/primary-icon-orange-cloud-security.svg" alt="" width="40" class="chapter-icon"> 12. 보안·운영 (시스템 테이블·비용)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

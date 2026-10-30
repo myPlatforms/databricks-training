@@ -1,4 +1,4 @@
-# 08. 머신러닝 (MLflow·Model Serving)
+# <img src="https://www.databricks.com/sites/default/files/2024-02/primary-icon-orange-machine-learning.svg" alt="" width="40" class="chapter-icon"> 08. 머신러닝 (MLflow·Model Serving)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

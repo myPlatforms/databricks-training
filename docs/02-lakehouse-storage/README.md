@@ -1,4 +1,4 @@
-# 02. 레이크하우스 스토리지 (Delta Lake·Iceberg)
+# <img src="https://www.databricks.com/sites/default/files/2024-06/primary-icon-orange-delta-lakehouse.svg" alt="" width="40" class="chapter-icon"> 02. 레이크하우스 스토리지 (Delta Lake·Iceberg)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

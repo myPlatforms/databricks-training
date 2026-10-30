@@ -102,3 +102,16 @@
   padding: 0.1rem 0.4rem;
   margin-left: -0.4rem;
 }
+
+/* Chapter icons (public databricks.com assets) */
+.md-typeset img.chapter-icon {
+  vertical-align: middle;
+  margin-right: 0.3em;
+}
+.md-typeset h1 img.chapter-icon { margin-top: -0.15em; }
+
+/* Screenshots: hairline frame so light UI captures stand out on both themes */
+.md-typeset img[src*="assets/shots/"] {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+}

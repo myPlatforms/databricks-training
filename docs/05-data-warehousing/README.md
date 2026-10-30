@@ -1,4 +1,4 @@
-# 5. 데이터 웨어하우징 (Databricks SQL)
+# <img src="https://www.databricks.com/sites/default/files/2026-03/primary-icon-orange-data-warehouse.svg" alt="" width="40" class="chapter-icon"> 5. 데이터 웨어하우징 (Databricks SQL)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

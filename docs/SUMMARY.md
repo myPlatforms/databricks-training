@@ -107,6 +107,7 @@
     * [변경 데이터 반출](10-lakebase/change-data-out.md)
     * [Databricks Apps와 함께 쓰기](10-lakebase/apps-integration.md)
     * [베스트 프랙티스와 비용](10-lakebase/best-practices-and-cost.md)
+    * [실습: 프로젝트, 브랜치, 동기화 테이블](10-lakebase/lab.md)
     * [퀴즈와 체크리스트](10-lakebase/quiz.md)
 * [11. 개발자 도구](11-developer-tools/README.md)
     * [Genie Code](11-developer-tools/genie-code/README.md)

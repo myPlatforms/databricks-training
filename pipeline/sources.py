@@ -202,7 +202,7 @@ def fetch_site_pages(client: httpx.Client, raw_base: str) -> list[dict]:
         pages.append(
             {
                 "path": path,
-                "title": title_m.group(1).strip() if title_m else path,
+                "title": re.sub(r"<[^>]+>", "", title_m.group(1)).strip() if title_m else path,
                 "chapter": path.split("/", 1)[0] if "/" in path else "",
                 "basis_date": date.fromisoformat(basis_m.group(1)) if basis_m else None,
                 "body": body,

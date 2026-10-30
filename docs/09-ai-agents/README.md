@@ -1,4 +1,4 @@
-# 09. AI 에이전트
+# <img src="https://www.databricks.com/sites/default/files/2024-09/primary-icon-orange-ai.svg" alt="" width="40" class="chapter-icon"> 09. AI 에이전트
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

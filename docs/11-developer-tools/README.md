@@ -1,4 +1,4 @@
-# 11. 개발자 도구
+# <img src="https://www.databricks.com/sites/default/files/2025-08/primary-icon-orange-built-in-functions.svg" alt="" width="40" class="chapter-icon"> 11. 개발자 도구
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

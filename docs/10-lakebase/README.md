@@ -1,4 +1,4 @@
-# 10. Lakebase
+# <img src="https://www.databricks.com/sites/default/files/2023-07/primary-icon-orange-unified.svg" alt="" width="40" class="chapter-icon"> 10. Lakebase
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 
@@ -30,7 +30,8 @@ Lakebase는 Databricks 플랫폼에 통합된 관리형 Postgres 데이터베이
 | 7 | [변경 데이터 반출](change-data-out.md) | 300 | CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위 |
 | 8 | [Databricks Apps와 함께 쓰기](apps-integration.md) | 200 | 리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할 |
 | 9 | [베스트 프랙티스와 비용](best-practices-and-cost.md) | 300 | 운영 설정 기준, 연결 설계, 과금 구조(문서에 명시된 범위) |
-| 10 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
+| 10 | [실습: 프로젝트, 브랜치, 동기화 테이블](lab.md) | 200 | 노트북으로 프로젝트 생성, OAuth 접속과 CRUD, 브랜치 격리, Snapshot 동기화, 정리까지 직접 실행 |
+| 11 | [퀴즈와 체크리스트](quiz.md) | 100~300 | 장 내용 확인 문제 10개와 실무 체크리스트 |
 
 권장 학습 순서는 위 표 순서입니다. 연결과 인증 페이지는 동기화 테이블, Apps 페이지의 전제가 되므로 건너뛰지 않는 것을 권장합니다.
 

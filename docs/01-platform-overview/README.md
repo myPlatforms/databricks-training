@@ -1,4 +1,4 @@
-# 1. 플랫폼 개요
+# <img src="https://www.databricks.com/sites/default/files/2025-05/primary-icon-orange-lakehouse.svg" alt="" width="40" class="chapter-icon"> 1. 플랫폼 개요
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~200
 
