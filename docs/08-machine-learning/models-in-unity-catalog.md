@@ -56,6 +56,10 @@ Unity Catalog의 모델 레지스트리(Model Registry)는 MLflow 모델을 `cat
 
 ## 어떻게 쓰는가
 
+![Unity Catalog에 등록한 모델 — 버전, 별칭(champion), 활동 로그](../assets/shots/uc-model.png)
+
+*그림 — Unity Catalog에 등록한 모델 — 버전, 별칭(champion), 활동 로그. 예제 데이터이며 이름·카탈로그 이름 같은 식별 정보는 가렸습니다. 화면은 2026년 10월 기준입니다.*
+
 ### 레지스트리 URI 설정
 
 MLflow 3에서 기본 레지스트리 URI는 `databricks-uc`입니다. 다른 워크스페이스에서 명시하려면 다음과 같이 씁니다.
