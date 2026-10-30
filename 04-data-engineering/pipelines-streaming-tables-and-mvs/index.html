@@ -3806,6 +3806,8 @@
       
         
       
+        
+      
     
     
     
@@ -4094,6 +4096,34 @@
     
   
     베스트 프랙티스와 비용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-lakebase/lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    실습: 프로젝트, 브랜치, 동기화 테이블
   
 
     
@@ -5548,6 +5578,8 @@
 </table>
 <p>Jobs &amp; Pipelines 목록의 "Pipeline type" 열에서 확인할 수 있습니다.</p>
 <h2 id="어떻게-쓰는가">어떻게 쓰는가<a class="headerlink" href="#어떻게-쓰는가" title="Permanent link">&para;</a></h2>
+<p><img alt="파이프라인 그래프 — Delta 원본에서 구체화된 뷰로 이어지는 흐름과 데이터셋별 출력 레코드 수" src="../../assets/shots/pipeline-graph.png" /></p>
+<p><em>그림 — 파이프라인 그래프 — Delta 원본에서 구체화된 뷰로 이어지는 흐름과 데이터셋별 출력 레코드 수. 예제 데이터이며 이름·카탈로그 이름 같은 식별 정보는 가렸습니다. 화면은 2026년 10월 기준입니다.</em></p>
 <h3 id="스트리밍-테이블-sql">스트리밍 테이블 (SQL)<a class="headerlink" href="#스트리밍-테이블-sql" title="Permanent link">&para;</a></h3>
 <p>스트리밍 테이블은 스트리밍 쿼리로 정의합니다. 원천 참조에는 <code>STREAM</code> 키워드를 씁니다. 문서의 최소 예시를 옮겼습니다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">REFRESH</span><span class="w"> </span><span class="n">STREAMING</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers_silver</span>
