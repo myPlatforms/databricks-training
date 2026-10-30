@@ -1,4 +1,4 @@
-# 06. Unity Catalog 거버넌스
+# <img src="https://www.databricks.com/sites/default/files/2024-06/primary-icon-orange-unity-catalog.svg" alt="" width="40" class="chapter-icon"> 06. Unity Catalog 거버넌스
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

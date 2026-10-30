@@ -1,4 +1,4 @@
-# 4. 데이터 엔지니어링 (Lakeflow)
+# <img src="https://www.databricks.com/sites/default/files/2025-02/primary-icon-orange-lakeflow-pipelines.svg" alt="" width="40" class="chapter-icon"> 4. 데이터 엔지니어링 (Lakeflow)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

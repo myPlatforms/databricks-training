@@ -1,4 +1,4 @@
-# 07. AI/BI (대시보드·Genie)
+# <img src="https://www.databricks.com/sites/default/files/2025-08/primary-icon-orange-predictive-analytics.svg" alt="" width="40" class="chapter-icon"> 07. AI/BI (대시보드·Genie)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

@@ -1,4 +1,4 @@
-# 3. 컴퓨트 (서버리스·클래식·SQL 웨어하우스)
+# <img src="https://www.databricks.com/sites/default/files/2024-01/primary-icon-orange-runtime.svg" alt="" width="40" class="chapter-icon"> 3. 컴퓨트 (서버리스·클래식·SQL 웨어하우스)
 
 > 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
 

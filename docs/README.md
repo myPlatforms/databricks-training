@@ -17,18 +17,18 @@ Databricks Data + AI Platform을 기능별로 정리한 한국어 교육 자료�
 
 | 장 | 주제 | 수준 | 상태 |
 |---|---|---|---|
-| 01 | [플랫폼 개요](01-platform-overview/README.md) | 100~200 | 공개 |
-| 02 | [레이크하우스 스토리지 (Delta Lake·Iceberg)](02-lakehouse-storage/README.md) | 100~300 | 공개 |
-| 03 | [컴퓨트 (서버리스·클래식·SQL 웨어하우스)](03-compute/README.md) | 100~300 | 공개 |
-| 04 | [데이터 엔지니어링 (Lakeflow)](04-data-engineering/README.md) | 100~300 | 공개 |
-| 05 | [데이터 웨어하우징 (Databricks SQL)](05-data-warehousing/README.md) | 100~300 | 공개 |
-| 06 | [Unity Catalog 거버넌스](06-unity-catalog/README.md) | 100~300 | 공개 |
-| 07 | [AI/BI (대시보드·Genie)](07-ai-bi/README.md) | 100~300 | 공개 |
-| 08 | [머신러닝 (MLflow·Model Serving)](08-machine-learning/README.md) | 100~300 | 공개 |
-| 09 | [AI 에이전트](09-ai-agents/README.md) | 100~300 | 공개 |
-| 10 | [Lakebase](10-lakebase/README.md) | 100~300 | 공개 |
-| 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code, Databricks CLI, Declarative Automation Bundles, SDK·REST API, Databricks Apps, Git·CI/CD | 100~300 | 공개 |
-| 12 | [보안·운영 (시스템 테이블·비용)](12-security-operations/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2025-05/primary-icon-orange-lakehouse.svg" alt="" width="28" class="chapter-icon"> 01 | [플랫폼 개요](01-platform-overview/README.md) | 100~200 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2024-06/primary-icon-orange-delta-lakehouse.svg" alt="" width="28" class="chapter-icon"> 02 | [레이크하우스 스토리지 (Delta Lake·Iceberg)](02-lakehouse-storage/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2024-01/primary-icon-orange-runtime.svg" alt="" width="28" class="chapter-icon"> 03 | [컴퓨트 (서버리스·클래식·SQL 웨어하우스)](03-compute/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2025-02/primary-icon-orange-lakeflow-pipelines.svg" alt="" width="28" class="chapter-icon"> 04 | [데이터 엔지니어링 (Lakeflow)](04-data-engineering/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2026-03/primary-icon-orange-data-warehouse.svg" alt="" width="28" class="chapter-icon"> 05 | [데이터 웨어하우징 (Databricks SQL)](05-data-warehousing/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2024-06/primary-icon-orange-unity-catalog.svg" alt="" width="28" class="chapter-icon"> 06 | [Unity Catalog 거버넌스](06-unity-catalog/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2025-08/primary-icon-orange-predictive-analytics.svg" alt="" width="28" class="chapter-icon"> 07 | [AI/BI (대시보드·Genie)](07-ai-bi/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2024-02/primary-icon-orange-machine-learning.svg" alt="" width="28" class="chapter-icon"> 08 | [머신러닝 (MLflow·Model Serving)](08-machine-learning/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2024-09/primary-icon-orange-ai.svg" alt="" width="28" class="chapter-icon"> 09 | [AI 에이전트](09-ai-agents/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2023-07/primary-icon-orange-unified.svg" alt="" width="28" class="chapter-icon"> 10 | [Lakebase](10-lakebase/README.md) | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2025-08/primary-icon-orange-built-in-functions.svg" alt="" width="28" class="chapter-icon"> 11 | [개발자 도구](11-developer-tools/README.md) — Genie Code, Databricks CLI, Declarative Automation Bundles, SDK·REST API, Databricks Apps, Git·CI/CD | 100~300 | 공개 |
+| <img src="https://www.databricks.com/sites/default/files/2024-07/primary-icon-orange-cloud-security.svg" alt="" width="28" class="chapter-icon"> 12 | [보안·운영 (시스템 테이블·비용)](12-security-operations/README.md) | 100~300 | 공개 |
 
 ## 수준 안내
 
