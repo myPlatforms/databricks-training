@@ -1,6 +1,6 @@
 # 트레이싱·평가·피드백
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-01 · 근거: 공식 문서 · 수준: 200
 
 ## 왜 필요한가
 
@@ -60,6 +60,10 @@ mlflow.set_experiment("/Shared/my-first-trace")
 트레이스는 MLflow 실험(Experiment)에 연결되어 저장됩니다. UI에서는 **Experiments** 에서 실험을 찾고 **Traces** 탭을 엽니다.
 
 문서는 저장소 옵션으로 Unity Catalog를 설명합니다. 트레이스를 Unity Catalog의 Delta 테이블로 저장하며, 스키마와 테이블 단위의 접근 제어가 적용되고 SQL로 직접 조회할 수 있다고 적혀 있습니다. 문서는 이것이 기본값인지는 명시하지 않습니다. Unity Catalog 저장소에는 실험당 제한이 없다고 설명합니다.
+
+**Managed warehouse for MLflow** (Beta)를 쓰면 Unity Catalog에 저장된 트레이스를 SQL 웨어하우스를 고르지 않고 MLflow UI에서 볼 수 있습니다. 워크스페이스가 지원하면 MLflow가 워크스페이스에 만드는 SQL 웨어하우스에서, 그렇지 않으면 서버리스 컴퓨트에서 트레이스 쿼리를 실행합니다. 워크스페이스 관리자가 Previews 페이지에서 활성화합니다.
+
+> **참고** 이 기능은 UI에서 트레이스를 조회하는 경우에 관한 것입니다. 프로덕션 모니터링에 필요한 SQL 웨어하우스 ID 설정(6절)이 이 기능으로 대체되는지는 원문에 명시가 없습니다.
 
 Agent Bricks CLI로 만든 프로젝트는 `agentbricks tracing bind --experiment-id <experiment-id>` 명령으로 트레이싱 실험을 연결합니다 ([Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md)).
 
@@ -160,3 +164,4 @@ set_databricks_monitoring_sql_warehouse_id(
 - [Collect feedback and build datasets](https://docs.databricks.com/aws/en/mlflow3/genai/human-feedback/)
 - [Evaluate and improve](https://docs.databricks.com/aws/en/mlflow3/genai/eval-monitor/)
 - [Set up production monitoring](https://docs.databricks.com/aws/en/mlflow3/genai/eval-monitor/production-monitoring)
+- [Databricks release notes, November 2026 — Managed warehouse for MLflow (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#managed-warehouse-for-mlflow-beta)
