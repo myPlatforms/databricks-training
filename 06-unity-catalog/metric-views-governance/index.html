@@ -5527,7 +5527,7 @@
 
 <h1 id="메트릭-뷰의-거버넌스">메트릭 뷰의 거버넌스<a class="headerlink" href="#메트릭-뷰의-거버넌스" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 200</p>
 <p><strong>참고</strong> 이 페이지는 메트릭 뷰의 <strong>정의 방식과 거버넌스 측면</strong> 만 다룹니다. 대시보드, Genie 공간, 에이전트에서 메트릭 뷰를 쓰는 방법은 07장 AI/BI 범위입니다.</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
@@ -5640,6 +5640,11 @@
 <td>숫자 인덱스 열 기반 윈도 측정값</td>
 <td>숫자 타입 인덱스 열 위의 윈도 측정값</td>
 <td>릴리즈 노트에 상태 라벨 없음 (2026-09-14)</td>
+</tr>
+<tr>
+<td>메트릭 뷰 간 관계(Relationships)</td>
+<td><code>ALTER VIEW ... ADD CONSTRAINT ... RELATIONSHIP</code>으로 원천 메트릭 뷰가 대상 메트릭 뷰에 조인되는 방식(카디널리티와 조인 조건)을 기록해, AI 어시스턴트와 BI 도구가 올바른 조인 경로를 고르게 합니다. Databricks Runtime 19 이상 또는 SQL 웨어하우스가 필요합니다.</td>
+<td>Beta (2026-10-30 릴리즈 노트)</td>
 </tr>
 </tbody>
 </table>

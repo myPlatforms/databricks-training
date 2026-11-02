@@ -5393,7 +5393,7 @@
 
 <h1 id="lakeflow-connect">Lakeflow Connect<a class="headerlink" href="#lakeflow-connect" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100</p>
+<p>기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 100</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
 <p>Lakeflow Connect는 SaaS 애플리케이션, 데이터베이스, 파일 서비스, 메시지 버스에서 데이터를 수집하는 <strong>관리형 커넥터(managed connectors)</strong> 모음입니다. 공식 문서는 Lakeflow Connect가 "local files, popular enterprise applications, databases, cloud storage, message buses, and more"에서 데이터를 수집하는 커넥터를 제공한다고 설명합니다. 수집 결과는 스트리밍 테이블(Delta 테이블에 증분 처리 기능이 추가된 형태)에 저장됩니다.</p>
@@ -5502,6 +5502,18 @@
 <td>GA</td>
 <td>08-04</td>
 <td>두 변형 모두 GA</td>
+</tr>
+<tr>
+<td>Microsoft Graph Logs</td>
+<td>Beta</td>
+<td>10-30</td>
+<td>Microsoft Defender XDR, Microsoft Sentinel 등 Microsoft 보안 제품의 보안 알림 수집. Microsoft Entra ID 애플리케이션 기반 OAuth M2M 인증, 증분 수집 지원</td>
+</tr>
+<tr>
+<td>Xero</td>
+<td>Beta</td>
+<td>10-29</td>
+<td>송장, 결제, 연락처 등 회계 데이터 수집. OAuth 사용자 인증, 관리자가 Previews 페이지에서 활성화해야 함</td>
 </tr>
 <tr>
 <td>QuickBooks</td>
@@ -5654,7 +5666,7 @@
 <h2 id="주의사항">주의사항<a class="headerlink" href="#주의사항" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>상태 라벨을 확인하십시오</strong>: Beta 커넥터는 SLA와 안정적인 인터페이스가 보장되지 않습니다. 릴리즈 상태 정의는 release-types 페이지에 있습니다.</li>
-<li><strong>Beta 활성화</strong>: Beta 커넥터는 관리자가 Previews 페이지에서 활성화해야 하는 경우가 있습니다 (Box Audit Logs, Google Analytics Aggregated 문서 명시).</li>
+<li><strong>Beta 활성화</strong>: Beta 커넥터는 관리자가 Previews 페이지에서 활성화해야 하는 경우가 있습니다 (Box Audit Logs, Google Analytics Aggregated 문서, Xero 릴리즈 노트 명시).</li>
 <li><strong>권한 분리</strong>: 연결은 관리자가 만들고 <code>USE CONNECTION</code> 권한으로 공유하는 방식이 권장됩니다. 자격 증명을 파이프라인 작성자에게 노출하지 않도록 설계합니다.</li>
 <li><strong>과금 추적</strong>: 수집 비용은 <code>system.billing.usage</code>에서 <code>LAKEFLOW_CONNECT</code>로 따로 집계하십시오. 유지 관리 요금이 있어 처리 시간만으로는 전체 비용이 맞지 않을 수 있습니다.</li>
 <li><strong>원천 준비 항목</strong>: 원천 측 관리자 권한이 필요한 커넥터가 많습니다. 설정 전에 커넥터별 <code>-source-setup</code> 페이지의 요구 사항을 먼저 확인하십시오.</li>
