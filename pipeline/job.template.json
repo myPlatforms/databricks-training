@@ -42,7 +42,7 @@
     },
     {
       "name": "review_cap",
-      "default": "5"
+      "default": "15"
     },
     {
       "name": "rules_path",
