@@ -1,6 +1,6 @@
 # Lakeflow Connect
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 100
 
 ## 한눈에 보기
 
@@ -54,6 +54,8 @@ SAP Business Data Cloud 공유는 Lakeflow Connect가 아니라 OpenSharing 기�
 | NetSuite | GA | 08-04 | |
 | Google Drive (managed, standard) | GA | 08-04 | 두 변형 모두 GA |
 | SharePoint (managed, standard) | GA | 08-04 | 두 변형 모두 GA |
+| Microsoft Graph Logs | Beta | 10-30 | Microsoft Defender XDR, Microsoft Sentinel 등 Microsoft 보안 제품의 보안 알림 수집. Microsoft Entra ID 애플리케이션 기반 OAuth M2M 인증, 증분 수집 지원 |
+| Xero | Beta | 10-29 | 송장, 결제, 연락처 등 회계 데이터 수집. OAuth 사용자 인증, 관리자가 Previews 페이지에서 활성화해야 함 |
 | QuickBooks | Beta | 10-26 | |
 | Google Analytics Aggregated | Beta | 10-23 | 커넥터 페이지에서도 "Beta" 확인 |
 | Box Audit Logs | Beta | 10-23 | 커넥터 페이지에서도 "Beta" 확인, 관리자가 Previews 페이지에서 활성화해야 함 |
@@ -122,7 +124,7 @@ ORDER BY usage_date DESC;
 ## 주의사항
 
 - **상태 라벨을 확인하십시오**: Beta 커넥터는 SLA와 안정적인 인터페이스가 보장되지 않습니다. 릴리즈 상태 정의는 release-types 페이지에 있습니다.
-- **Beta 활성화**: Beta 커넥터는 관리자가 Previews 페이지에서 활성화해야 하는 경우가 있습니다 (Box Audit Logs, Google Analytics Aggregated 문서 명시).
+- **Beta 활성화**: Beta 커넥터는 관리자가 Previews 페이지에서 활성화해야 하는 경우가 있습니다 (Box Audit Logs, Google Analytics Aggregated 문서, Xero 릴리즈 노트 명시).
 - **권한 분리**: 연결은 관리자가 만들고 `USE CONNECTION` 권한으로 공유하는 방식이 권장됩니다. 자격 증명을 파이프라인 작성자에게 노출하지 않도록 설계합니다.
 - **과금 추적**: 수집 비용은 `system.billing.usage`에서 `LAKEFLOW_CONNECT`로 따로 집계하십시오. 유지 관리 요금이 있어 처리 시간만으로는 전체 비용이 맞지 않을 수 있습니다.
 - **원천 준비 항목**: 원천 측 관리자 권한이 필요한 커넥터가 많습니다. 설정 전에 커넥터별 `-source-setup` 페이지의 요구 사항을 먼저 확인하십시오.

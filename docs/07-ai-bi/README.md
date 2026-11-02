@@ -1,6 +1,6 @@
 # <img src="https://www.databricks.com/sites/default/files/2025-08/primary-icon-orange-predictive-analytics.svg" alt="" width="40" class="chapter-icon"> 07. AI/BI (대시보드·Genie)
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
+> 기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 100~300
 
 AI/BI는 Databricks의 분석·소비 계층입니다. 정해진 질문에 답하는 **AI/BI 대시보드**(AI/BI dashboards)와 자연어로 데이터를 묻는 **Genie Agents** 가 같은 Unity Catalog 데이터 위에서 동작합니다. 여기에 비즈니스 사용자용 진입점인 **Genie One** 이 더해집니다. 이 장은 이 제품들을 어떻게 구성하고, 어떻게 게시하고, 어떻게 신뢰도를 높이고, 메트릭 뷰와 외부 BI 도구를 어떻게 함께 쓰는지를 다룹니다.
 
@@ -39,7 +39,7 @@ AI/BI는 Databricks의 분석·소비 계층입니다. 정해진 질문에 답�
 
 ## 최근 변경 (2026년 8~10월)
 
-공식 릴리즈 노트(AI/BI, 2026)에서 이 장과 관련 있는 항목만 추렸습니다. 상태 라벨은 릴리즈 노트에 적힌 그대로이며, 라벨이 없으면 "라벨 없음"으로 적었습니다.
+공식 릴리즈 노트(2026)에서 이 장과 관련 있는 항목만 추렸습니다. 릴리즈 노트 목록에서 이 영역의 제목은 "AI/BI and Genie One"이고, 제품 문서의 이름은 그대로 "Databricks AI/BI"입니다. 상태 라벨은 릴리즈 노트에 적힌 그대로이며, 라벨이 없으면 "라벨 없음"으로 적었습니다.
 
 | 날짜 | 항목 | 상태 | 이 장의 위치 |
 |---|---|---|---|
@@ -84,3 +84,9 @@ AI/BI는 Databricks의 분석·소비 계층입니다. 정해진 질문에 답�
 각 기능 페이지는 왜 필요한지, 어떻게 동작하는지, 어떻게 쓰는지, 트레이드오프, 주의사항 순서로 씁니다. 기능마다 상태 라벨(GA, Public Preview, Beta)을 표기합니다. 공식 문서에 라벨이 없으면 "문서에 상태 라벨 없음"이라고 적고, 라벨이 없다고 GA로 추정하지 않습니다.
 
 > **주의** AI/BI는 릴리즈가 매우 잦은 영역입니다. 2026년 8~10월 사이에도 라벨 변경, 한도 상향, 명칭 변경이 여러 건 있었습니다. 이 장은 2026-10-28 기준 공식 문서를 확인한 결과이며, 실제 설계 전에 각 페이지의 참고 문서 링크에서 최신 원문을 확인하십시오.
+
+## 참고 문서
+
+- [Databricks AI/BI](https://docs.databricks.com/aws/en/ai-bi/)
+- [AI/BI and Genie One 릴리즈 노트](https://docs.databricks.com/aws/en/ai-bi/release-notes/)
+- [Databricks 릴리즈 노트 목록](https://docs.databricks.com/aws/en/release-notes/)
