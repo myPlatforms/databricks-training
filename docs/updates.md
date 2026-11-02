@@ -4,6 +4,7 @@
 
 | 날짜 | 페이지 | 변경 | 근거 |
 |---|---|---|---|
+| 2026-11-02 | 07-ai-bi/README.md | 릴리즈 노트 영역 제목이 "AI/BI and Genie One"으로 바뀐 것을 반영했습니다(제품 문서 이름은 "Databricks AI/BI" 그대로). | [원문](https://docs.databricks.com/aws/en/release-notes/) [원문](https://docs.databricks.com/aws/en/ai-bi/) |
 | 2026-11-02 | 04-data-engineering/lakeflow-connect.md | 커넥터 상태 표에 Microsoft Graph Logs 커넥터(Beta, 2026-10-30)와 Xero 커넥터(Beta, 2026-10-29)를 추가했습니다(수집 대상, 인증 방식, 증분 수집, Previews 활성화). | [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/october) [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/october#microsoft-graph-logs-connector-is-available-in-beta) [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/october#xero-connector-is-available-in-beta) |
 | 2026-11-02 | 06-unity-catalog/metric-views-governance.md | 메트릭 뷰의 부가 기능 표에 메트릭 뷰 간 관계(Beta, 2026-10-30)를 추가했습니다(`ALTER VIEW ... ADD CONSTRAINT ... RELATIONSHIP`, 카디널리티와 조인 조건, Databricks Runtime 19 이상 또는 SQL 웨어하우스). | [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/october) [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/october#relationships-between-metric-views-beta) |
 | 2026-11-02 | 09-ai-agents/tracing-evaluation-feedback.md | 트레이스 저장 위치 절에 Managed warehouse for MLflow(Beta, 2026-11-02)를 추가했습니다(SQL 웨어하우스 선택 없이 MLflow UI에서 UC 트레이스 조회, 실행 컴퓨트, Previews 활성화). | [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/november#managed-warehouse-for-mlflow-beta) |
