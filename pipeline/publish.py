@@ -21,6 +21,7 @@ import json
 import re
 import traceback
 from datetime import UTC, datetime
+from zoneinfo import ZoneInfo
 
 import httpx
 from pyspark.sql import SparkSession
@@ -31,6 +32,9 @@ SENSITIVE_RE = re.compile(
     r"|[\w.+-]+@(?!example\.com)[\w-]+\.[\w.]+|\b\d{13,}\b"
 )
 JOB_RUN_NOTE_RE = re.compile(r"\s*\(job run [^)]*\)")
+BASIS_DATE_RE = re.compile(r"(기준일:\s*)\d{4}-\d{2}-\d{2}")
+SITE_TZ = ZoneInfo("Asia/Seoul")  # the site is written for Korean readers; dates follow KST
+ROW_MAX = 200
 
 
 def gh(token: str) -> httpx.Client:
@@ -69,8 +73,11 @@ def file_on_main(c: httpx.Client, repo: str, path: str) -> str | None:
 def updates_rows(proposals: list, today: str) -> list[str]:
     rows = []
     for p in proposals:
-        first = re.split(r"(?<=[.다])\s", JOB_RUN_NOTE_RE.sub("", p.rationale or "").strip())[0]
-        first = first.replace("|", "\\|")[:200]
+        # Korean sentences end with "다." — splitting on any "." cut rows at "..." or "2.".
+        first = re.split(r"(?<=다\.)\s+", JOB_RUN_NOTE_RE.sub("", p.rationale or "").strip())[0]
+        if len(first) > ROW_MAX:
+            first = first[:ROW_MAX].rsplit(" ", 1)[0] + "…"
+        first = first.replace("|", "\\|")
         src = " ".join(f"[원문]({u})" for u in (p.source_urls or [])[:3])
         rows.append(f"| {today} | {p.page_path.removeprefix('docs/')} | {first} | {src} |")
     return rows
@@ -150,12 +157,16 @@ def publish(spark: SparkSession, fq: str, repo: str, token: str, run_id: str) ->
             ok.append(p)
 
         if ok:
-            today = datetime.now(UTC).strftime("%Y-%m-%d")
+            today = datetime.now(SITE_TZ).strftime("%Y-%m-%d")
             branch = f"refresh/{today}-{run_id or datetime.now(UTC).strftime('%H%M%S')}"
             base_sha = _json(c.get(f"/repos/{repo}/git/ref/heads/main"))["object"]["sha"]
             base_tree = _json(c.get(f"/repos/{repo}/git/commits/{base_sha}"))["tree"]["sha"]
             updates_md = file_on_main(c, repo, "docs/updates.md") or "# 변경 이력\n"
-            files = {f"docs/{p.page_path}": p.proposed_markdown for p in ok}
+            # Basis date = the day this run checked the sources (KST), whatever date the reviewer wrote.
+            files = {
+                f"docs/{p.page_path}": BASIS_DATE_RE.sub(rf"\g<1>{today}", p.proposed_markdown, count=1)
+                for p in ok
+            }
             files["docs/updates.md"] = add_update_rows(updates_md, updates_rows(ok, today))
             tree = [
                 {"path": path, "mode": "100644", "type": "blob", "content": body}
