@@ -1,6 +1,6 @@
 # 클래식 컴퓨트
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
 
 클래식 컴퓨트(Classic compute)는 올-퍼포즈(All-purpose), Job, Lakeflow 파이프라인용 자원으로, 사용자가 직접 만들고 설정하고 관리합니다. 자원은 고객 클라우드 계정에서 실행됩니다. 이 페이지는 클래식 컴퓨트를 설정할 때 가장 먼저 정하는 항목인 액세스 모드(Access mode), Databricks Runtime(DBR) 버전, 오토스케일링(Autoscaling), 자동 종료(Auto termination)를 다룹니다. 풀과 정책은 [인스턴스 풀과 컴퓨트 정책](pools-and-policies.md) 페이지에서 다룹니다.
 
@@ -42,7 +42,10 @@ Standard 모드의 제약은 Standard 제약 페이지에 정리되어 있으며
 - Hive UDF 없음
 - 소켓 스트리밍 소스 없음
 - IMDS 접근 없음
+- 워크스페이스 VPC CIDR 범위 안의 IP 주소로 나가는 아웃바운드 연결은 포트 53, 80, 443, 5432만 허용
 - DBR 19 이상에서 일부 Spark 설정 속성 제한
+
+> **주의** 문서는 위 아웃바운드 포트 제한이 Databricks가 관리하는 서비스뿐 아니라 워크스페이스 VPC CIDR 범위 안의 모든 대상에 적용된다고 설명합니다. 예를 들어 인터페이스가 워크스페이스 VPC 안의 주소로 확인되는 Private Link 또는 VPC 엔드포인트에도 적용됩니다. 다른 포트로 이런 엔드포인트에 연결해야 하면 워크스페이스 CIDR 범위 밖의 VPC에 엔드포인트를 만들고 VPC 피어링으로 연결하라고 문서가 안내합니다.
 
 R은 지원하지 않습니다. 권한 상승이 필요한 머신 접근, RDD API, 분산 머신러닝, GPU, R이 필요하면 Dedicated를 쓰라고 문서가 안내합니다.
 
@@ -68,7 +71,11 @@ Auto는 기본값입니다. 실제로는 다음 조건에서 Dedicated가 선택
 - GPU 인스턴스 유형을 고른 경우
 - Databricks Runtime이 14.3 미만인 경우
 
-그 밖의 경우에는 Standard가 선택됩니다. 액세스 모드를 명시적으로 정하지 않으면 워크로드가 의도와 다른 모드에서 돌 수 있으므로, 운영 설정에서는 Auto보다 명시적인 선택을 권합니다.
+그 밖의 경우에는 Standard가 선택됩니다.
+
+> **참고** 릴리즈 노트에 따르면 UI에서 새 Job 컴퓨트(Jobs compute)를 만들 때 액세스 모드 기본값이 Dedicated에서 Auto로 바뀌었습니다. 다른 액세스 모드를 강제하는 컴퓨트 정책이 있으면 정책이 우선하며, 기존 Job은 바뀌지 않습니다. 규정 준수 보안 프로필(Compliance security profile)이 켜진 워크스페이스에서는 이 변경이 2026년 12월에 적용됩니다.
+
+액세스 모드를 명시적으로 정하지 않으면 워크로드가 의도와 다른 모드에서 돌 수 있으므로, 운영 설정에서는 Auto보다 명시적인 선택을 권합니다.
 
 ### 2.2 의존성 모드 (Dependency mode, Beta)
 
@@ -83,13 +90,12 @@ Auto는 기본값입니다. 실제로는 다음 조건에서 Dedicated가 선택
 
 ### 2.3 Databricks Runtime(DBR) 버전
 
-공식 Runtime 릴리즈 노트 페이지 기준으로 2026-10-28 현재 다음 버전이 보입니다.
+공식 Runtime 릴리즈 노트 페이지 기준으로 2026-11-08 현재 다음 버전이 보입니다.
 
 | Runtime | Apache Spark | 출시일 | 지원 종료 |
 |---|---|---|---|
 | 19 | 4.2.0 | 2026-06-15 | LTS 전환 시 결정 |
 | 18 LTS | 4.1.0 | 2026-06-10 | 2029-06-10 |
-| 18.2 | 4.1.0 | 2026-05-05 | 2026-11-05 |
 | 17.3 LTS | 4.0.0 | 2025-10-22 | 2028-10-22 |
 | 16.4 LTS | 3.5.2 | 2025-05-09 | 2028-05-09 |
 | 15.4 LTS | 3.5.0 | 2024-08-19 | 2027-08-19 |
@@ -193,3 +199,5 @@ databricks clusters list --profile <PROFILE_NAME>
 - [Access mode 제약 (AWS)](https://docs.databricks.com/aws/en/compute/access-mode-limitations)
 - [Databricks Runtime 릴리즈 노트 (AWS)](https://docs.databricks.com/aws/en/release-notes/runtime/)
 - [Clusters API 레퍼런스](https://docs.databricks.com/api/workspace/clusters/create)
+- [2026년 11월 릴리즈 노트: New jobs compute defaults to Auto access mode (AWS)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#new-jobs-compute-defaults-to-auto-access-mode)
+- [What's coming: Compliance security profile 워크스페이스의 Auto access mode 기본값 (AWS)](https://docs.databricks.com/aws/en/release-notes/whats-coming#new-jobs-compute-will-soon-default-to-auto-access-mode-for-workspaces-with-the-compliance-security-profile-enabled)

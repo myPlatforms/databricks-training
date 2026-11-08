@@ -1,6 +1,6 @@
 # Lakeflow Jobs 태스크와 트리거
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -40,6 +40,7 @@ Lakeflow Jobs는 태스크 의존성 그래프, 실행 이력, 재시도, 알림
 | Spark Submit | |
 | Run Job | 다른 잡을 태스크로 실행 |
 | Genie Code | GA (2026-10-21 릴리즈 노트). 상세는 아래 참고 |
+| AI Function tasks | **Beta**. 볼륨의 파일이나 테이블의 행에 `ai_parse_document`, `ai_extract`, `ai_classify`를 SQL 없이 실행. 실행마다 이전 실행 이후 새로 생기거나 바뀐 입력만 처리하고, 결과를 이후 태스크가 읽을 수 있는 Unity Catalog 테이블에 씀 |
 | If/else | 조건 분기 태스크. [파라미터 페이지](jobs-parameters-and-control-flow.md) 참고 |
 | For each | 반복 태스크. [파라미터 페이지](jobs-parameters-and-control-flow.md) 참고 |
 
@@ -54,9 +55,12 @@ Lakeflow Jobs는 태스크 의존성 그래프, 실행 이력, 재시도, 알림
 | File arrival | 감시 중인 Unity Catalog 스토리지 위치에 새 파일이 도착하면 실행 | 문서에 상태 라벨 없음 |
 | Table update | 원천 테이블이 업데이트되면 실행 | 문서에 상태 라벨 없음. 릴리즈 노트: OpenSharing 객체와 시스템 테이블 지원은 2026-09-30 GA |
 | Model update | Unity Catalog 모델 생성, 모델 버전 준비, 모델 별칭 설정 시 실행 | **Beta** |
+| Job completion | 하나 이상의 업스트림 잡이 일치하는 결과로 완료되면 실행. 같은 Unity Catalog 메타스토어에 연결된 워크스페이스 간 의존성도 가능하며, 의존성은 다운스트림 잡에 설정 | **Beta** |
 | Continuous | 실행이 끝나면(성공 또는 실패) 다음 실행을 바로 시작해 항상 실행 상태 유지 | 문서에 상태 라벨 없음 |
 
 문서는 **여러 트리거(Multiple triggers)** 기능을 **Beta** 로 표기합니다. 릴리즈 노트는 2026-10-05에 "Use multiple triggers for Lakeflow Jobs (Beta)"를 발표했습니다. 잡 하나에 최대 5개 트리거를 두고 각각 독립적으로 일시 정지할 수 있습니다.
+
+문서는 Scheduled, Table update, File arrival, Model update, Job completion 트리거에 **SQL 조건(SQL condition)** 을 추가해 데이터가 준비됐을 때만 실행을 시작하게 하는 기능을 **Beta** 로 표기합니다. 트리거의 SQL 조건 확인이 오류로 실패하면 잡의 Failure 알림이 그 오류를 받습니다.
 
 ### 트리거 제한
 
@@ -65,7 +69,7 @@ Lakeflow Jobs는 태스크 의존성 그래프, 실행 이력, 재시도, 알림
 - 여러 트리거 Beta 기간 동안 잡 하나당 최대 **5개** 트리거.
 - Continuous 트리거는 다른 트리거와 **함께 쓸 수 없습니다**.
 - 워크스페이스 전체에서 활성 트리거는 모든 잡과 트리거 종류를 합쳐 최대 **12,000개**. 일시 정지된 트리거는 이 한도에 포함되지 않습니다.
-- 기본적으로 잡 하나의 실행은 한 번에 하나만 활성화됩니다. 최대 동시 실행(max concurrency)을 넘는 실행은 건너뜁니다.
+- 기본적으로 잡 하나의 실행은 한 번에 하나만 활성화됩니다. 대부분의 트리거 종류에서 최대 동시 실행(max concurrency)을 넘는 실행은 건너뜁니다. Job completion 트리거는 다른 실행을 시작할 수 있을 때까지 준비된 완료를 보존합니다.
 
 ## 어떻게 쓰는가
 
@@ -125,6 +129,7 @@ UI 경로는 다음과 같습니다. 워크스페이스 사이드바에서 **Job
 | 매일·매시 정해진 시각에 배치 | Scheduled |
 | 클라우드 스토리지에 파일이 쌓일 때마다 처리 | File arrival (또는 Auto Loader 파이프라인) |
 | 원천 테이블 변경에 맞춰 후속 처리 | Table update |
+| 업스트림 잡이 끝난 뒤 후속 처리 (같은 메타스토어의 다른 워크스페이스 포함) | Job completion (Beta) |
 | 항상 실행 상태가 필요하고 실행이 끝나면 바로 재시작 | Continuous (다른 트리거와 함께 쓸 수 없음) |
 | 밀리초 단위 응답 | Lakeflow Jobs 스케줄러는 부적합. 실시간 스트리밍을 검토 |
 
@@ -132,7 +137,7 @@ UI 경로는 다음과 같습니다. 워크스페이스 사이드바에서 **Job
 
 - **파일 덮어쓰기**: 같은 이름으로 덮어쓴 파일은 파일 도착 트리거를 발생시키지 않습니다. 새 파일 이름 규칙을 쓰거나, 처리 방식을 맞추십시오.
 - **스케줄 지연**: 정확한 초 단위 시작이 필요하면 스케줄러를 쓰지 마십시오.
-- **동시 실행**: 기본 설정에서 실행이 겹치면 새 실행은 건너뜁니다. 겹침을 허용하려면 최대 동시 실행 값을 바꿔야 하며, 그 전에 태스크가 동시 실행을 견딜 수 있는지 확인하십시오.
+- **동시 실행**: 기본 설정에서 실행이 겹치면 대부분의 트리거에서 새 실행은 건너뜁니다(Job completion 트리거는 준비된 완료를 보존). 겹침을 허용하려면 최대 동시 실행 값을 바꿔야 하며, 그 전에 태스크가 동시 실행을 견딜 수 있는지 확인하십시오.
 - **Continuous와 재시도**: Continuous 잡은 재시도가 지수 백오프로 자동 적용된다고 문서가 설명합니다. 자세한 내용은 [재시도·알림·Repair run](jobs-retries-notifications-repair.md) 참고.
 - **트리거 한도**: 활성 트리거 12,000개 한도는 워크스페이스 전체 기준입니다. 많은 잡을 같은 방식으로 만들면 한도에 가까워질 수 있습니다.
 
@@ -147,3 +152,6 @@ UI 경로는 다음과 같습니다. 워크스페이스 사이드바에서 **Job
 - [Genie Code 태스크 (이 저장소)](../11-developer-tools/genie-code/lakeflow-jobs-task.md)
 - [Release notes, 2026년 9월](https://docs.databricks.com/aws/en/release-notes/product/2026/september)
 - [Release notes, 2026년 10월](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Release notes, 2026년 11월: AI Function tasks for jobs (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-function-tasks-for-jobs-beta)
+- [Release notes, 2026년 11월: Trigger Lakeflow Jobs when upstream jobs complete (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#trigger-lakeflow-jobs-when-upstream-jobs-complete-beta)
+- [Job notifications](https://docs.databricks.com/aws/en/jobs/notifications)

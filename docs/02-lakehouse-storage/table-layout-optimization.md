@@ -1,6 +1,6 @@
 # 테이블 레이아웃 최적화
 
-> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
 
 레이크하우스 테이블은 쓰기가 반복되면서 작은 파일이 많이 쌓이고, 데이터가 쿼리 조건과 무관하게 흩어집니다. 그러면 같은 쿼리도 읽는 파일 수가 늘어나 느려집니다. 이 페이지는 파일 레이아웃을 정리하는 네 가지 도구를 다룹니다. 데이터를 쿼리 조건에 맞춰 묶는 **리퀴드 클러스터링(Liquid clustering)**, 최적화 작업을 Databricks가 대신 실행하는 **예측 최적화(Predictive optimization)**, 파일을 실제로 다시 쓰는 **`OPTIMIZE`**, 오래된 파일을 지우는 **`VACUUM`** 입니다.
 
@@ -41,6 +41,8 @@
 | `OPTIMIZE table_name FULL` | 기존 데이터 전체를 다시 클러스터링 | 문서 기준 Databricks Runtime 16.4 LTS 이상 |
 | `OPTIMIZE table_name FULL WHERE <predicate>` | 조건에 맞는 일부만 다시 클러스터링 | Databricks Runtime 18.1 이상 |
 
+리퀴드 클러스터링을 쓰는 관리형 Apache Iceberg 테이블도 `OPTIMIZE <table_name> FULL`과 `OPTIMIZE <table_name> FULL WHERE <predicate>`를 지원합니다. 세부 내용은 [Apache Iceberg 지원](iceberg-support.md)을 참고하십시오.
+
 > **주의** `OPTIMIZE` 페이지는 `FULL`을 Databricks Runtime 16.0 이상으로, 리퀴드 클러스터링 페이지는 16.4 LTS 이상으로 적고 있습니다. 두 페이지의 값이 다르므로 실제 적용 전 원문을 다시 확인하십시오. 이 장에서는 더 구체적인 리퀴드 클러스터링 페이지 값을 표에 적었습니다.
 
 공식 문서가 설명하는 `OPTIMIZE`의 공통 특징은 다음과 같습니다.
@@ -58,7 +60,7 @@
 |---|---|
 | 대상 | Unity Catalog 관리형 테이블만 |
 | 요구 사항 | Premium 이상 플랜, 지원 리전, SQL 웨어하우스 또는 Databricks Runtime 12.2 LTS 이상 |
-| 기본 설정 | 2024-11-11 이후 생성된 계정은 기본 활성화. 이전 계정은 순차 적용 중이며 문서는 2026년 8월까지 완료 예정이라고 설명. 기준일(2026-10-28) 이후 원문 상태를 다시 확인할 것 |
+| 기본 설정 | 기본 활성화. 계정에서 활성화되어 있는지는 문서의 "Verify whether predictive optimization is enabled" 절차로 확인 |
 | 상태 라벨 | 기능 페이지에 상태 라벨 없음 (문서 명시 없음) |
 | 실행 기록 | Catalog Explorer의 History 탭에 `Auto`(실행됨) 또는 `Not applied`(건너뜀, 사유 확인 가능)로 표시 |
 
@@ -83,6 +85,8 @@ CREATE TABLE main.sales.orders_clustered2
 CLUSTER BY (customer)
 AS SELECT * FROM main.sales.orders;
 ```
+
+> **참고** 관리형 Iceberg 테이블에서는 `PARTITIONED BY` 컬럼을 리퀴드 클러스터링의 클러스터링 키로 해석합니다. 관리형 Iceberg v2 테이블에서 `CLUSTER BY`를 쓰려면 삭제 벡터와 행 추적(row tracking)을 명시적으로 꺼야 하며, 두 기능을 모두 지원하는 관리형 Iceberg v3 테이블에는 이 조건이 적용되지 않습니다.
 
 같은 스키마로 빈 테이블을 만들 때는 `LIKE`를 씁니다.
 
@@ -199,3 +203,4 @@ VACUUM main.sales.orders;
 - [Predictive optimization for Unity Catalog managed tables](https://docs.databricks.com/aws/en/optimizations/predictive-optimization)
 - [Remove unused data files with vacuum](https://docs.databricks.com/aws/en/tables/operations/vacuum)
 - [Work with table history](https://docs.databricks.com/aws/en/tables/history)
+- [CREATE TABLE [USING]](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)

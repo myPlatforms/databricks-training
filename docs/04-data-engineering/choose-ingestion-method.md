@@ -1,6 +1,6 @@
 # 수집 방법 선택 기준
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 100
 
 ## 한눈에 보기
 
@@ -31,6 +31,8 @@
 | Google Pub/Sub | Structured Streaming with Pub/Sub source |
 | SaaS, 데이터베이스 등 | Lakeflow Connect 관리형 커넥터(managed connectors) |
 
+> **참고** 2026년 10월 릴리즈 노트는 네이티브 XML 파일 형식 지원을 GA로 발표했습니다. Auto Loader, `read_files`, `COPY INTO`로 XML 파일을 배치나 스트리밍으로 수집·조회·파싱할 수 있고, `from_xml`과 `schema_of_xml` SQL 함수를 쓸 수 있습니다.
+
 ### 파이프라인 계층의 권장
 
 파이프라인 계층에서는 공식 문서가 "Databricks recommends Lakeflow pipelines, built on Apache Spark™ Declarative Pipelines (SDP), for most ETL workloads"라고 권장합니다. 아래 표는 "Choose an ETL approach" 페이지의 시나리오별 권장을 정리한 것입니다.
@@ -60,6 +62,8 @@ Lakeflow Connect 수집 결과 테이블은 **스트리밍 테이블** 입니다
 
 문서 개요 페이지는 애플리케이션이 레코드를 스트리밍 테이블에 직접 쓰는 경로로 **Zerobus Ingest API**(Direct write)를 소개합니다. 릴리즈 노트에 따르면 "Zerobus Ingest into streaming tables"는 2026-08-26에 GA로 발표되었고, "Zerobus Ingest into default storage"는 2026-09-07에 Public Preview로 발표되었습니다. 스트리밍 테이블에 쓰는 방식은 관리형 Delta 테이블에 쓰는 방식과 같고, 같은 한도와 쿼터가 적용됩니다. 이 장의 세부 설정은 다루지 않습니다.
 
+> **참고** Databricks 블로그는 데이터베이스 CDC를 Kafka 없이 Zerobus Ingest로 보내는 경로로 오픈소스 Debezium Server의 Zerobus 싱크(Debezium Server 3.7 릴리스에 포함)를 소개합니다. 원천 네트워크에서는 아웃바운드 접근만 필요합니다. Zerobus Ingest는 추가 전용(append-only)이고 전달은 at-least-once이므로, 내려받은 변경 이벤트는 `idempotency_key`로 중복을 제거하고 원천 LSN 순서로 `AUTO CDC`를 적용해 현재 상태(Type-1) 테이블을 만드는 방식을 안내합니다.
+
 ### 대안: 복사하지 않는 경로
 
 수집 개요 문서는 수집이 원천 데이터를 복사해 중복 데이터를 만든다는 점을 밝히고, 복사가 필요 없는 경우의 도구를 함께 소개합니다.
@@ -68,6 +72,8 @@ Lakeflow Connect 수집 결과 테이블은 **스트리밍 테이블** 입니다
 |---|---|
 | Lakehouse Federation | 외부 데이터 소스를 옮기지 않고 질의 |
 | OpenSharing | 플랫폼·클라우드·리전을 넘어 데이터를 안전하게 공유 |
+
+> **참고** Databricks 블로그는 SFTP 파일이나 API 피드 대신 OpenSharing으로 공급자의 테이블을 복사 없이 읽는 패턴을 소개합니다. 공급자가 테이블을 `WITH HISTORY`로 공유하면, Databricks-to-Databricks 수신자는 공유 테이블을 Structured Streaming 소스로 읽어 체크포인트 이후 변경분만 가져올 수 있습니다. 업데이트와 삭제까지 전파해야 하면 공유 테이블의 변경 데이터 피드를 읽습니다.
 
 ## 어떻게 쓰는가
 
@@ -152,3 +158,7 @@ Lakeflow Connect 수집 결과 테이블은 **스트리밍 테이블** 입니다
 - [Real-time mode concepts](https://docs.databricks.com/aws/en/structured-streaming/real-time)
 - [Release notes, 2026년 8월](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
 - [Release notes, 2026년 9월](https://docs.databricks.com/aws/en/release-notes/product/2026/september)
+- [Read, don't copy: replacing file and API feeds with OpenSharing - Part 1 (Databricks 블로그)](https://www.databricks.com/blog/read-dont-copy-replacing-file-and-api-feeds-opensharing-part-1-why)
+- [Read, don't copy: replacing file feeds with OpenSharing - Part 2 (Databricks 블로그)](https://www.databricks.com/blog/read-dont-copy-replacing-file-feeds-opensharing-part-2-how-implement)
+- [Push-based CDC into Unity Catalog with Zerobus Ingest and Debezium (Databricks 블로그)](https://www.databricks.com/blog/push-based-cdc-unity-catalog-zerobus-ingest-and-debezium)
+- [Release notes, 2026년 10월: Native XML file format support is now generally available](https://docs.databricks.com/aws/en/release-notes/product/2026/october#native-xml-file-format-support-is-now-generally-available)

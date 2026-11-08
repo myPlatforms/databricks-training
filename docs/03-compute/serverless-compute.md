@@ -1,6 +1,6 @@
 # 서버리스 컴퓨트
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
 
 서버리스 컴퓨트(Serverless compute)는 노트북, 워크플로(Job), Lakeflow 파이프라인을 Databricks가 관리하는 온디맨드 자원에서 실행하는 방식입니다. 이 페이지는 서버리스가 어떤 워크로드를 지원하는지, 환경 버전(Environment version)과 기본 환경(Base environment)이 무엇인지, 노트북과 Job에서 각각 어떻게 설정하는지, 성능 모드와 타임아웃을 다룹니다. 제약과 지원 기능의 세부 목록은 [서버리스 제약과 지원 기능](serverless-limitations.md) 페이지에 있습니다.
 
@@ -75,9 +75,11 @@ Job에서는 **Configure environment** 대화상자의 **Base environment** 드�
 
 서버리스 노트북을 쓰려면 워크스페이스가 Unity Catalog에 연결되어 있어야 합니다. 문서에 따르면 서버리스 대화형 컴퓨트가 켜져 있으면 워크스페이스의 모든 사용자가 노트북용 서버리스에 접근할 수 있고, 별도 권한은 필요하지 않습니다.
 
+> **참고** Databricks 블로그는 **Serverless Compute Access Controls** 가 GA라고 발표했습니다. 워크스페이스마다 기본 서버리스 컴퓨트 객체 두 개(Default Serverless Interactive Compute: 노트북과 Databricks Connect, Default Serverless Automated Compute: Job과 Spark Declarative Pipelines)가 있고, 권한은 Can Use와 Can Manage입니다. 모든 사용자가 Can Use로 시작하므로 기능을 켜도 관리자가 바꾸기 전에는 달라지는 것이 없습니다. 관리자가 **Compute** 페이지의 **Serverless** 탭에서 기본 컴퓨트 객체의 "All Users"를 빼고 특정 그룹을 추가하면, 그룹 밖 사용자는 노트북 컴퓨트 선택기에서 Serverless를 쓸 수 없고 이미 실행 중인 작업은 중단되지 않습니다.
+
 - **수동 연결**: 노트북 상단의 컴퓨트 드롭다운에서 **Serverless** 를 고릅니다.
 - **자동 연결**: 새 노트북은 다른 리소스를 고르지 않은 상태에서 코드를 실행하면 서버리스가 기본으로 선택됩니다.
-- **Git 폴더와 번들**: Shared Serverless(Beta)로 `pyproject.toml`에서 정의한 컴퓨트와 환경을 여러 파일이 함께 쓸 수 있습니다.
+- **Git 폴더와 번들**: Shared Serverless(Beta)로 `pyproject.toml`에서 정의한 컴퓨트와 환경을 여러 파일이 함께 쓸 수 있습니다. 번들에서는 번들 루트의 `pyproject.toml`에 정의한 환경을 쓰며, 워크스페이스 관리자가 **Previews** 페이지에서 Project-Scoped Shared Compute를 켜야 합니다.
 
 서버리스 노트북에서 지원하는 기능의 예는 다음과 같습니다.
 
@@ -108,6 +110,8 @@ Job 작업 유형이 서버리스를 지원하면 Job 생성 시 서버리스 �
 | 고메모리(High memory) | 노트북 태스크 유형에서만 쓸 수 있습니다. Public Preview |
 | Spark 설정 | 허용된 일부 파라미터만 지정할 수 있고, 세션 수준에서만 적용됩니다 |
 | 사용 정책(Usage policy) | 한 개만 할당되면 자동 선택. Public Preview |
+
+워크스페이스 관리자는 서버리스 Job의 애플리케이션 로그를 보존과 분석을 위해 Unity Catalog 볼륨으로 전달할 수 있습니다. 이 기능은 2026년 10월 릴리즈 노트에 **Beta** 로 발표되었습니다. Job 실행 페이지에 표시되는 태스크 로그는 태스크 실행별로 분리되지 않지만, 볼륨으로 전달하면 태스크 실행별로 정리된 디렉터리에 로그가 쌓입니다.
 
 Job 실행 시간의 상한은 7일입니다. 이 한도를 넘는 실행은 종료되며 재시도하지 않습니다. 상한 값은 [서버리스 제약 페이지](serverless-limitations.md)에서 확인한 값입니다.
 
@@ -166,7 +170,7 @@ Job으로 옮길 때는 같은 코드를 노트북 태스크로 등록하고, �
 - **환경 버전을 고정해서 기록하십시오.** 노트북은 환경 설정이 노트북 메타데이터에 남습니다. 문서가 `environment_version = "5"` 같은 형태의 예시를 보여 줍니다. 팀 공유 전에 버전과 의존성 목록을 저장소에 함께 두면 재현이 쉽습니다.
 - **Python 패키지는 환경의 Dependencies에서 설치하십시오.** 노트북 안에서 임의로 패키지를 설치하면 같은 환경을 다른 노트북이나 Job이 재현하기 어렵습니다. 설치 절차는 문서의 **Dependencies** 절차를 따르십시오.
 - **상태 라벨을 확인하십시오.** 노트북 기능과 Job 기능이 같은 상태를 갖지 않습니다. 운영 Job에 쓰기 전에 기능별 상태를 봅니다.
-- **사용 정책과 태깅.** 문서는 서버리스 노트북에서 노트북 태그를 지원하지 않으며, 태깅은 서버리스 사용 정책으로 하라고 안내합니다.
+- **사용 정책과 태깅.** 문서는 서버리스 노트북에서 노트북 태그를 지원하지 않으며, 태깅은 서버리스 사용 정책으로 하라고 안내합니다. Databricks 블로그는 서버리스 컴퓨트 객체에 태그를 붙여 비용을 귀속하는 Serverless Compute tags를 **Beta** 로, 자동화 워크로드의 지출 속도를 컴퓨트 객체 단위로 제한하는 rate limits를 **Beta** 로 소개합니다.
 - **Unity Catalog 전제.** 레거시 워크스페이스는 Unity Catalog를 활성화하기 전까지 서버리스 컴퓨트를 쓸 수 없습니다.
 
 ## 참고 문서
@@ -180,3 +184,6 @@ Job으로 옮길 때는 같은 코드를 노트북 태스크로 등록하고, �
 - [2026년 9월 릴리즈 노트 (AWS)](https://docs.databricks.com/aws/en/release-notes/product/2026/september)
 - [2026년 10월 릴리즈 노트 (AWS)](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
 - [Serverless environment versions](https://docs.databricks.com/aws/en/release-notes/serverless/environment-version/)
+- [Smarter cost controls for serverless (Databricks 블로그)](https://www.databricks.com/blog/smarter-cost-controls-serverless)
+- [2026년 10월 릴리즈 노트: Serverless log delivery to Unity Catalog volumes (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#serverless-log-delivery-to-unity-catalog-volumes-beta)
+- [2026년 10월 릴리즈 노트: Shared Serverless (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#shared-serverless-beta)
