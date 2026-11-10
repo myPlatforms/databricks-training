@@ -38,11 +38,11 @@
     },
     {
       "name": "max_items",
-      "default": "200"
+      "default": "400"
     },
     {
       "name": "review_cap",
-      "default": "15"
+      "default": "40"
     },
     {
       "name": "rules_path",

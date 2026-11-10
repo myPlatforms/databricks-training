@@ -191,12 +191,17 @@ def refresh_views(spark: SparkSession, fq: str) -> None:
     """Queues read by the Genie Code review task.
 
     review_queue      relevant items per existing page, deduplicated (the same note is often
-                      published on several release-notes pages), minus items already proposed
+                      published on several release-notes pages), minus items already proposed.
+                      pick_order is the processing order: chapters take turns (round-robin) and,
+                      within a chapter, the page whose oldest pending item has waited longest goes
+                      first. Ordering by newest item instead (the original prompt) starved pages:
+                      fresh items kept pushing older ones back, and date ties fell to path order,
+                      so every run picked chapters 01-04 only (2026-11-09 run).
     new_page_backlog  relevant items with no existing page — input for writing new chapters
     """
     spark.sql(f"""
         CREATE OR REPLACE VIEW {fq}.review_queue
-        COMMENT 'Training refresh: relevant items per page awaiting a revision proposal' AS
+        COMMENT 'Training refresh: relevant items per page awaiting a revision proposal; process in pick_order' AS
         WITH proposed AS (
           SELECT DISTINCT explode(item_ids) AS item_id FROM {fq}.revision_proposals),
         rel AS (
@@ -208,12 +213,22 @@ def refresh_views(spark: SparkSession, fq: str) -> None:
         dedup AS (
           SELECT *, row_number() OVER (
                    PARTITION BY page_path, lower(trim(title)), published_date ORDER BY source, url) AS rn
-          FROM rel)
-        SELECT page_path, count(*) AS n_items, max(published_date) AS latest,
-               collect_list(named_struct('item_id', item_id, 'source', source, 'url', url,
-                 'title', title, 'published_date', published_date, 'change_type', change_type,
-                 'summary_ko', summary_ko)) AS items
-        FROM dedup WHERE rn = 1 GROUP BY page_path""")
+          FROM rel),
+        per_page AS (
+          SELECT page_path, count(*) AS n_items, min(published_date) AS oldest,
+                 max(published_date) AS latest,
+                 collect_list(named_struct('item_id', item_id, 'source', source, 'url', url,
+                   'title', title, 'published_date', published_date, 'change_type', change_type,
+                   'summary_ko', summary_ko)) AS items
+          FROM dedup WHERE rn = 1 GROUP BY page_path),
+        ranked AS (
+          SELECT *, row_number() OVER (
+                   PARTITION BY split(page_path, '/')[0]
+                   ORDER BY oldest ASC NULLS LAST, latest ASC NULLS LAST, page_path) AS chapter_rank
+          FROM per_page)
+        SELECT row_number() OVER (ORDER BY chapter_rank, oldest ASC NULLS LAST, page_path) AS pick_order,
+               page_path, n_items, oldest, latest, items
+        FROM ranked""")
     spark.sql(f"""
         CREATE OR REPLACE VIEW {fq}.new_page_backlog
         COMMENT 'Training refresh: relevant items with no existing page (new page candidates)' AS
