@@ -5087,6 +5087,78 @@
 </thead>
 <tbody>
 <tr>
+<td>2026-11-09</td>
+<td>01-platform-overview/account-workspace-metastore.md</td>
+<td>기본 스토리지 문서가 '워크스페이스 컴퓨트는 서버리스이면서 Unity Catalog 활성화 필요, 외부 클라이언트도 접근 가능'으로 바뀐 점을 5절 목록에 반영했습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#restore-a-deleted-unity-catalog-metastore-with-the-rest-api-public-preview">원문</a> <a href="https://docs.databricks.com/aws/en/storage/default-storage">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>02-lakehouse-storage/deletion-vectors.md</td>
+<td>삭제 벡터 문서가 구체화된 뷰·스트리밍 테이블에서 삭제 벡터를 켠 뒤에도 ALTER TABLE ... DROP FEATURE로 프로토콜을 다운그레이드할 수 있고, 끄는 것만으로는 다운그레이드되지 않는다고 바뀌었습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/tables/features/deletion-vectors">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>02-lakehouse-storage/iceberg-support.md</td>
+<td>관리형 Iceberg 테이블에서 PARTITIONED BY가 클러스터링 키로 해석되고, v2에서 CLUSTER BY 시 삭제 벡터·행 추적을 꺼야 하며 v3는 예외라는 점을 3.1에 추가했습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/delta/clustering">원문</a> <a href="https://docs.databricks.com/aws/en/iceberg/">원문</a> <a href="https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>02-lakehouse-storage/managed-vs-external-tables.md</td>
+<td>관리형 테이블 문서가 카탈로그 커밋은 기본 꺼짐이지만 자동 업그레이드가 새 스키마의 새 테이블에서 켤 수 있다는 예외와, 예측 최적화가 기본 활성화(계정 생성일 조건 삭제)라고 바뀐 점을 3.4 외부 쓰기 절에 참고 박스로 추가했습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/tables/managed">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>02-lakehouse-storage/table-layout-optimization.md</td>
+<td>예측 최적화 문서가 계정 생성일·순차 적용 일정 없이 '기본 활성화'로 바뀌어 2.3 표의 기본 설정 행을 고쳤습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/delta/clustering">원문</a> <a href="https://docs.databricks.com/aws/en/optimizations/predictive-optimization">원문</a> <a href="https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>02-lakehouse-storage/time-travel-and-cdf.md</td>
+<td>테이블 이력·VACUUM 문서 기준으로 DBR 18.0 이상의 타임 트래블 차단이 Unity Catalog 관리형 테이블은 12.2 LTS 이상에 적용되고 VACUUM 보존도 deletedFileRetentionDuration으로 제어된다는 점, 18.0 이상에서 logRetentionDuration ≥ deletedFileRetentionDuration…</td>
+<td><a href="https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using">원문</a> <a href="https://docs.databricks.com/aws/en/tables/history">원문</a> <a href="https://docs.databricks.com/aws/en/tables/operations/vacuum">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>03-compute/classic-compute.md</td>
+<td>Standard 액세스 모드 제약에 워크스페이스 VPC CIDR 대상 아웃바운드 포트(53, 80, 443, 5432) 제한과 주의 박스를 추가하고, Runtime 표에서 18.2를 빼고 19 출시일을 원문(2026-07-23)대로 고쳤습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/compute/access-mode-limitations">원문</a> <a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#new-jobs-compute-defaults-to-auto-access-mode">원문</a> <a href="https://docs.databricks.com/aws/en/release-notes/runtime/">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>03-compute/serverless-compute.md</td>
+<td>블로그 근거로 Serverless Compute Access Controls(GA)의 기본 컴퓨트 객체·Can Use/Can Manage 권한·관리자 제한 절차를 참고 박스로 추가하고, Serverless Compute tags와 rate limits가 Beta라는 점을 주의사항에 덧붙였습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/compute/configure">원문</a> <a href="https://docs.databricks.com/aws/en/compute/serverless/limitations">원문</a> <a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>03-compute/serverless-limitations.md</td>
+<td>제약 문서의 Job 로그 설명 변경에 맞춰 2.8의 로그 항목을 'Job 실행 페이지의 태스크 로그는 분리되지 않으며, 볼륨 전달(Beta) 시 태스크 실행별 디렉터리에 저장'으로 고치고 2.4에 서버리스 로그 볼륨 전달(Beta)을 추가했습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/compute/configure">원문</a> <a href="https://docs.databricks.com/aws/en/compute/serverless/limitations">원문</a> <a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>04-data-engineering/choose-ingestion-method.md</td>
+<td>네이티브 XML 파일 형식 지원 GA(Auto Loader, read_files, COPY INTO, from_xml, schema_of_xml)를 원천별 선택지 아래에 참고 박스로 추가했습니다.</td>
+<td><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october#native-xml-file-format-support-is-now-generally-available">원문</a> <a href="https://www.databricks.com/blog/push-based-cdc-unity-catalog-zerobus-ingest-and-debezium">원문</a> <a href="https://www.databricks.com/blog/read-dont-copy-replacing-file-and-api-feeds-opensharing-part-1-why">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>04-data-engineering/jobs-retries-notifications-repair.md</td>
+<td>Notifications 문서에 추가된 내용대로, 트리거의 SQL 조건 확인이 오류로 실패하면 잡의 Failure 알림이 오류를 받는다는 참고 박스(Beta 표기)를 알림 절에 추가했습니다.</td>
+<td><a href="https://docs.databricks.com/api/workspace/jobs/repairrun">원문</a> <a href="https://docs.databricks.com/aws/en/jobs/disabled-tasks">원문</a> <a href="https://docs.databricks.com/aws/en/jobs/notifications">원문</a></td>
+</tr>
+<tr>
+<td>2026-11-09</td>
+<td>04-data-engineering/jobs-tasks-and-triggers.md</td>
+<td>태스크 유형 표에 AI Function tasks(Beta)를, 트리거 표에 Job completion 트리거(Beta, 같은 메타스토어의 워크스페이스 간 의존성 포함)를 추가했습니다.</td>
+<td><a href="https://docs.databricks.com/api/workspace/jobs/repairrun">원문</a> <a href="https://docs.databricks.com/aws/en/jobs/configure-task">원문</a> <a href="https://docs.databricks.com/aws/en/jobs/file-arrival-triggers">원문</a></td>
+</tr>
+<tr>
 <td>2026-11-02</td>
 <td>07-ai-bi/README.md</td>
 <td>릴리즈 노트 영역 제목이 "AI/BI and Genie One"으로 바뀐 것을 반영했습니다(제품 문서 이름은 "Databricks AI/BI" 그대로).</td>

@@ -5459,7 +5459,7 @@
 
 <h1 id="lakeflow-jobs-태스크와-트리거">Lakeflow Jobs 태스크와 트리거<a class="headerlink" href="#lakeflow-jobs-태스크와-트리거" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
 <p>Lakeflow Jobs(잡)는 노트북, 파이프라인, SQL, Python 스크립트 같은 <strong>태스크</strong> 를 순서대로 묶어 실행하는 오케스트레이션 기능입니다. 잡은 하나 이상의 <strong>트리거</strong> 가 발생했을 때 실행됩니다. 트리거는 시간(스케줄), 파일 도착, 테이블 업데이트, 모델 업데이트, 잡 연속 실행 등이 될 수 있습니다. 이 페이지는 태스크 유형과 트리거 종류, 그리고 각 트리거의 제한을 정리합니다. 파라미터와 조건 분기는 <a href="../jobs-parameters-and-control-flow/">파라미터·태스크 값·조건 분기</a>, 재시도와 복구는 <a href="../jobs-retries-notifications-repair/">재시도·알림·Repair run</a>에서 다룹니다.</p>
@@ -5547,6 +5547,10 @@
 <td>GA (2026-10-21 릴리즈 노트). 상세는 아래 참고</td>
 </tr>
 <tr>
+<td>AI Function tasks</td>
+<td><strong>Beta</strong>. 볼륨의 파일이나 테이블의 행에 <code>ai_parse_document</code>, <code>ai_extract</code>, <code>ai_classify</code>를 SQL 없이 실행. 실행마다 이전 실행 이후 새로 생기거나 바뀐 입력만 처리하고, 결과를 이후 태스크가 읽을 수 있는 Unity Catalog 테이블에 씀</td>
+</tr>
+<tr>
 <td>If/else</td>
 <td>조건 분기 태스크. <a href="../jobs-parameters-and-control-flow/">파라미터 페이지</a> 참고</td>
 </tr>
@@ -5595,6 +5599,11 @@
 <td><strong>Beta</strong></td>
 </tr>
 <tr>
+<td>Job completion</td>
+<td>하나 이상의 업스트림 잡이 일치하는 결과로 완료되면 실행. 같은 Unity Catalog 메타스토어에 연결된 워크스페이스 간 의존성도 가능하며, 의존성은 다운스트림 잡에 설정</td>
+<td><strong>Beta</strong></td>
+</tr>
+<tr>
 <td>Continuous</td>
 <td>실행이 끝나면(성공 또는 실패) 다음 실행을 바로 시작해 항상 실행 상태 유지</td>
 <td>문서에 상태 라벨 없음</td>
@@ -5602,13 +5611,14 @@
 </tbody>
 </table>
 <p>문서는 <strong>여러 트리거(Multiple triggers)</strong> 기능을 <strong>Beta</strong> 로 표기합니다. 릴리즈 노트는 2026-10-05에 "Use multiple triggers for Lakeflow Jobs (Beta)"를 발표했습니다. 잡 하나에 최대 5개 트리거를 두고 각각 독립적으로 일시 정지할 수 있습니다.</p>
+<p>문서는 Scheduled, Table update, File arrival, Model update, Job completion 트리거에 <strong>SQL 조건(SQL condition)</strong> 을 추가해 데이터가 준비됐을 때만 실행을 시작하게 하는 기능을 <strong>Beta</strong> 로 표기합니다. 트리거의 SQL 조건 확인이 오류로 실패하면 잡의 Failure 알림이 그 오류를 받습니다.</p>
 <h3 id="트리거-제한">트리거 제한<a class="headerlink" href="#트리거-제한" title="Permanent link">&para;</a></h3>
 <p>문서에 명시된 제한입니다.</p>
 <ul>
 <li>여러 트리거 Beta 기간 동안 잡 하나당 최대 <strong>5개</strong> 트리거.</li>
 <li>Continuous 트리거는 다른 트리거와 <strong>함께 쓸 수 없습니다</strong>.</li>
 <li>워크스페이스 전체에서 활성 트리거는 모든 잡과 트리거 종류를 합쳐 최대 <strong>12,000개</strong>. 일시 정지된 트리거는 이 한도에 포함되지 않습니다.</li>
-<li>기본적으로 잡 하나의 실행은 한 번에 하나만 활성화됩니다. 최대 동시 실행(max concurrency)을 넘는 실행은 건너뜁니다.</li>
+<li>기본적으로 잡 하나의 실행은 한 번에 하나만 활성화됩니다. 대부분의 트리거 종류에서 최대 동시 실행(max concurrency)을 넘는 실행은 건너뜁니다. Job completion 트리거는 다른 실행을 시작할 수 있을 때까지 준비된 완료를 보존합니다.</li>
 </ul>
 <h2 id="어떻게-쓰는가">어떻게 쓰는가<a class="headerlink" href="#어떻게-쓰는가" title="Permanent link">&para;</a></h2>
 <p><img alt="Job 태스크 그래프 — 파이프라인 새로 고침, SQL 검증, 대시보드 새로 고침 태스크가 순서대로 이어진 모습" src="../../assets/shots/jobs-graph.png" /></p>
@@ -5675,6 +5685,10 @@
 <td>Table update</td>
 </tr>
 <tr>
+<td>업스트림 잡이 끝난 뒤 후속 처리 (같은 메타스토어의 다른 워크스페이스 포함)</td>
+<td>Job completion (Beta)</td>
+</tr>
+<tr>
 <td>항상 실행 상태가 필요하고 실행이 끝나면 바로 재시작</td>
 <td>Continuous (다른 트리거와 함께 쓸 수 없음)</td>
 </tr>
@@ -5688,7 +5702,7 @@
 <ul>
 <li><strong>파일 덮어쓰기</strong>: 같은 이름으로 덮어쓴 파일은 파일 도착 트리거를 발생시키지 않습니다. 새 파일 이름 규칙을 쓰거나, 처리 방식을 맞추십시오.</li>
 <li><strong>스케줄 지연</strong>: 정확한 초 단위 시작이 필요하면 스케줄러를 쓰지 마십시오.</li>
-<li><strong>동시 실행</strong>: 기본 설정에서 실행이 겹치면 새 실행은 건너뜁니다. 겹침을 허용하려면 최대 동시 실행 값을 바꿔야 하며, 그 전에 태스크가 동시 실행을 견딜 수 있는지 확인하십시오.</li>
+<li><strong>동시 실행</strong>: 기본 설정에서 실행이 겹치면 대부분의 트리거에서 새 실행은 건너뜁니다(Job completion 트리거는 준비된 완료를 보존). 겹침을 허용하려면 최대 동시 실행 값을 바꿔야 하며, 그 전에 태스크가 동시 실행을 견딜 수 있는지 확인하십시오.</li>
 <li><strong>Continuous와 재시도</strong>: Continuous 잡은 재시도가 지수 백오프로 자동 적용된다고 문서가 설명합니다. 자세한 내용은 <a href="../jobs-retries-notifications-repair/">재시도·알림·Repair run</a> 참고.</li>
 <li><strong>트리거 한도</strong>: 활성 트리거 12,000개 한도는 워크스페이스 전체 기준입니다. 많은 잡을 같은 방식으로 만들면 한도에 가까워질 수 있습니다.</li>
 </ul>
@@ -5703,6 +5717,9 @@
 <li><a href="../../11-developer-tools/genie-code/lakeflow-jobs-task/">Genie Code 태스크 (이 저장소)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/september">Release notes, 2026년 9월</a></li>
 <li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october">Release notes, 2026년 10월</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-function-tasks-for-jobs-beta">Release notes, 2026년 11월: AI Function tasks for jobs (Beta)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#trigger-lakeflow-jobs-when-upstream-jobs-complete-beta">Release notes, 2026년 11월: Trigger Lakeflow Jobs when upstream jobs complete (Beta)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/jobs/notifications">Job notifications</a></li>
 </ul>
 
 

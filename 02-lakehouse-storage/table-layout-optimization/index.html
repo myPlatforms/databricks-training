@@ -5515,7 +5515,7 @@
 
 <h1 id="테이블-레이아웃-최적화">테이블 레이아웃 최적화<a class="headerlink" href="#테이블-레이아웃-최적화" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <p>레이크하우스 테이블은 쓰기가 반복되면서 작은 파일이 많이 쌓이고, 데이터가 쿼리 조건과 무관하게 흩어집니다. 그러면 같은 쿼리도 읽는 파일 수가 늘어나 느려집니다. 이 페이지는 파일 레이아웃을 정리하는 네 가지 도구를 다룹니다. 데이터를 쿼리 조건에 맞춰 묶는 <strong>리퀴드 클러스터링(Liquid clustering)</strong>, 최적화 작업을 Databricks가 대신 실행하는 <strong>예측 최적화(Predictive optimization)</strong>, 파일을 실제로 다시 쓰는 <strong><code>OPTIMIZE</code></strong>, 오래된 파일을 지우는 <strong><code>VACUUM</code></strong> 입니다.</p>
 <h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
@@ -5622,6 +5622,7 @@
 </tr>
 </tbody>
 </table>
+<p>리퀴드 클러스터링을 쓰는 관리형 Apache Iceberg 테이블도 <code>OPTIMIZE &lt;table_name&gt; FULL</code>과 <code>OPTIMIZE &lt;table_name&gt; FULL WHERE &lt;predicate&gt;</code>를 지원합니다. 세부 내용은 <a href="../iceberg-support/">Apache Iceberg 지원</a>을 참고하십시오.</p>
 <blockquote>
 <p><strong>주의</strong> <code>OPTIMIZE</code> 페이지는 <code>FULL</code>을 Databricks Runtime 16.0 이상으로, 리퀴드 클러스터링 페이지는 16.4 LTS 이상으로 적고 있습니다. 두 페이지의 값이 다르므로 실제 적용 전 원문을 다시 확인하십시오. 이 장에서는 더 구체적인 리퀴드 클러스터링 페이지 값을 표에 적었습니다.</p>
 </blockquote>
@@ -5652,7 +5653,7 @@
 </tr>
 <tr>
 <td>기본 설정</td>
-<td>2024-11-11 이후 생성된 계정은 기본 활성화. 이전 계정은 순차 적용 중이며 문서는 2026년 8월까지 완료 예정이라고 설명. 기준일(2026-10-28) 이후 원문 상태를 다시 확인할 것</td>
+<td>기본 활성화. 계정에서 활성화되어 있는지는 문서의 "Verify whether predictive optimization is enabled" 절차로 확인</td>
 </tr>
 <tr>
 <td>상태 라벨</td>
@@ -5679,6 +5680,9 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">CLUSTER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">main</span><span class="p">.</span><span class="n">sales</span><span class="p">.</span><span class="n">orders</span><span class="p">;</span>
 </code></pre></div>
+<blockquote>
+<p><strong>참고</strong> 관리형 Iceberg 테이블에서는 <code>PARTITIONED BY</code> 컬럼을 리퀴드 클러스터링의 클러스터링 키로 해석합니다. 관리형 Iceberg v2 테이블에서 <code>CLUSTER BY</code>를 쓰려면 삭제 벡터와 행 추적(row tracking)을 명시적으로 꺼야 하며, 두 기능을 모두 지원하는 관리형 Iceberg v3 테이블에는 이 조건이 적용되지 않습니다.</p>
+</blockquote>
 <p>같은 스키마로 빈 테이블을 만들 때는 <code>LIKE</code>를 씁니다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">main</span><span class="p">.</span><span class="n">sales</span><span class="p">.</span><span class="n">orders_clustered3</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">main</span><span class="p">.</span><span class="n">sales</span><span class="p">.</span><span class="n">orders_clustered</span><span class="p">;</span>
 </code></pre></div>
@@ -5812,6 +5816,7 @@
 <li><a href="https://docs.databricks.com/aws/en/optimizations/predictive-optimization">Predictive optimization for Unity Catalog managed tables</a></li>
 <li><a href="https://docs.databricks.com/aws/en/tables/operations/vacuum">Remove unused data files with vacuum</a></li>
 <li><a href="https://docs.databricks.com/aws/en/tables/history">Work with table history</a></li>
+<li><a href="https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using">CREATE TABLE [USING]</a></li>
 </ul>
 
 

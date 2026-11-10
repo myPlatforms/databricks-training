@@ -5515,7 +5515,7 @@
 
 <h1 id="삭제-벡터-deletion-vectors">삭제 벡터 (Deletion vectors)<a class="headerlink" href="#삭제-벡터-deletion-vectors" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300</p>
+<p>기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 300</p>
 </blockquote>
 <p>삭제 벡터(Deletion vectors)는 Delta Lake와 Apache Iceberg 테이블에서 <code>DELETE</code>, <code>UPDATE</code>, <code>MERGE</code>를 빠르게 처리하기 위한 기능입니다. 행 하나를 지우거나 고칠 때 그 행이 들어 있는 Parquet 파일 전체를 다시 쓰지 않고, 어떤 행이 삭제되었는지를 <strong>메타데이터에 표시</strong> 해 둡니다. 읽는 쪽은 그 표시를 적용해서 현재 데이터를 보여 줍니다. 이 페이지는 이 방식이 왜 필요한지, 어떻게 켜고 확인하는지, 그리고 파일을 실제로 정리하는 <code>REORG</code>·<code>PURGE</code>·<code>VACUUM</code> 흐름을 다룹니다.</p>
 <h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
@@ -5642,6 +5642,7 @@
 </code></pre></div>
 <blockquote>
 <p><strong>주의</strong> 삭제 벡터를 켜면 테이블 프로토콜이 올라갑니다. 삭제 벡터를 지원하지 않는 클라이언트는 이 테이블을 읽을 수 없습니다. 외부 엔진과 공유하기 전에 호환성을 확인하십시오.</p>
+<p><strong>참고</strong> 구체화된 뷰(Materialized view)나 스트리밍 테이블(Streaming table)에서 삭제 벡터를 켠 뒤에도 <code>ALTER TABLE ... DROP FEATURE</code>로 테이블 프로토콜을 다운그레이드할 수 있습니다. 삭제 벡터를 끄는 것만으로는 프로토콜이 다운그레이드되지 않습니다. 삭제 벡터를 끄면 이후 쓰기에는 적용되지 않지만, 기존 삭제 벡터는 남습니다.</p>
 </blockquote>
 <h3 id="33-iceberg-테이블에서-켜기">3.3 Iceberg 테이블에서 켜기<a class="headerlink" href="#33-iceberg-테이블에서-켜기" title="Permanent link">&para;</a></h3>
 <p>Iceberg 테이블에서는 속성 이름이 다릅니다.</p>

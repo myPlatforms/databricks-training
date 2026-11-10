@@ -5481,7 +5481,7 @@
 
 <h1 id="클래식-컴퓨트">클래식 컴퓨트<a class="headerlink" href="#클래식-컴퓨트" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <p>클래식 컴퓨트(Classic compute)는 올-퍼포즈(All-purpose), Job, Lakeflow 파이프라인용 자원으로, 사용자가 직접 만들고 설정하고 관리합니다. 자원은 고객 클라우드 계정에서 실행됩니다. 이 페이지는 클래식 컴퓨트를 설정할 때 가장 먼저 정하는 항목인 액세스 모드(Access mode), Databricks Runtime(DBR) 버전, 오토스케일링(Autoscaling), 자동 종료(Auto termination)를 다룹니다. 풀과 정책은 <a href="../pools-and-policies/">인스턴스 풀과 컴퓨트 정책</a> 페이지에서 다룹니다.</p>
 <h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
@@ -5536,8 +5536,12 @@
 <li>Hive UDF 없음</li>
 <li>소켓 스트리밍 소스 없음</li>
 <li>IMDS 접근 없음</li>
+<li>워크스페이스 VPC CIDR 범위 안의 IP 주소로 나가는 아웃바운드 연결은 포트 53, 80, 443, 5432만 허용</li>
 <li>DBR 19 이상에서 일부 Spark 설정 속성 제한</li>
 </ul>
+<blockquote>
+<p><strong>주의</strong> 문서는 위 아웃바운드 포트 제한이 Databricks가 관리하는 서비스뿐 아니라 워크스페이스 VPC CIDR 범위 안의 모든 대상에 적용된다고 설명합니다. 예를 들어 인터페이스가 워크스페이스 VPC 안의 주소로 확인되는 Private Link 또는 VPC 엔드포인트에도 적용됩니다. 다른 포트로 이런 엔드포인트에 연결해야 하면 워크스페이스 CIDR 범위 밖의 VPC에 엔드포인트를 만들고 VPC 피어링으로 연결하라고 문서가 안내합니다.</p>
+</blockquote>
 <p>R은 지원하지 않습니다. 권한 상승이 필요한 머신 접근, RDD API, 분산 머신러닝, GPU, R이 필요하면 Dedicated를 쓰라고 문서가 안내합니다.</p>
 <h4 id="dedicated-모드">Dedicated 모드<a class="headerlink" href="#dedicated-모드" title="Permanent link">&para;</a></h4>
 <p>Dedicated 모드는 한 사용자나 그룹에게 할당되며, 할당된 사용자나 그룹만 붙을 수 있습니다. 문서에 따르면 Dedicated 컴퓨트를 사용자에게 할당할 수 있는 주체는 워크스페이스 관리자입니다.</p>
@@ -5574,7 +5578,11 @@
 <li>GPU 인스턴스 유형을 고른 경우</li>
 <li>Databricks Runtime이 14.3 미만인 경우</li>
 </ul>
-<p>그 밖의 경우에는 Standard가 선택됩니다. 액세스 모드를 명시적으로 정하지 않으면 워크로드가 의도와 다른 모드에서 돌 수 있으므로, 운영 설정에서는 Auto보다 명시적인 선택을 권합니다.</p>
+<p>그 밖의 경우에는 Standard가 선택됩니다.</p>
+<blockquote>
+<p><strong>참고</strong> 릴리즈 노트에 따르면 UI에서 새 Job 컴퓨트(Jobs compute)를 만들 때 액세스 모드 기본값이 Dedicated에서 Auto로 바뀌었습니다. 다른 액세스 모드를 강제하는 컴퓨트 정책이 있으면 정책이 우선하며, 기존 Job은 바뀌지 않습니다. 규정 준수 보안 프로필(Compliance security profile)이 켜진 워크스페이스에서는 이 변경이 2026년 12월에 적용됩니다.</p>
+</blockquote>
+<p>액세스 모드를 명시적으로 정하지 않으면 워크로드가 의도와 다른 모드에서 돌 수 있으므로, 운영 설정에서는 Auto보다 명시적인 선택을 권합니다.</p>
 <h3 id="22-의존성-모드-dependency-mode-beta">2.2 의존성 모드 (Dependency mode, Beta)<a class="headerlink" href="#22-의존성-모드-dependency-mode-beta" title="Permanent link">&para;</a></h3>
 <p>문서는 Standard 액세스 모드 컴퓨트에서 DBR 19 이상일 때 <strong>의존성 모드(Dependency mode)</strong> 를 Beta로 표기합니다.</p>
 <table>
@@ -5597,7 +5605,7 @@
 </table>
 <p>문서는 Cluster libraries 방식을 "The classic behavior"라고 부릅니다.</p>
 <h3 id="23-databricks-runtimedbr-버전">2.3 Databricks Runtime(DBR) 버전<a class="headerlink" href="#23-databricks-runtimedbr-버전" title="Permanent link">&para;</a></h3>
-<p>공식 Runtime 릴리즈 노트 페이지 기준으로 2026-10-28 현재 다음 버전이 보입니다.</p>
+<p>공식 Runtime 릴리즈 노트 페이지 기준으로 2026-11-09 현재 다음 버전이 보입니다.</p>
 <table>
 <thead>
 <tr>
@@ -5611,7 +5619,7 @@
 <tr>
 <td>19</td>
 <td>4.2.0</td>
-<td>2026-06-15</td>
+<td>2026-07-23</td>
 <td>LTS 전환 시 결정</td>
 </tr>
 <tr>
@@ -5619,12 +5627,6 @@
 <td>4.1.0</td>
 <td>2026-06-10</td>
 <td>2029-06-10</td>
-</tr>
-<tr>
-<td>18.2</td>
-<td>4.1.0</td>
-<td>2026-05-05</td>
-<td>2026-11-05</td>
 </tr>
 <tr>
 <td>17.3 LTS</td>
@@ -5794,6 +5796,8 @@
 <li><a href="https://docs.databricks.com/aws/en/compute/access-mode-limitations">Access mode 제약 (AWS)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/release-notes/runtime/">Databricks Runtime 릴리즈 노트 (AWS)</a></li>
 <li><a href="https://docs.databricks.com/api/workspace/clusters/create">Clusters API 레퍼런스</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#new-jobs-compute-defaults-to-auto-access-mode">2026년 11월 릴리즈 노트: New jobs compute defaults to Auto access mode (AWS)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/whats-coming#new-jobs-compute-will-soon-default-to-auto-access-mode-for-workspaces-with-the-compliance-security-profile-enabled">What's coming: Compliance security profile 워크스페이스의 Auto access mode 기본값 (AWS)</a></li>
 </ul>
 
 
