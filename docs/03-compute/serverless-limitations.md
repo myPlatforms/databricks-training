@@ -1,6 +1,6 @@
 # 서버리스 제약과 지원 기능
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 300
 
 서버리스 컴퓨트는 편리한 만큼 클래식 컴퓨트와 다른 제약이 있습니다. 같은 노트북 코드라도 서버리스에서 실패하거나 결과가 달라질 수 있습니다. 이 페이지는 공식 서버리스 제약 목록을 영역별로 정리하고, DataFrame 캐싱(Public Preview)과 데이터 소스 지원 범위를 다룹니다. 옮기기 전에 이 목록을 먼저 대조하는 것을 권장합니다.
 
@@ -61,6 +61,7 @@ df = spark.read.csv("/Volumes/main/raw/landing/orders.csv", header=True)
 
 - Spark UI를 쓸 수 없습니다. 대신 **쿼리 프로파일(Query profile)** 을 씁니다.
 - Spark 로그를 쓸 수 없습니다. 클라이언트 측 애플리케이션 로그만 접근할 수 있습니다.
+- 워크스페이스 관리자는 서버리스 Job의 애플리케이션 로그를 Unity Catalog 볼륨으로 전달해 보존하고 분석할 수 있습니다. 이 기능은 2026년 10월 릴리즈 노트에 **Beta** 로 발표되었습니다.
 
 ### 2.5 네트워크와 워크스페이스 접근
 
@@ -107,7 +108,7 @@ query.awaitTermination()
 
 ### 2.8 Job 제약
 
-- 작업 로그가 태스크 실행별로 분리되지 않습니다. 여러 태스크의 출력이 한 로그에 섞입니다.
+- Job 실행 페이지에 표시되는 태스크 로그는 태스크 실행별로 분리되지 않고 여러 태스크의 출력이 섞입니다. 태스크 실행별로 정리된 디렉터리에 애플리케이션 로그를 받으려면 Unity Catalog 볼륨으로 로그를 전달합니다(Beta).
 - 노트북 태스크에는 태스크 범위 라이브러리를 쓸 수 없습니다. 노트북 범위 라이브러리를 쓰십시오.
 - 기본적으로 쿼리 실행 시간 제한이 없습니다. `spark.databricks.execution.timeout`으로 설정할 수 있습니다.
 - 최대 실행 시간은 7일입니다. 이를 넘는 실행은 종료되며 재시도하지 않습니다.
@@ -221,3 +222,4 @@ Hive SerDe 테이블은 지원하지 않습니다. `LOAD DATA`로 Hive SerDe 테
 - [Serverless compute 개요 (AWS)](https://docs.databricks.com/aws/en/compute/serverless/)
 - [2026년 10월 릴리즈 노트 (AWS)](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
 - [2026년 8월 릴리즈 노트 (AWS)](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
+- [2026년 10월 릴리즈 노트: Serverless log delivery to Unity Catalog volumes (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#serverless-log-delivery-to-unity-catalog-volumes-beta)

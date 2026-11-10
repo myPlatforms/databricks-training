@@ -1,6 +1,6 @@
 # Apache Iceberg 지원
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 300
 
 Apache Iceberg는 Delta Lake와 같은 오픈 테이블 포맷이지만, 여러 엔진이 같은 테이블을 읽고 쓰는 시나리오에 더 초점을 둔 포맷입니다. Databricks는 Unity Catalog 안에서 Iceberg 테이블을 **관리형(Managed)** 으로 만들 수 있고, Iceberg REST 카탈로그 API를 통해 외부 Iceberg 엔진이 접근하게 할 수 있습니다. 또한 Delta 테이블에 Iceberg 메타데이터를 덧붙여 Iceberg 클라이언트가 읽게 하는 방법도 있습니다. 이 페이지는 세 가지 경로를 구분하고, 외부 클라이언트가 할 수 있는 작업을 표로 정리합니다.
 
@@ -74,6 +74,23 @@ CREATE TABLE main.sales.orders_iceberg (
 ) USING ICEBERG;
 ```
 
+관리형 Iceberg 테이블에서 `PARTITIONED BY`를 쓰면 Databricks는 그 컬럼을 리퀴드 클러스터링(Liquid clustering)의 클러스터링 키로 해석합니다. 관리형 Iceberg v2 테이블에서 `CLUSTER BY`를 쓰려면 삭제 벡터와 행 추적(row tracking)을 명시적으로 꺼야 합니다. 관리형 Iceberg v3 테이블은 두 기능을 모두 지원하므로 이 조건이 적용되지 않습니다.
+
+예측 최적화(Predictive optimization)가 관리형 Iceberg 테이블에 `OPTIMIZE`를 자동으로 실행합니다. 클러스터링 키를 바꾼 뒤 기존 데이터를 다시 클러스터링할 때처럼 `OPTIMIZE`를 수동으로 실행할 수도 있습니다.
+
+| 명령 | 동작 (문서 요약) |
+|---|---|
+| `OPTIMIZE table_name` | 작은 파일을 압축하고 데이터를 증분 클러스터링 |
+| `OPTIMIZE table_name FULL` | 리퀴드 클러스터링 테이블에서 현재 클러스터링 키로 클러스터링되지 않은 기존 데이터 파일을 다시 씀. 이미 현재 키로 클러스터링된 파일은 다시 쓰지 않음 |
+| `OPTIMIZE table_name FULL WHERE predicate` | 리퀴드 클러스터링 테이블에서 클러스터링 컬럼 조건과 범위가 겹치는 파일에 `FULL`을 적용 (Databricks Runtime 18.1 이상) |
+
+관리형 Iceberg 테이블은 Databricks Runtime 16.4 LTS 이상이 필요하므로, `OPTIMIZE FULL`도 16.4 LTS 이상에서 실행해야 합니다(Delta Lake 테이블은 16.0 이상에서 `OPTIMIZE FULL` 사용 가능).
+
+```sql
+-- 클러스터링 키를 바꾼 뒤 기존 데이터를 다시 클러스터링
+OPTIMIZE main.default.iceberg_table FULL;
+```
+
 ### 3.2 Iceberg v3 테이블 만들기
 
 Iceberg v3 기능(삭제 벡터 기본 활성화, VARIANT 등)을 쓰려면 `format-version` 속성을 3으로 지정합니다.
@@ -98,6 +115,7 @@ Iceberg v3 테이블의 주요 특징과 제한은 다음과 같습니다.
 | 행 계보 (Row lineage) | 테이블 데이터의 증분 변경 추적 (자동 CDF의 기반) |
 | GEOMETRY, GEOGRAPHY | 공간 데이터 저장과 조회 |
 | 쓰기 기본값 (Write defaults) | 쓰기에서 컬럼이 생략되면 값 지정 |
+| Lakebase 동기화 테이블(Synced table) 소스 | 관리형 Iceberg 테이블을 소스로 쓸 때 자동 변경 데이터 피드 기반 증분 처리는 Iceberg v3에서만 가능. 이전 버전의 관리형 Iceberg 테이블은 Snapshot 동기화 모드만 지원 |
 | 제한 | 초기 기본값(Initial defaults), `unknown` 타입, 나노초 정밀도 타임스탬프, 다중 인자 변환은 지원되지 않음 |
 
 ### 3.3 외부 Iceberg 클라이언트에서 쓰기 제약
@@ -195,3 +213,4 @@ ALTER TABLE main.sales.orders SET TBLPROPERTIES (
 - [Databricks tables](https://docs.databricks.com/aws/en/tables/)
 - [Transactions](https://docs.databricks.com/aws/en/transactions)
 - [Use liquid clustering for tables](https://docs.databricks.com/aws/en/delta/clustering)
+- [CREATE TABLE [USING]](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)

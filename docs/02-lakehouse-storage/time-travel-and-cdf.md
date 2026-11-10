@@ -1,6 +1,6 @@
 # 타임 트래블과 변경 데이터 피드
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
 
 Delta 테이블과 Iceberg 테이블은 쓰기마다 새 버전을 만듭니다. 이 버전 이력을 이용하면 과거 시점의 데이터를 조회하거나 되돌릴 수 있는데, 이를 **타임 트래블(Time travel)** 이라고 합니다. 한편 **변경 데이터 피드(Change Data Feed, CDF)** 는 두 버전 사이에서 어떤 행이 추가·수정·삭제되었는지를 행 단위로 알려 줍니다. 이 페이지는 두 기능의 동작, 보존 기간, 사용법을 다루고, 둘이 함께 맞물리는 보존 설정의 주의점을 설명합니다.
 
@@ -26,6 +26,8 @@ Delta 테이블의 각 쓰기는 트랜잭션 로그에 새 버전을 남깁니�
 | `logRetentionDuration` | 30일 | 테이블 이력(트랜잭션 로그)의 보존 기간 |
 | `deletedFileRetentionDuration` | 7일 | `VACUUM`이 참조되지 않는 데이터 파일을 지우기 전 보존 기간 |
 
+Databricks Runtime 18.0 이상에서는 `logRetentionDuration`이 `deletedFileRetentionDuration`보다 크거나 같아야 합니다.
+
 두 값이 모두 실제 조회 가능 기간을 결정합니다. 데이터 파일이 `VACUUM`으로 지워지면 그 파일을 필요로 하는 버전은 더 이상 조회하거나 복원할 수 없습니다.
 
 ### 2.2 CDF의 두 가지 방식
@@ -34,7 +36,7 @@ Delta 테이블의 각 쓰기는 트랜잭션 로그에 새 버전을 남깁니�
 
 | 구분 | 이름 | 동작 시점 | 설정 | 지원 범위 | 상태 |
 |---|---|---|---|---|---|
-| 자동 CDF | Automatic change data feed | 테이블을 읽을 때 행 계보(Row lineage) 메타데이터로 계산 | 테이블 속성 불필요 | Unity Catalog 관리형 Delta(행 추적 켜짐), 관리형 Iceberg v3, 외부 Delta(행 추적 켜짐). Databricks Runtime 19 이상 | GA (릴리스 노트 2026-09-01) |
+| 자동 CDF | Automatic change data feed | 테이블을 읽을 때 행 계보(Row lineage) 메타데이터로 계산 | 테이블 속성 불필요 | Unity Catalog 관리형 Delta(행 추적 켜짐), 관리형 Iceberg v3, 외부 Delta(행 추적 켜짐). Databricks Runtime 19 이상. Databricks-to-Databricks OpenSharing과 함께 동작 | GA (릴리스 노트 2026-09-01) |
 | 레거시 CDF | Legacy change data feed | 테이블을 쓸 때 변경을 물리적으로 기록 | `delta.enableChangeDataFeed` 속성 필요 | Delta Lake만 | 공식 문서에서 레거시로 표기 |
 
 > **주의** 자동 CDF와 레거시 CDF는 같은 테이블에서 함께 쓸 수 없습니다. 공식 문서는 두 방식을 동시에 쓸 수 없다고 명시합니다. 새 테이블은 요구 조건을 맞추면 자동 CDF를, 아니면 레거시 CDF를 쓰는 것으로 방향을 정하십시오.
@@ -161,7 +163,7 @@ DESCRIBE DETAIL main.sales.orders;
 
 > **주의** 공식 문서는 기본 설정에서 타임 트래블을 최근 7일로 보라고 설명합니다. 데이터 보존 설정과 로그 보존 설정을 모두 더 크게 두지 않는 한, 7일보다 오래된 버전을 기대하지 마십시오. 보존을 늘리면 저장 비용도 늘어납니다.
 
-> **주의** Databricks Runtime 18.0 이상에서는 `deletedFileRetentionDuration`보다 오래된 버전을 요청하는 타임 트래블 조회가 차단됩니다.
+> **주의** Databricks Runtime 18.0 이상에서는 `deletedFileRetentionDuration`(기본 7일)보다 오래된 버전을 요청하는 타임 트래블 조회가 차단됩니다. Unity Catalog 관리형 테이블은 Databricks Runtime 12.2 LTS 이상에 이 동작이 적용됩니다. `VACUUM`의 보존 기간도 Databricks Runtime 18.0 이상(Unity Catalog 관리형 테이블은 12.2 LTS 이상)에서는 `deletedFileRetentionDuration` 테이블 속성으로 제어합니다.
 
 - **트랜잭션 안에서는 타임 트래블을 쓸 수 없습니다.** 멀티 문장 트랜잭션 내부의 타임 트래블 조회는 지원되지 않습니다 ([Delta Lake 동작 원리](delta-lake-internals.md) 참고).
 - **타임스탬프나 버전에 서브쿼리를 쓸 수 없습니다.** 공식 문서는 `timestamp_expression`과 `version`이 서브쿼리일 수 없다고 설명합니다.
@@ -181,3 +183,4 @@ DESCRIBE DETAIL main.sales.orders;
 - [Remove unused data files with vacuum](https://docs.databricks.com/aws/en/tables/operations/vacuum)
 - [CREATE TABLE (USING)](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)
 - [Deletion vectors in Databricks](https://docs.databricks.com/aws/en/tables/features/deletion-vectors)
+- [Read, don't copy: replacing file feeds with OpenSharing - Part 2 (Databricks 블로그)](https://www.databricks.com/blog/read-dont-copy-replacing-file-feeds-opensharing-part-2-how-implement)

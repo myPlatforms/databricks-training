@@ -1,6 +1,6 @@
 # 계정·워크스페이스·메타스토어
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -88,7 +88,8 @@ LIMIT 100;
 
 - 기본 스토리지는 Databricks 계정 안의 완전 관리형 객체 스토리지입니다.
 - 기본 스토리지에 생성한 카탈로그는 기본적으로 만든 워크스페이스에서만 접근할 수 있습니다. 다른 워크스페이스에 권한을 부여할 수 있지만, 그 워크스페이스는 서버리스 컴퓨트를 써야 합니다.
-- 클래식 컴퓨트는 기본 스토리지의 데이터 자산과 상호작용할 수 없습니다.
+- 기본 스토리지와 상호작용하는 워크스페이스 컴퓨트는 서버리스이면서 Unity Catalog가 활성화되어 있어야 합니다. 따라서 클래식 컴퓨트는 기본 스토리지의 데이터 자산과 상호작용할 수 없습니다.
+- 외부 클라이언트도 기본 스토리지에 접근할 수 있으며, 조건은 문서의 Limitations 항목에 설명되어 있습니다.
 - 관리형 테이블이나 볼륨을 삭제한 뒤에도 데이터 파일은 **7일 복구 기간** 동안 보존된다고 문서가 설명합니다.
 
 ## 6. 설계 체크리스트
@@ -114,6 +115,8 @@ LIMIT 100;
 
 > **주의** 계정 관리자와 워크스페이스 관리자, 카탈로그 소유자는 서로 다른 권한입니다. 한 사람이 모든 권한을 가진 상태를 운영 기본값으로 두지 마십시오.
 
+> **참고** 계정 관리자(Account admin)는 삭제된 Unity Catalog 메타스토어를 ID로 REST API를 통해 복원할 수 있습니다. 복원은 삭제 후 최대 5일까지 가능하며, 이 기능은 릴리즈 노트에 **Public Preview** 로 표기되어 있습니다.
+
 > **참고** 공식 문서의 "Get started with Unity Catalog" 페이지에서 메타스토어 등록과 첫 카탈로그 생성 절차를 확인할 수 있습니다.
 
 ## 다음으로 읽을 페이지
@@ -128,3 +131,4 @@ LIMIT 100;
 - [High-level architecture](https://docs.databricks.com/aws/en/getting-started/high-level-architecture)
 - [Default storage in Databricks](https://docs.databricks.com/aws/en/storage/default-storage)
 - [Workspace UI](https://docs.databricks.com/aws/en/workspace/)
+- [Release notes, 2026년 11월: Restore a deleted Unity Catalog metastore with the REST API (Public Preview)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#restore-a-deleted-unity-catalog-metastore-with-the-rest-api-public-preview)
