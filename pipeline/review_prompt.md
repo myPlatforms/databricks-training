@@ -5,12 +5,12 @@
 - 작성 규칙: {{job.parameters.rules_path}} (품질 기준, 최신성 규칙, 문체·서식, 공개 리포 규칙). 이 규칙을 그대로 따릅니다.
 
 ## 입력 (읽기 전용)
-- `{{job.parameters.catalog}}.{{job.parameters.schema}}.review_queue` — 페이지별 반영 대기 항목 (page_path, n_items, latest, items 배열: item_id·source·url·title·published_date·change_type·summary_ko)
+- `{{job.parameters.catalog}}.{{job.parameters.schema}}.review_queue` — 페이지별 반영 대기 항목 (pick_order, page_path, n_items, oldest, latest, items 배열: item_id·source·url·title·published_date·change_type·summary_ko)
 - `{{job.parameters.catalog}}.{{job.parameters.schema}}.pages` — 현재 페이지 본문 (path, title, basis_date, body)
 - `{{job.parameters.catalog}}.{{job.parameters.schema}}.source_items` — 항목 원문 (item_id, url, title, published_date, body)
 
 ## 할 일
-1. review_queue 에서 latest 가 최근인 순으로 최대 {{job.parameters.review_cap}}개 페이지를 고릅니다.
+1. review_queue 에서 `pick_order <= {{job.parameters.review_cap}}` 인 페이지를 `pick_order` 순서대로 처리합니다. 순서는 뷰가 정합니다(장을 돌아가며, 가장 오래 기다린 페이지부터). 다른 기준으로 다시 고르거나 순서를 바꾸지 마세요.
 2. 페이지마다 현재 본문(pages.body)과 해당 항목들의 원문(source_items.body)을 끝까지 읽고 판단합니다.
    - 원문이 이 페이지가 가르치는 사실(기능, 상태 라벨, 이름, 한도, 동작, 절차)을 실제로 바꾸거나 보강하지 않으면 → status='rejected'.
    - 바꾸면 → 페이지 전체를 고친 마크다운을 만듭니다.
