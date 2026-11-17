@@ -1,6 +1,6 @@
 # AI Functions
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 AI Functions는 SQL 함수 호출만으로 텍스트 요약, 분류, 문서 파싱, 필드 추출, 모델 호출을 수행하는 함수 묶음입니다. 공식 문서는 함수를 문서 처리, 텍스트 변환, 텍스트 분석, 콘텐츠 생성, 예측, 시계열 예측, 메트릭 변화 분석, 검색 임베딩 등으로 묶어 제공합니다. 이 페이지는 함수 목록과 상태 라벨, 범용 함수인 `ai_query`와 문서 처리 함수인 `ai_extract`, `ai_parse_document`의 요구 사항과 권한을 다룹니다.
 
@@ -45,9 +45,10 @@ LLM이나 문서 처리 모델을 쓰려면 보통 엔드포인트를 만들고,
 | 항목 | 문서 원문 기준 |
 |---|---|
 | 웨어하우스 유형 | Databricks SQL Classic 웨어하우스에서는 AI Functions를 쓸 수 없음 |
-| 런타임 | Databricks Runtime 15.4 LTS 이상 필요. 18.2 이상을 권장 |
+| 런타임 | Databricks Runtime 15.4 LTS 이상 필요. 18.2 이상을 권장. 2027-02-01부터 15.4 LTS 이상이 필요한 AI Functions는 17.3 LTS 이상이 필요하며, 17.3 미만에서의 SQL 호출은 지원되지 않고 오류를 반환함. `ai_forecast`, `ai_top_drivers`, `ai_detect_anomalies`, `ai_predict_class`, `ai_predict_value`, `vector_search`, AI Functions REST API는 영향 없음 |
 | 배치 워크로드의 `ai_query` 모델 | 프로비저닝 처리량(provisioned throughput)이 아닌 Databricks 호스팅 파운데이션 모델(`databricks-` 접두사) 사용을 권장 |
 | 권한 제한 | 작업별 함수 접근은 "AI Functions Unity Catalog permissions" 문서를 따라 제한 가능 |
+| 비동기 실행 | AI Functions Asynchronous API (Beta)로 `ai_parse_document`, `ai_extract`, `ai_classify`를 Unity Catalog 볼륨의 JSONL 파일에 담긴 최대 50,000개 요청에 대해 비동기로 실행. 요청마다 결과 하나를 볼륨의 파일에 씀. 워크스페이스 관리자가 Previews 페이지에서 켬 |
 
 ## 대표 함수 세 가지
 
@@ -176,12 +177,13 @@ FROM main.docs.parsed;
 | 웨어하우스 유형 | Classic 웨어하우스에서는 사용 불가. 웨어하우스 선택은 03장 |
 | 런타임 버전 | `ai_parse_document`는 17.3 이상, 나머지는 15.4 LTS 이상. 버전에 따라 기능 범위가 다름 |
 | 상태 라벨 | 함수마다 Beta 표기가 다름. Beta 함수는 운영 SLA와 변경 가능성을 따로 검토 |
-| 비용 구조 | 문서 원문에서 함수별 단가를 확인하지 않음. 과금은 해당 함수의 과금 페이지를 따름 |
+| 비용 구조 | 문서 원문에서 함수별 단가를 확인하지 않음. 과금은 해당 함수의 과금 페이지를 따름. 2026-11-01부터 `ai_parse_document`, `ai_extract`, `ai_classify` 같은 작업별 AI Functions 지출은 배치·실시간 경로 모두 Unity Gateway 예산에 포함됨 |
 | 대안 | 정형 규칙으로 충분하면 SQL 파싱과 정규식이 더 싸고 예측 가능 |
 
 ## 주의사항
 
 - **상태 라벨을 확인합니다.** `(Beta)` 함수를 핵심 파이프라인에 넣기 전 상세 문서와 릴리즈 노트를 확인합니다.
+- **런타임 업그레이드를 계획합니다.** 2027-02-01 이전에 영향받는 SQL 쿼리를 실행하는 컴퓨트를 Databricks Runtime 17.3 LTS 이상으로 올리십시오.
 - **`ai_query`의 권한 오류는 엔드포인트 권한부터 봅니다.** `CAN QUERY`가 정의자에게 있는지, 관리자가 미리보기 기능을 껐는지 확인합니다.
 - **배치 처리는 프로비저닝 처리량이 아닌 호스팅 모델을 씁니다.** 문서가 그렇게 권장합니다.
 - **민감 데이터를 프롬프트에 넣기 전 거버넌스를 확인합니다.** 데이터가 모델 엔드포인트로 전달되므로, 허용 정책과 데이터 분류를 먼저 정합니다.
@@ -194,3 +196,7 @@ FROM main.docs.parsed;
 - [ai_extract 함수](https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_extract)
 - [ai_parse_document 함수](https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_parse_document)
 - [Data warehousing on Databricks](https://docs.databricks.com/aws/en/sql/)
+- [Upcoming removal of AI Functions support on older runtimes (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#upcoming-removal-of-ai-functions-support-on-older-runtimes)
+- [AI Functions Asynchronous API (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-asynchronous-api-beta)
+- [AI Functions usage is now included in Unity Gateway budgets](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-usage-is-now-included-in-unity-gateway-budgets)
+- [What's coming — AI Functions require Databricks Runtime 17.3 LTS or above](https://docs.databricks.com/aws/en/release-notes/whats-coming#ai-functions-require-databricks-runtime-173-lts-or-above)

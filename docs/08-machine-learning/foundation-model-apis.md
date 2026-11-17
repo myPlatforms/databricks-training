@@ -1,6 +1,6 @@
 # Foundation Model APIs
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
 
 Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(foundation model)을 엔드포인트로 호출하는 기능입니다. 모델을 직접 배포하지 않고 쓸 수 있으며, 과금 방식은 **pay-per-token**, **우선순위 pay-per-token**, **provisioned throughput** 세 가지입니다. 문서는 Foundation Model APIs를 Databricks 지정 서비스(Databricks Designated Service)로 분류하며, 데이터 거주를 위해 Databricks Geo를 사용한다고 설명합니다.
 
@@ -19,7 +19,7 @@ Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(fo
 |---|---|---|---|
 | **pay-per-token** | 파운데이션 모델에 접근하는 가장 쉬운 방법. 시작 시 권장 | 없음 | 시작 단계, 호출량이 들쭉날쭉한 워크로드 |
 | **우선순위 pay-per-token** (priority mode) | 요청마다 `service_tier`를 `"priority"`로 지정해 옵트인. 지연에 민감한 앱용. 더 높은 토큰 단가 | 없음 | 지연 민감 애플리케이션 |
-| **provisioned throughput** | 모든 운영 워크로드에 권장. 온디맨드와 예약 두 옵션 | 온디맨드는 없음, 예약은 1개월 또는 3개월 | 운영 워크로드, 성능 보장 필요 |
+| **provisioned throughput** | 높은 처리량, 성능 보장, 파인튜닝 모델, 추가 보안 요건이 필요한 운영 워크로드에 권장. HIPAA 같은 컴플라이언스 인증으로 사용 가능. 온디맨드와 예약 두 옵션 | 온디맨드는 없음, 예약은 1개월 또는 3개월 | 운영 워크로드, 성능 보장 필요 |
 | **AI Functions 최적화 모델** | 배치 추론에 권장 (문서의 설명) | 문서에 명시 없음 | 대량 배치 추론 |
 
 ### 예약과 온디맨드
@@ -45,6 +45,9 @@ Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(fo
 | DeepSeek V4.1 Flash (1017) (`databricks-deepseek-v4-1-flash-1017`) | pay-per-token | 문서에 명시 없음 |
 | Google Gemini 3.1 Flash Image, Gemini 3 Pro Image | pay-per-token만 | provisioned throughput, AI Functions 배치 추론, `ai_query`, AI Playground 미지원 |
 | TypeSafe AI Jev 1.14.0 | pay-per-token | 제공자 호스팅. 계정 관리자가 TypeSafe AI Models 프리뷰를 켜야 함. System One API 사용 |
+| Google Gemini 4 Hydrogen (`system.ai.gemini-4-hydrogen`) | pay-per-token (Chat Completions API) | Google Vertex AI로 제공. Databricks에서는 텍스트 입력만 지원. 글로벌 엔드포인트, 교차 지역 라우팅 필요 |
+| Google Gemini 4 Carbon (`system.ai.gemini-4-carbon`) | pay-per-token | Databricks 호스팅. Unity Gateway로만 사용 가능하며 `databricks-gemini-4-carbon` 서빙 엔드포인트 조회는 미지원. 추론을 끌 수 없음 |
+| Anthropic Claude Fable 5.2 (`system.ai.claude-fable-5-2`) | pay-per-token, AI Functions(배치 추론) | Amazon Bedrock을 통해 호스팅. Unity Gateway로만 사용 가능. 프롬프트와 응답을 30일 보존하며, 데이터 보존을 옵트아웃한 고객은 사용할 수 없음 |
 
 > **참고** 문서는 provisioned throughput이 "지원 아키텍처 계열의 모든 모델"을 포함한다고 설명하지만, 계열 목록은 다른 페이지에 있어 이 장에서 확인하지 못했습니다. 문서가 예약 provisioned throughput을 명시한 모델은 DeepSeek V4.1 Flash뿐입니다.
 
@@ -52,11 +55,13 @@ Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(fo
 
 | 항목 | 날짜·상태 (문서 원문) |
 |---|---|
-| DeepSeek V4 Pro (0813) | 2026-10-30 종료 |
-| Thinking Machine Labs Inkling | 2026-10-30 종료 |
-| DeepSeek V4 Flash (0731) | deprecated, 2026-11-05 종료 |
+| DeepSeek V4 Pro (0813) | 2026-10-30 종료. 권장 대체: DeepSeek V4.1 Flash (1017) |
+| Thinking Machine Labs Inkling | 2026-10-30 종료. 권장 대체: GLM 5.3 또는 Kimi K3 |
+| Moonshot AI Kimi K2.7 | 2026-10-30 종료. 권장 대체: Kimi K3 |
+| DeepSeek V4 Flash (0731) | 2026-11-05 종료. 권장 대체: DeepSeek V4.1 Flash (1017) |
+| Google Gemini 3.6 Flash | 2026-11-19 종료. 이날부터 API 호출이 같은 가격의 Gemini 3.8 Flash로 자동 리디렉션 |
 | DeepSeek V4.1 Flash | 2026-11-19 종료 |
-| Zhipu AI GLM 5.2 | 신규 워크로드에 권장하지 않음 (legacy) |
+| Zhipu AI GLM 5.2 | 신규 워크로드에 권장하지 않음 (legacy). deprecated, 2027-02-04 종료 예정. 권장 대체: GLM 5.3 |
 | Alibaba Cloud Qwen3.5 122B A10B, Qwen3-Embedding-0.6B, Qwen3-Next 80B A3B Instruct, Inkling | Public Preview |
 
 > **주의** 종료 날짜가 가까운 모델을 쓰는 코드는 대체 모델로 옮겨야 합니다. 대체 모델은 supported-models 페이지에서 고르십시오.
@@ -96,7 +101,7 @@ LIMIT 10
 | 제약 (문서) | 내용 |
 |---|---|
 | 지원 환경 | Databricks SQL Classic에서는 쓸 수 없다 |
-| 런타임 | Databricks Runtime 15.4 LTS 이상. 18.2 이상 권장 |
+| 런타임 | Databricks Runtime 15.4 LTS 이상. 18.2 이상 권장. 이 요구 사항은 AI Functions의 Databricks Runtime 17.3 LTS 이상 요구로 바뀔 예정 |
 | 리전 | 워크스페이스가 Model Serving 지원 리전에 있어야 한다 |
 | 과금 | Foundation Model 엔드포인트는 task 전용 함수처럼 과금된다. 커스텀·provisioned throughput 엔드포인트는 전용 서빙 컴퓨트로 과금된다 |
 | 배치 권장 | 배치 처리에는 `databricks-` 접두사의 호스팅 모델을 쓰고, provisioned throughput은 쓰지 않는다고 문서가 권장 |
@@ -156,7 +161,7 @@ REST 호출은 엔드포인트 호출 경로 `POST /serving-endpoints/{name}/inv
 ## 주의사항
 
 - **호출 한도를 확인하십시오.** 문서는 Foundation Model APIs 한도 페이지를 링크하지만, 페이지에는 수치가 없습니다. 이 장은 수치를 쓰지 않았습니다.
-- **종료 날짜를 코드 리뷰에 넣으십시오.** 2026-10-30, 11-05, 11-19 종료 항목이 있습니다.
+- **종료 날짜를 코드 리뷰에 넣으십시오.** 2026-10-30, 11-05, 11-19, 2027-02-04 종료 항목이 있습니다.
 - **Gemini 이미지 모델의 제외 기능을 확인하십시오.** `ai_query`와 배치 추론에서 쓸 수 없습니다.
 - **데이터 보존은 원문 문장만 인용하십시오.** 일부 모델(예: Claude Fable 5, 5.1)은 보존 정책이 다르다고 원문이 설명하며, 세부는 최신 공식 문서를 기준으로 확인하십시오.
 - **게이트웨이 정책을 함께 검토하십시오.** 사용량 추적, 한도, 가드레일은 [Unity Gateway](unity-gateway.md)에서 다룹니다.
@@ -169,3 +174,5 @@ REST 호출은 엔드포인트 호출 경로 `POST /serving-endpoints/{name}/inv
 - [Use foundation models (score-foundation-models)](https://docs.databricks.com/aws/en/machine-learning/model-serving/score-foundation-models)
 - [ai_query 함수](https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_query)
 - [AI Functions](https://docs.databricks.com/aws/en/large-language-models/ai-functions)
+- [Legacy, deprecated, and retired models 관련 릴리즈 노트 (2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november)
+- [Databricks release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)

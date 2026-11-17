@@ -1,6 +1,6 @@
 # Structured Streaming 기초
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
 
 ## 한눈에 보기
 
@@ -20,7 +20,7 @@ Structured Streaming은 Apache Spark의 스트리밍 엔진입니다. 공식 문
 
 | 모드 | 설명 (문서 원문 요지) |
 |---|---|
-| 실시간 모드 (real-time mode) | 서브 초 단위 워크로드용. 엔드투엔드 지연이 최소 5밀리초 수준. 트리거와 컴퓨트 설정으로 활성화 |
+| 실시간 모드 (real-time mode) | 서브 초 단위 워크로드용. 엔드투엔드 지연이 최소 5밀리초 수준. 트리거와 컴퓨트 설정으로 활성화. update 출력 모드만 지원. 소스는 Kafka·Event Hubs(Kafka 커넥터)·Kinesis·AWS MSK, 싱크는 Kafka·Event Hubs·`forEachWriter` 임의 싱크이며 Delta는 소스·싱크 모두 미지원 (reference 문서). 상태 저장 연산자(스트리밍 집계, `dropDuplicates`, `transformWithState`)도 Databricks에서 GA로 지원 (블로그) |
 | 마이크로 배치 모드 (micro-batch, 기본) | 분석과 ETL 파이프라인용. 데이터를 작은 배치로 나누어 처리하며, 컴퓨트 비용과 초·분 단위 지연 요구의 균형을 맞춤 |
 
 문서 개요 페이지에서 상세 설명(무한 테이블 모델 등)은 연결된 하위 페이지에 있습니다. 이 페이지는 실무에 필요한 항목만 정리합니다.
@@ -128,6 +128,8 @@ from pyspark.sql.functions import window
 
 이 예시는 `trigger(availableNow=True)`를 쓰므로 실행 후 종료합니다. 상시 실행이 필요하면 트리거를 바꾸거나 생략하고, 운영에서는 Lakeflow 파이프라인이나 Jobs를 쓰는 편이 관리하기 쉽습니다([스트리밍 테이블과 구체화된 뷰](pipelines-streaming-tables-and-mvs.md), [Lakeflow Jobs 태스크와 트리거](jobs-tasks-and-triggers.md) 참고).
 
+> **참고** Structured Streaming에서 Lakebase로 쓸 때 병합 전략(merge strategies)으로 upsert가 개별 컬럼을 갱신하는 방식을 정할 수 있습니다. 첫 값 또는 마지막 값 유지, null 무시, 정렬 컬럼 기준 값 선택이 가능하며 Databricks Runtime 19 이상이 필요합니다.
+
 ## 트레이드오프
 
 | 질문 | 권장 |
@@ -155,3 +157,7 @@ from pyspark.sql.functions import window
 - [Watermarks](https://docs.databricks.com/aws/en/structured-streaming/watermarks)
 - [Structured Streaming tutorial](https://docs.databricks.com/aws/en/structured-streaming/tutorial)
 - [Auto Loader (이 장)](auto-loader.md)
+- [Spark vs Flink (Databricks 블로그)](https://www.databricks.com/blog/spark-vs-flink)
+- [Introducing Apache Spark 4.3, now available in Databricks Runtime 19 (Databricks 블로그)](https://www.databricks.com/blog/introducing-apache-spark-43-now-available-databricks-runtime-19)
+- [Real-time mode reference](https://docs.databricks.com/aws/en/structured-streaming/real-time/reference)
+- [Control Lakebase sink upserts with merge strategies (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#control-lakebase-sink-upserts-with-merge-strategies)

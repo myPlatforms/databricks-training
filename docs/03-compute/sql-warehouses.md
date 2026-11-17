@@ -1,6 +1,6 @@
 # SQL 웨어하우스
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 SQL 웨어하우스(SQL warehouse)는 SQL 쿼리, 대시보드, BI 도구 연결을 위해 쓰는 컴퓨트입니다. 유형은 서버리스(Serverless), Pro, Classic 세 가지이고, 크기(T-shirt size)와 클러스터 수 범위를 정해 씁니다. 이 페이지는 세 유형의 차이, 크기와 클러스터 개념, 자동 확장과 자동 중지, 큐 동작, 설정 방법을 다룹니다. 서버리스 노트북과 Job의 컴퓨트는 [서버리스 컴퓨트](serverless-compute.md) 페이지에서 다룹니다.
 
@@ -33,7 +33,7 @@ SQL 쿼리는 노트북 Job과 다른 패턴을 가집니다. 많은 사용자�
 
 #### Lakehouse Real-Time (Beta)
 
-문서는 Lakehouse Real-Time(Lakehouse//RT)을 저지연·고동시성 워크로드용 서버리스 웨어하우스 유형으로 소개하며 상태는 **Beta** 입니다. 지원하는 쿼리는 `SELECT`뿐입니다. 운영 쿼리에 쓰기 전에 Beta 상태를 확인하십시오.
+문서는 Lakehouse Real-Time(Lakehouse//RT)을 저지연·고동시성 워크로드용 서버리스 웨어하우스 유형으로 소개하며 상태는 **Beta** 입니다. 지원하는 쿼리는 `SELECT`뿐입니다. Databricks 블로그는 Lakehouse//RT가 선택한 크기와 관계없이 노드 한 개 단위로도 용량을 늘릴 수 있다고 설명합니다. 운영 쿼리에 쓰기 전에 Beta 상태를 확인하십시오.
 
 ### 2.2 크기 (Cluster size)
 
@@ -62,7 +62,7 @@ Pro와 Classic의 크기별 구성은 문서 표 기준으로 다음과 같습�
 
 ### 2.3 클러스터 수와 자동 확장
 
-Pro와 Classic 웨어하우스는 생성 시 최소와 최대 클러스터 수를 정합니다. 문서는 클러스터 한 개당 동시 쿼리 10개 정도를 처리한다고 설명합니다. 동시 쿼리가 많아지면 클러스터를 더 씁니다.
+Pro와 Classic 웨어하우스는 생성 시 최소와 최대 클러스터 수를 정합니다. 문서는 Pro와 Classic에서 동시 쿼리 10개마다 클러스터 한 개를 권장합니다. 동시 쿼리가 많아지면 클러스터를 더 씁니다.
 
 | 동작 | Pro·Classic 문서 설명 |
 |---|---|
@@ -176,3 +176,4 @@ databricks warehouses list --profile <PROFILE_NAME>
 - [SQL warehouse 생성 (AWS)](https://docs.databricks.com/aws/en/compute/sql-warehouse/create)
 - [웨어하우스 REST API 레퍼런스 (생성)](https://docs.databricks.com/api/workspace/warehouses/create)
 - [2026년 9월 릴리즈 노트 — Query tags for SQL warehouses GA (AWS)](https://docs.databricks.com/aws/en/release-notes/product/2026/september)
+- [Lakehouse//RT: scale real-time analytics, not your bill (Databricks 블로그)](https://www.databricks.com/blog/lakehousert-scale-real-time-analytics-not-your-bill)

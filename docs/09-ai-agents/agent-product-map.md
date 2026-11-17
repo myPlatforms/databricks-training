@@ -1,6 +1,6 @@
 # Databricks 에이전트 제품 지도
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 왜 필요한가
 
@@ -44,7 +44,7 @@ Agent Bricks FAQ는 두 방식 사이의 선택 기준을 한 줄로 정리합�
 | 대체 경로 | 기존 LangGraph 또는 OpenAI Agents SDK 코드는 `agentbricks init --existing`으로 이전. 레거시 에이전트 서버는 CLI 프로젝트로 옮기도록 안내 |
 | 제약 | 배포된 에이전트의 서버 종류는 바꿀 수 없음. 바꾸려면 새 프로젝트를 새 이름으로 배포 |
 
-프레임워크 옵션은 `langgraph`와 `openai` 두 가지입니다. 서버 옵션은 `agentbricks`(DurableAgentServer)와 `custom` 두 가지이며, `agent.toml`의 `server` 값으로 정합니다. 문서는 서버 종류를 바꾸려면 `agentbricks init --server`로 새 프로젝트를 만들라고 안내합니다. `--existing` 이전에는 `custom` 서버를 쓸 수 없습니다. 자세한 명령은 [Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md)에 있습니다.
+프레임워크 옵션은 `langgraph`와 `openai` 두 가지입니다. 서버 옵션은 `agentbricks`(DurableAgentServer)와 `custom` 두 가지이며, `agent.toml`의 `server` 값으로 정합니다. 문서는 서버 종류를 바꾸려면 `agentbricks init --server`로 새 프로젝트를 만들라고 안내합니다. `--existing` 이전에는 `custom` 서버를 쓸 수 없습니다. Agent Bricks 개념 문서는 **Databricks Sandbox** 를 에이전트가 작성한 코드를 Unity Catalog 권한으로 접근이 통제되는 격리 환경에서 실행하는 도구로 설명합니다. 자세한 명령은 [Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md)에 있습니다.
 
 ### 2. Genie Agents (구 Genie Spaces)
 
@@ -52,7 +52,7 @@ Agent Bricks FAQ는 두 방식 사이의 선택 기준을 한 줄로 정리합�
 |---|---|
 | 무엇 | 데이터셋(UC 테이블, 뷰, 메트릭 뷰, 구체화 뷰), 지식 저장소, 지침, 예시 SQL, SQL 함수, 신뢰 자산, 벤치마크로 구성되는 도메인 채팅 에이전트 |
 | 언제 | 정형 데이터에 대해 한 번의 SQL로 답할 수 있는 질문. 복잡한 탐색형 질문은 Agent 모드. 파일과 외부 도구는 Agent 모드 필요 |
-| 상태 | 제품 라벨 없음. 기능별로 Inspect는 Public Preview, Flash는 Beta, 볼륨 접근은 Beta, Agent 모드는 리전 가용성이 다름 |
+| 상태 | 제품 라벨 없음. 기능별로 Inspect는 Public Preview, Flash는 Beta, 볼륨 접근은 Public Preview, Agent 모드는 리전 가용성이 다름 |
 | 대체 경로 | Knowledge Assistant의 대체(문서 권장). 코드가 필요하면 Agent Bricks CLI |
 | 제약 | Chat 모드는 정형 데이터만 다룸. 사용자가 권한이 없는 데이터를 물으면 빈 응답. 생성 쿼리는 항상 읽기 전용 |
 
@@ -108,7 +108,7 @@ Databricks Apps의 정의는 다음과 같습니다. "Databricks Apps enables de
 
 | 항목 | 내용 |
 |---|---|
-| 새 에이전트 배포 | Agent Runtime. 배포마다 `agent-bricks-<name>`이라는 앱이 생기고 고유 URL을 가짐 |
+| 새 에이전트 배포 | Agent Runtime. 배포마다 `agent-bricks-<name>`이라는 앱이 생기고 고유 URL을 가짐. 여러 인스턴스에 걸쳐 에이전트를 확장 실행할 수 있음(Databricks Apps 수평 확장) |
 | 실행 위치 설명 | 배포 페이지는 Agent Runtime이 "runs your agent on Databricks Apps"라고 설명. Agent Runtime 페이지는 "runs your agent on Databricks-hosted serverless compute"라고 설명 |
 | 상태 | 두 페이지 모두 Agent Runtime의 상태 라벨 없음 |
 | 레거시 배포 | Model Serving (legacy). 기존 에이전트는 Databricks Apps 이전 가이드 참고 |

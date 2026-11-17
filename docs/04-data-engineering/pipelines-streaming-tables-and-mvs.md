@@ -1,6 +1,6 @@
 # 스트리밍 테이블과 구체화된 뷰
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -37,6 +37,8 @@ Lakeflow 파이프라인(Lakeflow pipelines)은 **무엇을 만들지** 만 선�
 | AUTO CDC flow | 변경 데이터 캡처(CDC) 데이터를 반영. 이전 이름은 "apply changes". 하나의 스트리밍 테이블에 여러 AUTO CDC 흐름 가능 | 상세는 [Expectations와 AUTO CDC](pipelines-expectations-and-cdc.md) 참고 |
 | Update flow | 전역 비워터마크 스트리밍 집계를 싱크로 출력. 각 배치에서 바뀐 레코드만 출력 | **Public Preview**. Python에서만 사용 가능 |
 
+> **참고** 흐름은 Unity Catalog의 보안 개체(securable object)입니다(Beta). 개별 흐름에 조회, 새로 고침, 관리 권한을 부여할 수 있습니다. 릴리즈 노트는 흐름에 `READ FLOW`, `REFRESH FLOW`, `WRITE FLOW`, `APPLY TAG`, `MANAGE`를, 스키마에 `CREATE FLOW`를 부여할 수 있다고 설명합니다. Beta 참여는 Databricks 계정 팀에 문의합니다.
+
 > **참고** 문서는 Backfill(과거 데이터 채우기)을 별도로 정의된 흐름의 사용 사례로 소개하고 "Backfilling historical data with pipelines" 항목으로 연결합니다. 세부 구문은 이 페이지에서 다루지 않습니다.
 
 ### 파이프라인 종류 표기
@@ -44,7 +46,7 @@ Lakeflow 파이프라인(Lakeflow pipelines)은 **무엇을 만들지** 만 선�
 | 파이프라인 유형 | 의미 |
 |---|---|
 | `ETL` | 파이프라인 안에 정의된 스트리밍 테이블과 구체화된 뷰 |
-| `MV/ST` | 독립형(standalone) 스트리밍 테이블·구체화된 뷰. Databricks가 이를 갱신하는 파이프라인을 자동으로 만듦 |
+| `MV/ST` | 독립형(standalone) 스트리밍 테이블·구체화된 뷰. Databricks가 이를 갱신하는 파이프라인을 자동으로 만듦. 서버리스 범용 컴퓨트의 노트북에서 독립형 구체화된 뷰·스트리밍 테이블을 만들고 갱신하는 기능은 GA이며, `spark.sql()`의 SQL이나 Python 파이프라인 데코레이터로 정의함 |
 
 Jobs & Pipelines 목록의 "Pipeline type" 열에서 확인할 수 있습니다.
 
@@ -88,6 +90,8 @@ def users():
 
 dp.create_streaming_table("users_history")
 ```
+
+> **참고** What's coming 문서에 따르면, 이후 릴리즈에서 Python Lakeflow 파이프라인이 부분 스키마 추론(partial schema inference)을 Beta로 지원할 예정입니다. `table`, `materialized_view`, `create_streaming_table`의 `override_schema` 인수로 타입·제약·주석을 직접 정할 컬럼만 선언할 수 있게 되고, 나머지 컬럼은 쿼리 출력에서 추론합니다.
 
 ### 구체화된 뷰 (Python)
 
@@ -147,7 +151,7 @@ CREATE OR REPLACE MATERIALIZED VIEW regional_sales
 - **조인의 한계**: 스트리밍 테이블은 조인 상대 차원이 나중에 바뀌어도 과거 결과를 다시 계산하지 않습니다. 차원 변경을 반영해야 하면 구체화된 뷰가 맞습니다.
 - **CLONE 불가**: 스트리밍 테이블은 deep·shallow clone의 원본이나 대상으로 쓸 수 없다고 문서가 명시합니다.
 - **REFRESH 권한**: 관리자가 아닌 사용자가 스트리밍 테이블을 보려면 해당 테이블에 `REFRESH` 권한과 파이프라인 권한이 필요합니다.
-- **저지연**: 밀리초 단위 엔드투엔드 지연이 필요하면 문서는 실시간 모드(real-time mode)를 안내합니다. [Structured Streaming 기초](structured-streaming-basics.md) 참고.
+- **저지연**: 밀리초 단위 엔드투엔드 지연이 필요하면 문서는 실시간 모드(real-time mode)를 안내합니다. Lakeflow 파이프라인의 실시간 모드는 클래식 컴퓨트와 서버리스 컴퓨트에서 GA이며, 엔드투엔드 지연이 5밀리초까지 낮아야 하는 운영 워크로드(예: 사기 탐지)용입니다. 블로그는 실시간 모드에 update flow가 필요하다고 설명합니다. [Structured Streaming 기초](structured-streaming-basics.md) 참고.
 - **네이밍**: 원천 노트북을 바꾸면서 테이블 이름을 같이 바꾸면 기존 테이블과의 연속성이 끊깁니다. 이름 변경 전 영향 범위를 확인하십시오.
 
 ## 참고 문서
@@ -160,3 +164,8 @@ CREATE OR REPLACE MATERIALIZED VIEW regional_sales
 - [CREATE STREAMING TABLE (SQL)](https://docs.databricks.com/aws/en/ldp/developer/ldp-sql-ref-create-streaming-table)
 - [Lakeflow 파이프라인 튜토리얼 (tutorial-get-started)](https://docs.databricks.com/aws/en/ldp/tutorial-get-started)
 - [What happened to Delta Live Tables (DLT)?](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)
+- [Real-time mode in Lakeflow pipelines is now generally available (릴리즈 노트, 2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#real-time-mode-in-lakeflow-pipelines-is-now-generally-available)
+- [Standalone pipelines on serverless general compute are now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#standalone-pipelines-on-serverless-general-compute-are-now-generally-available)
+- [What's coming — Partial schema inference for Python Lakeflow pipelines](https://docs.databricks.com/aws/en/release-notes/whats-coming#partial-schema-inference-for-python-lakeflow-pipelines)
+- [Flows are securable objects in Unity Catalog (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#flows-are-securable-objects-in-unity-catalog-beta)
+- [Announcing General Availability of Real-Time Mode on Spark Declarative Pipelines (Databricks 블로그)](https://www.databricks.com/blog/announcing-general-availability-real-time-mode-spark-declarative-pipelines-databricks)

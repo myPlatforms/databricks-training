@@ -1,6 +1,6 @@
 # 데이터 공유와 Clean Rooms
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -58,6 +58,7 @@ Clean Rooms는 "데이터를 합치지 않고 분석 결과만 얻고 싶다"는
 
 - 기본값은 Databricks Runtime 16.2 이상에서 `WITH HISTORY`, 그 이전 버전에서는 `WITHOUT HISTORY`입니다.
 - 삭제 벡터(deletion vectors)나 열 매핑(column mapping)이 켜진 테이블은 `WITH HISTORY`로 공유해야 합니다.
+- 뷰도 `ALTER SHARE ... ADD VIEW`와 `ALTER SHARE ... ALTER VIEW`에서 `WITH HISTORY`와 `WITHOUT HISTORY` 절을 받습니다(Databricks Runtime 19, Databricks SQL 2026.45). 기존 이력 기본값은 바뀌지 않습니다.
 - 일부 테이블은 공유할 수 없습니다. 공식 문서는 공유할 수 없는 테이블 목록을 별도 페이지로 안내합니다.
 
 ### Clean Rooms 구조
@@ -71,7 +72,7 @@ Clean Rooms는 "데이터를 합치지 않고 분석 결과만 얻고 싶다"는
 | 노트북 | 중앙 Clean Room에서 공유 데이터를 처리하는 코드. 모든 노트북은 참여자 승인을 받아야 실행됩니다. 최신 버전만 실행할 수 있습니다. |
 | 출력(Output) | 노트북이 만든 출력 테이블. 각 참여자의 메타스토어에 임시 읽기 전용으로 나타납니다. |
 
-Clean Room의 신뢰 모델은 "모든 참여자가 동등한 권한"입니다. 생성자도 특별한 권한이 없고, 노트북은 다른 참여자의 승인이 있어야 돌아갑니다. 패키지형 Clean Room은 예외로 프로바이더와 소비자 모델을 쓴다고 공식 문서가 설명합니다.
+Clean Room의 신뢰 모델은 "모든 참여자가 동등한 권한"입니다. 생성자도 특별한 권한이 없고, 노트북은 다른 참여자의 승인이 있어야 돌아갑니다. 패키지형 Clean Room과 Genie Clean Rooms(Beta)는 예외로, 참여자 권한이 동등하지 않은 프로바이더와 소비자 모델을 쓴다고 공식 문서가 설명합니다.
 
 다음은 공식 문서가 밝힌 **보이는 것과 보이지 않는 것** 의 구분입니다.
 
@@ -156,10 +157,13 @@ REVOKE SELECT ON SHARE <share-name> FROM RECIPIENT <recipient-name>;
 | 이메일로 OpenSharing 수신자 초대 | Beta (2026-09-22 공지) | 공식 문서, 릴리즈 노트 |
 | Clean Room: 공유 출력 | GA (2026-10-13 공지) | 릴리즈 노트 |
 | Clean Room: JAR 워크로드 | GA (2026-10-13 공지) | 릴리즈 노트 |
-| Clean Room: 서버리스 GPU 노트북 | GA (2026-10-28 공지) | 릴리즈 노트 |
+| Clean Room: 서버리스 GPU 노트북 | GA (2026-10-28 공지). 2026-11-26 이후 Enterprise 가격 등급 계정에서 기본으로 켜질 예정이며, 그 전에는 계정 관리자가 계정 콘솔 Previews에서 Clean Rooms AI Runtime을 켬 | 릴리즈 노트, What's coming |
+| Marketplace 메트릭 뷰 리스팅 | GA (2026-11-05 공지). 공유된 메트릭 뷰는 Databricks 수신자만 사용 가능 | 릴리즈 노트 |
+| 공유받은 뷰·구체화된 뷰·스트리밍 테이블에 수신자가 ABAC 행 필터·열 마스크 적용 | 공유 뷰는 Beta이며 ABAC on views 프리뷰 필요 (2026-10-29 공지) | 릴리즈 노트 |
+| Genie Clean Rooms | Beta | 공식 문서 |
 | Clean Room: 신원 해석 프로바이더를 한 단계로 생성 | GA (2026-10-13 공지) | 릴리즈 노트 |
 
-> **참고** Clean Rooms 페이지 자체에는 상태 라벨이 없습니다(마지막 업데이트 2026-10-08). 위 표의 GA는 개별 릴리즈 노트 항목의 표기이며, Clean Rooms 기능 전체의 상태로 읽지 마십시오.
+> **참고** Clean Rooms 페이지 자체에는 상태 라벨이 없습니다(마지막 업데이트 2026-11-04). 위 표의 GA는 개별 릴리즈 노트 항목의 표기이며, Clean Rooms 기능 전체의 상태로 읽지 마십시오.
 
 ### Clean Rooms 요구 사항과 제약
 
@@ -178,7 +182,7 @@ REVOKE SELECT ON SHARE <share-name> FROM RECIPIENT <recipient-name>;
 
 > **주의** Clean Room 노트북은 참여자 승인을 받아야 실행되고, 최신 버전만 실행된다고 공식 문서가 설명합니다. 노트북을 고친 뒤의 승인 흐름을 참여자와 미리 합의하십시오.
 
-- 공유 자산에 열 마스크나 행 필터가 걸려 있을 때의 동작은 이 장에서 확인한 원문에 명시되지 않았습니다. 공유 설계 전에 공식 문서의 공유 페이지에서 직접 확인하십시오.
+- 테이블 수준 행 필터·열 마스크가 있는 테이블은 OpenSharing으로 공유할 수 없고, ABAC 기반 행 필터·열 마스크가 있는 테이블은 공유 소유자가 정책에서 제외(exempt)되어 있을 때만 공유할 수 있습니다. 제공자의 정책은 수신자의 접근을 통제하지 않으므로, 수신자가 공유받은 테이블, 뷰(Beta), 구체화된 뷰, 스트리밍 테이블에 자체 ABAC 정책을 적용합니다([행 필터와 열 마스크](row-filters-and-column-masks.md) 참고).
 - 공유 감사와 모니터링은 공식 문서의 Audit and monitor 페이지에 있으며, 감사 로그와 시스템 테이블 세부는 12장에서 다룹니다.
 - 참여자에게 돌아가는 결과는 노트북이 만든 출력 테이블입니다. 원본 데이터를 직접 내려받는 설계는 Clean Rooms 목적과 맞지 않으므로, 결과 테이블 설계를 먼저 하십시오.
 
@@ -193,3 +197,10 @@ REVOKE SELECT ON SHARE <share-name> FROM RECIPIENT <recipient-name>;
 - [Resource limits](https://docs.databricks.com/aws/en/resources/limits)
 - [Databricks release notes, September 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/september)
 - [Databricks release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Databricks Runtime 19 릴리즈 노트](https://docs.databricks.com/aws/en/release-notes/runtime/19#databricks-runtime-19-november-2-2026)
+- [Apply ABAC policies to shared views, materialized views, and streaming tables](https://docs.databricks.com/aws/en/release-notes/product/2026/october#apply-abac-policies-to-shared-views-materialized-views-and-streaming-tables)
+- [Metric view listings are generally available in Databricks Marketplace](https://docs.databricks.com/aws/en/release-notes/product/2026/november#metric-view-listings-are-generally-available-in-databricks-marketplace)
+- [What's coming — Serverless GPU in clean rooms](https://docs.databricks.com/aws/en/release-notes/whats-coming#serverless-gpu-in-clean-rooms-will-soon-be-on-by-default-for-accounts-where-its-turned-off)
+- [Row filters and column masks](https://docs.databricks.com/aws/en/tables/row-and-column-filters)
+- [ABAC requirements](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/requirements)
+- [Databricks SQL release notes 2026](https://docs.databricks.com/aws/en/sql/release-notes/2026)

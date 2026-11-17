@@ -1,6 +1,6 @@
 # 도구: UC 함수와 MCP 서버
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
 
 ## 왜 필요한가
 
@@ -28,11 +28,13 @@ Unity Gateway에 등록된 시스템 MCP 서비스는 URL 패턴 `https://<works
 | MCP | 상태 | 조건 |
 |---|---|---|
 | `system.ai.genie_one_mcp` (Genie One) | generally available | Unity Gateway 권한과 정책, 기반 리소스 권한 필요 |
-| `system.ai.dbsql` (Databricks SQL) | Unity Gateway Beta | 계정 관리자가 계정 콘솔 Previews에서 Unity Gateway 베타를 켬. 호출자의 UC 권한과 웨어하우스 권한 사용 |
-| `system.ai.web_search` | Unity Gateway Beta | 같은 베타 필요. HIPAA/BAA 규정 준수 설정이 켜져 있으면 사용 불가 |
-| `system.ai.sandbox` | Unity Gateway Beta | 같은 베타 필요. 네트워크 송신 없음 |
+| `system.ai.dbsql` (Databricks SQL) | Beta | 계정 관리자가 계정 콘솔 Previews에서 **Enhanced Unity Gateway** 프리뷰를 켬. 호출자의 UC 권한과 웨어하우스 권한 사용 |
+| `system.ai.web_search` | Beta | 같은 프리뷰 필요. HIPAA/BAA 규정 준수 설정이 켜져 있으면 사용 불가 |
+| `system.ai.sandbox` | Beta | 같은 프리뷰 필요. 네트워크 송신 없음 |
 
-외부 서비스 MCP(`system.ai.slack`, `system.ai.github`, `system.ai.atlassian`, `system.ai.google_drive`, `system.ai.google_calendar`, `system.ai.gmail`, `system.ai.microsoft_365`)는 페이지에 상태 라벨이 없습니다. GitHub는 기본으로 공개 저장소만 읽고, 비공개 저장소나 쓰기 작업에는 GitHub 커넥터 앱 설치가 필요하다고 문서가 설명합니다.
+Unity Gateway 자체는 generally available입니다. Beta인 것은 위 세 MCP입니다.
+
+외부 서비스 MCP(`system.ai.slack`, `system.ai.github`, `system.ai.atlassian`, `system.ai.asana`, `system.ai.google_drive`, `system.ai.google_calendar`, `system.ai.gmail`, `system.ai.microsoft_365`)는 페이지에 상태 라벨이 없습니다. GitHub는 기본으로 공개 저장소만 읽고, 비공개 저장소나 쓰기 작업에는 GitHub 커넥터 앱 설치가 필요하다고 문서가 설명합니다.
 
 워크스페이스 MCP 엔드포인트는 Public Preview이며, 워크스페이스 관리자가 Previews 페이지에서 **Managed MCP Servers** 를 켜야 합니다.
 
@@ -82,7 +84,7 @@ Databricks Apps로 MCP 서버를 올리면 에이전트가 붙을 HTTPS URL이 �
 3. 앱 이름에 `mcp-` 접두사를 붙입니다. 예: `mcp-my-server`. 접두사가 있어야 AI Playground가 이 서버를 인식합니다.
 4. 배포가 끝나면 앱 URL 뒤에 `/mcp`를 붙입니다.
 
-템플릿에는 `health` 도구가 들어 있습니다. 도구를 추가하려면 `server/tools.py`의 `load_tools(mcp_server)` 안에 다음을 넣습니다.
+템플릿에는 서버 동작을 확인하는 `health` 도구와 호출한 사용자의 신원을 돌려주는 `get_current_user` 도구가 들어 있습니다. `get_current_user`는 앱에 사용자 권한 범위(user authorization scopes)가 있을 때만 동작합니다. 도구를 추가하려면 `server/tools.py`의 `load_tools(mcp_server)` 안에 다음을 넣습니다.
 
 ```python
 @mcp_server.tool
@@ -123,6 +125,12 @@ command: ['python', 'server.py']
 ### 에이전트에서 MCP 도구 호출
 
 Python 에이전트가 MCP 도구를 쓰는 기본 구성은 다음과 같습니다. 문서가 예시로 드는 패키지는 `databricks-mcp`(`DatabricksMCPClient`)와 `databricks-sdk`(`WorkspaceClient`)입니다. MCP 클라이언트는 `list_tools()`로 도구 이름, 설명, 입력 스키마를 얻고, `call_tool(tool_name, arguments)`로 호출합니다. 결과는 `structuredContent` 또는 `content` 블록에 오므로, 사용 전에 `isError`를 확인하라고 문서가 안내합니다.
+
+Agent Bricks CLI로 에이전트를 만들 때는 `agentbricks tools add mcp <catalog>.<schema>.<service>` 로 MCP 서비스를 프로젝트에 추가합니다. 내장 `system.ai` 서비스와 다른 카탈로그·스키마의 MCP 서비스도 받으며, 서비스가 있는지 확인한 뒤 `agent.toml`에 도구를 기록합니다. 에이전트는 런타임에 도구에 연결하므로 연결 코드를 쓰지 않습니다.
+
+```bash
+agentbricks tools add mcp main.tools.ticket_search --name tickets
+```
 
 Claude Code, Codex, Cursor 같은 코딩 에이전트에 연결하는 방법은 `ug mcp add --names "app:mcp-my-server"` 명령으로 안내됩니다. 코딩 에이전트 구성은 [11장 Genie Code](../11-developer-tools/genie-code/README.md)와 함께 보십시오.
 
@@ -170,7 +178,7 @@ Claude Code, Codex, Cursor 같은 코딩 에이전트에 연결하는 방법은 
 - **Global Search에 안 보임**: Unity Catalog 전역 검색에는 MCP가 나오지 않으므로 MCPs 페이지에서 찾습니다.
 - **OpenAPI 명세 위치**: `spec.json`은 볼륨 루트에 있어야 하고, OpenAPI 3.x 형식이어야 합니다.
 - **서버 요구사항**: Streamable HTTP, `0.0.0.0` listen, `DATABRICKS_APP_PORT` 사용을 지키지 않으면 배포가 동작하지 않습니다.
-- **Beta 항목 주의**: `system.ai.dbsql`, `system.ai.web_search`, `system.ai.sandbox`는 계정 베타가 필요합니다. 고객 환경에서 쓰기 전에 베타 활성 여부를 확인하십시오.
+- **Beta 항목 주의**: `system.ai.dbsql`, `system.ai.web_search`, `system.ai.sandbox`는 계정 콘솔의 Enhanced Unity Gateway 프리뷰가 필요합니다. 고객 환경에서 쓰기 전에 베타 활성 여부를 확인하십시오.
 
 ## 참고 문서
 

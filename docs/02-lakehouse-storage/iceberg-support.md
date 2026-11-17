@@ -1,6 +1,6 @@
 # Apache Iceberg 지원
 
-> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
 
 Apache Iceberg는 Delta Lake와 같은 오픈 테이블 포맷이지만, 여러 엔진이 같은 테이블을 읽고 쓰는 시나리오에 더 초점을 둔 포맷입니다. Databricks는 Unity Catalog 안에서 Iceberg 테이블을 **관리형(Managed)** 으로 만들 수 있고, Iceberg REST 카탈로그 API를 통해 외부 Iceberg 엔진이 접근하게 할 수 있습니다. 또한 Delta 테이블에 Iceberg 메타데이터를 덧붙여 Iceberg 클라이언트가 읽게 하는 방법도 있습니다. 이 페이지는 세 가지 경로를 구분하고, 외부 클라이언트가 할 수 있는 작업을 표로 정리합니다.
 
@@ -30,7 +30,7 @@ Iceberg를 Unity Catalog와 함께 쓰면 하나의 테이블을 여러 엔진�
 
 ### Iceberg REST 카탈로그 (IRC)
 
-외부 Iceberg 클라이언트는 Unity Catalog의 Iceberg REST 카탈로그 API로 접근합니다. 엔드포인트 경로 패턴은 `/api/2.1/unity-catalog/iceberg-rest`이며, 인증은 Databricks 개인 액세스 토큰(PAT) 또는 OAuth를 사용합니다.
+외부 Iceberg 클라이언트는 Unity Catalog의 Iceberg REST 카탈로그 API로 접근합니다. 엔드포인트 경로 패턴은 `/api/2.1/unity-catalog/iceberg-rest`이며, 인증은 Databricks 개인 액세스 토큰(PAT) 또는 OAuth를 사용합니다. Iceberg 클라이언트는 Unity Catalog의 테이블 태그와 컬럼 태그도 읽을 수 있으며, Iceberg REST 카탈로그를 통한 뷰 외부 접근(Iceberg 호환 테이블 위의 Unity Catalog 뷰 조회)은 **Beta** 이며(2026-11-13 릴리즈 노트), 방법은 "External access to views" 문서에서 다룹니다.
 
 ### 외부 클라이언트가 할 수 있는 작업
 
@@ -200,6 +200,7 @@ ALTER TABLE main.sales.orders SET TBLPROPERTIES (
 - **테이블 유형을 먼저 정합니다.** 외부 엔진의 쓰기 필요 여부에 따라 관리형 Iceberg와 UniForm 중 무엇을 쓸지 달라지므로, 설계 단계에서 쓰기 주체를 확정하십시오. 두 방식 사이의 전환 절차는 이 장의 문서 범위에서 확인하지 않았습니다.
 - **외부 클라이언트의 DELETE·UPDATE·MERGE 모드를 확인합니다.** Copy-on-write 또는 삭제 벡터 기록 방식을 지원하지 않는 엔진은 실패합니다.
 - **UniForm을 켠 테이블에 삭제 벡터를 켜지 않습니다.** 공식 문서가 금지하는 조합입니다(Iceberg v3 테이블 제외).
+- **관리형 테이블은 이름으로만 접근합니다.** 공식 문서는 Unity Catalog 관리형 테이블의 경로 기반 접근이 Unity Catalog 접근 제어를 우회하므로 지원되지 않으며, 런타임이나 오픈소스 클라이언트 버전에 따라 데이터 손상이나 손실을 일으킬 수 있다고 경고합니다. 외부 클라이언트에 경로로 읽기 접근을 줘야 하면 읽기 전용 복사본을 만드는 Compatibility Mode를 씁니다.
 - **Iceberg 클라이언트의 기능 지원 범위를 확인합니다.** 공식 문서도 "개별 Iceberg 클라이언트는 자체 제한이 있을 수 있다"고 설명합니다.
 - **상태 라벨을 발표 자료에 그대로 옮기지 않습니다.** 같은 기능이라도 기능 페이지, 릴리스 노트, 구 명칭 문서의 표기가 다를 수 있습니다.
 
@@ -214,3 +215,4 @@ ALTER TABLE main.sales.orders SET TBLPROPERTIES (
 - [Transactions](https://docs.databricks.com/aws/en/transactions)
 - [Use liquid clustering for tables](https://docs.databricks.com/aws/en/delta/clustering)
 - [CREATE TABLE [USING]](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)
+- [External access to views through the Iceberg REST catalog is in Beta (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#external-access-to-views-through-the-iceberg-rest-catalog-is-in-beta)

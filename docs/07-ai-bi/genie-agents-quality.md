@@ -1,6 +1,6 @@
 # Genie Agents 신뢰도 높이기
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
 
 ## 한눈에 보기
 
@@ -172,6 +172,8 @@ GROUP BY region
 
 Agent mode는 LLM 판정기가 평가 메모에 맞는지 보고 Good을 줍니다.
 
+벤치마크 질문은 병렬로 실행되므로 벤치마크 평가가 더 빨리 끝납니다.
+
 실행 결과는 **Evaluations** 탭에 실행 시각, 실행 상태, 정확도 점수, 생성자와 함께 나열됩니다. 실행 상태는 completed, paused, unsuccessful 등입니다. 실행 상세는 **1주일** 간 보관된다고 문서에 나옵니다.
 
 > **주의** 벤치마크 실행 상세가 1주일 뒤 사라진다는 점을 운영 절차에 넣으십시오. 장기 추세가 필요하면 결과를 별도로 기록해 두어야 합니다. 이 장은 보관 방식을 추가로 확인하지 않았습니다.
@@ -180,6 +182,7 @@ Agent mode는 LLM 판정기가 평가 메모에 맞는지 보고 Good을 줍니�
 
 **Monitor** 탭은 사용자가 한 질문과 답을 보여 줍니다. 시간, 평가, 사용자, 상태로 걸러 볼 수 있고, 항목을 열어 전체 대화를 읽을 수 있습니다.
 
+- 앱이 OAuth 사용자 지정 ID 클레임(custom identity claim)으로 에이전트를 조회하면, 열 선택기에서 **Custom claim** 열을 켜 각 메시지를 앱의 어느 최종 사용자가 보냈는지 볼 수 있습니다.
 - 사용자는 응답을 **Yes**, **Fix it**, **Request review** 로 평가할 수 있습니다. 표시된 항목은 Monitor 페이지에 모입니다.
 - **Weekly digest** 는 메시지 양, 활성 사용자, 좋아요·싫어요 피드백을 보여 줍니다.
 - **Analyze Agent Usage** 는 Genie Code를 써서 최근 **6개월** 의 활동을 요약합니다. 2026-09-17 릴리즈 노트는 작성자가 Monitor 탭에서 최대 6개월의 에이전트 활동을 요약할 수 있다고 기록합니다.
@@ -205,7 +208,7 @@ Agent mode는 LLM 판정기가 평가 메모에 맞는지 보고 Good을 줍니�
 - **벤치마크를 변경 전후로 돌립니다.** 설정을 바꾸면 벤치마크를 다시 실행하는 것을 변경 절차로 삼으십시오.
 - **영어 프롬프트가 기본 경로입니다.** 문서는 비영어 프롬프트가 영어 시스템 프롬프트로 감싸져 응답이 영어로 나올 수 있다고 설명합니다.
 - **Flash 리전 제약을 확인합니다.** 문서는 미국·EU 외 워크스페이스에서 Flash가 cross-Geo 처리를 요구한다고 설명합니다. 데이터 거주 요구가 있으면 설계 전에 확인하십시오.
-- **라벨을 확인합니다.** Flash(Beta), Inspect(Public Preview), Genie Ontology 기본 활성화(Public Preview, 2026-08-06 릴리즈 노트)는 기능별로 다릅니다.
+- **라벨을 확인합니다.** Flash(Beta), Inspect(Public Preview)처럼 기능별로 다릅니다. Genie Ontology는 GA(generally available)입니다(2026년 11월 릴리즈 노트).
 
 ## 참고 문서
 
@@ -215,3 +218,4 @@ Agent mode는 LLM 판정기가 평가 메모에 맞는지 보고 Good을 줍니�
 - [Genie Agent 만들기와 관리](https://docs.databricks.com/aws/en/genie-agents/set-up)
 - [AI/BI 릴리즈 노트 (2026)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026)
 - [권한 모델과 소유권 (06장)](../06-unity-catalog/privileges-and-ownership.md)
+- [Genie Ontology is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-ontology-is-now-generally-available)

@@ -1,6 +1,6 @@
 # 모드·기능과 데이터 접근 권한
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100
 
 ## 왜 필요한가
 
@@ -35,7 +35,7 @@ Genie Code는 한 에이전트가 여러 화면을 가로지르며 **Unity Catal
 
 | 축 | 값 | 요구 사항·설명 |
 |----|----|----------------|
-| 에이전트 기능 | Genie Code agentic capabilities | 파트너 AI 기능(Partner-powered AI features)이 켜져 있어야 합니다. 꺼져 있으면 **agentic capabilities 없이**, Databricks 호스팅 모델로 동작한다고 문서에 나옵니다. |
+| 에이전트 기능 | Genie Code agentic capabilities | 파트너 AI 기능(Partner-powered AI features)이 켜져 있어야 합니다. 꺼져 있으면 **agentic capabilities 없이**, Databricks 호스팅 모델로 동작한다고 문서에 나옵니다. 켜져 있으면 테이블·컬럼 이름, 설명, 작업 중인 코드에 더해 테이블 데이터 샘플과 셀 출력도 모델에 보냅니다. compliance security profile 워크스페이스에서는 가용성이 컴플라이언스 표준에 따라 다릅니다. |
 | 승인 방식 | Ask first / Auto-approve | 아래 "승인" 절 참고 |
 | 응답 방식 | 대화형 답변 | 문서 개요는 작업을 실행하지 않고 대화형 답변만 받을 수 있다고 설명합니다. 전환 방법은 문서에 자세히 나오지 않습니다. |
 
@@ -93,16 +93,20 @@ Genie Code는 세션을 넘어 지속될 가치가 있는 사실을 기억합니
 | 노트북 | AI-based autocomplete, Diagnose Error, Quick Fix | 자동완성, 오류 진단, 수정안 제시 후 수락·실행 |
 | 노트북 | Serverless code execution | 서버리스 실행 |
 | Lakeflow Pipelines | Pipeline development in Lakeflow | ETL 워크로드와 Lakeflow 파이프라인 작성 |
-| SQL | Genie Ontology (Public Preview), Explore sample data | 지표 정의와 조인 힌트 등 비즈니스 맥락 검색, 샘플 데이터 탐색용 SQL 생성 |
+| SQL | Genie Ontology, Explore sample data | 지표 정의와 조인 힌트 등 비즈니스 맥락 검색, 샘플 데이터 탐색용 SQL 생성 |
 | 문서 처리 | Document processing | 비정형 문서를 파싱·분류·추출하는 파이프라인 구축과 점검 (릴리즈 노트 2026-09-25). `ai_parse_document`, `ai_classify`, 인용(citation)과 신뢰도 점수(confidence score)를 포함한 `ai_extract`로 Lakeflow job을 만들고, 라벨 테이블 기준 필드별 평가(Measure), 수정안 제시(Improve), 재평가(Re-evaluate) 루프를 자동화합니다. 수정안은 승인 후 적용되는 diff로 제시됩니다 (블로그 2026-10-27) |
 | AI/BI 대시보드 | Data analysis in dashboards | 대시보드 계획·생성과 데이터 분석 |
-| AI/BI 대시보드 | Bulk import from Power BI and Tableau | Power BI 또는 Tableau 파일을 한 번에 최대 100개까지 AI/BI 대시보드와 메트릭 뷰(metric view)로 가져오기 (릴리즈 노트 2026-10-22) |
+| AI/BI 대시보드 | Bulk import from Power BI and Tableau | Power BI 또는 Tableau 파일을 한 번에 최대 100개까지 AI/BI 대시보드와 메트릭 뷰(metric view)로 가져오기 (릴리즈 노트 2026-10-22). 가져오기에는 계정과 워크스페이스의 파트너 AI 기능이 필요합니다. compliance security profile 워크스페이스에는 2026-12-15 이후 기본 제공 예정이며, 그 전에는 워크스페이스 관리자가 Previews에서 켤 수 있습니다 (What's coming) |
+| 마이그레이션 | Code migration with Genie Migrate | 마이그레이션 프로젝트에서 다른 데이터 웨어하우스 SQL 방언을 Databricks SQL 또는 Databricks 노트북으로 변환 |
+| Lakeflow Designer | 공유 사용자 지정 연산자(shared custom operator) | Lakeflow Designer에서 Genie Code로 공유 사용자 지정 연산자를 만들거나 워크스페이스 YAML 파일 경로로 편집 (릴리즈 노트 2026년 11월) |
 | MLflow | Observability and evaluation in MLflow | AI 애플리케이션 관찰·평가·개선 |
 | Lakeflow Jobs | Improved Lakeflow Performance Observability | 지원되는 태스크의 Job 수준 쿼리 성능 지표·인사이트에서 **Optimize** 버튼으로 Genie Code를 열어 쿼리 개선을 돕습니다. 쿼리 프로파일링은 서버리스 컴퓨트, SQL Warehouses, Lakeflow Pipelines를 지원합니다. compliance security profile 워크스페이스에는 2026-11-25 이후 기본 제공 예정 (What's coming) |
 | 전체 공통 | Chat with Genie Code, Inline suggestions, Quick fix, Diagnose error, /slash commands, Command shortcuts, Filter data | 기본 대화와 편집 보조 |
 | 전체 공통 | Schedule tasks with Genie Code | 예약 작업 ([상세](scheduled-tasks.md)) |
 | 전체 공통 | Branch and edit chats | 채팅 분기와 수정 (릴리즈 노트 2026-09-09 "conversation controls") |
 | 전체 공통 | Search the web | 웹 검색, Beta (릴리즈 노트 2026-08-06) |
+| 전체 공통 | Databricks-provided MCP connectors | Google Drive, Gmail, Google Calendar, Microsoft 365, Atlassian, Slack, GitHub용 Databricks 제공 MCP 커넥터로 회사 도구를 검색하고 작업. 연결은 Unity Catalog와 Unity Gateway로 관리됩니다. compliance security profile 워크스페이스에는 2026년 12월부터 기본 활성화 예정 (What's coming) |
+| 전체 공통 | Genie traces in the unified trace table (Beta) | Genie Code 턴을 Unity Gateway 통합 트레이스 테이블에 OpenTelemetry span으로 내보내기. 워크스페이스 관리자가 Previews 페이지에서 제품별로 켭니다 (AI/BI 릴리즈 노트 2026-11-05) |
 | 전체 공통 | 파일 첨부 | 현재 채팅의 컨텍스트로 첨부. 첨부 파일은 기본적으로 워크스페이스 파일 시스템에 저장되지 않는다고 문서에 나옵니다. |
 
 ## 어떻게 쓰는가
@@ -144,7 +148,7 @@ Genie Code는 세션을 넘어 지속될 가치가 있는 사실을 기억합니
 
 - **Auto-approve를 운영에서 켜 두지 않습니다.** 문서도 운영, 민감, 공유 리소스에서 끄기를 권장합니다.
 - **파트너 AI 설정을 확인합니다.** 에이전트 기능이 꺼져 있으면 기대한 동작이 나오지 않습니다. 설정 경로는 [거버넌스와 비용](governance-and-cost.md)을 참고하십시오.
-- **상태 라벨을 구분합니다.** 기능 페이지 대부분에는 GA·Beta 라벨이 없습니다. Genie Ontology만 Public Preview로 명시되어 있습니다.
+- **상태 라벨을 구분합니다.** 기능 페이지 대부분에는 GA·Beta 라벨이 없습니다. Genie Ontology는 2026년 11월 릴리즈 노트에서 GA(generally available)가 되었고, 기능 페이지의 Public Preview 라벨도 빠졌습니다.
 - **기능 노출 범위는 실제 화면에서 확인합니다.** SQL 에디터와 파이프라인 에디터에서 쓸 수 있는 기능 목록이 문서 페이지마다 다르게 서술됩니다.
 
 ## 참고 문서
@@ -157,3 +161,6 @@ Genie Code는 세션을 넘어 지속될 가치가 있는 사실을 기억합니
 - [AI/BI 릴리즈 노트 (2026) — Dashboard enhancements](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#dashboard-enhancements)
 - [From spot fixes to measured gains: improving document extraction accuracy with ai_extract and MLflow Prompt Registry](https://www.databricks.com/blog/spot-fixes-measured-gains-improving-document-extraction-accuracy-aiextract-and-mlflow-prompt)
 - [What's coming — Improved Lakeflow Performance Observability](https://docs.databricks.com/aws/en/release-notes/whats-coming#improved-lakeflow-performance-observability-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)
+- [Genie Ontology is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-ontology-is-now-generally-available)
+- [What's coming — Importing Power BI and Tableau files with Genie Code](https://docs.databricks.com/aws/en/release-notes/whats-coming#importing-power-bi-and-tableau-files-with-genie-code-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)
+- [Edit shared Lakeflow Designer operators with Genie Code (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#edit-shared-lakeflow-designer-operators-with-genie-code)

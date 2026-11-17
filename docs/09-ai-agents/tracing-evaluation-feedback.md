@@ -1,6 +1,6 @@
 # 트레이싱·평가·피드백
 
-> 기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 왜 필요한가
 
@@ -59,7 +59,7 @@ mlflow.set_experiment("/Shared/my-first-trace")
 
 트레이스는 MLflow 실험(Experiment)에 연결되어 저장됩니다. UI에서는 **Experiments** 에서 실험을 찾고 **Traces** 탭을 엽니다.
 
-문서는 저장소 옵션으로 Unity Catalog를 설명합니다. 트레이스를 Unity Catalog의 Delta 테이블로 저장하며, 스키마와 테이블 단위의 접근 제어가 적용되고 SQL로 직접 조회할 수 있다고 적혀 있습니다. 문서는 이것이 기본값인지는 명시하지 않습니다. Unity Catalog 저장소에는 실험당 제한이 없다고 설명합니다.
+문서는 저장소 옵션으로 Unity Catalog를 설명합니다. 트레이스를 Unity Catalog의 Delta 테이블로 저장하며, 스키마와 테이블 단위의 접근 제어가 적용되고 SQL로 직접 조회할 수 있다고 적혀 있습니다. 문서는 이것이 기본값인지는 명시하지 않습니다. Unity Catalog 저장소에는 실험당 제한이 없다고 설명합니다. Databricks 블로그(2026-11-03)에 따르면 Claude Platform의 OpenTelemetry 내보내기는 Public Beta이며 Databricks MLflow를 네이티브 내보내기 대상으로 지원하고, 수신한 스팬은 Zerobus Ingest로 받아 MLflow 실험에 연결된 Unity Catalog 테이블에 저장됩니다. 같은 블로그는 반복되는 품질·운영 문제를 Genie Code로 찾는 MLflow Issues를 Beta로 소개합니다.
 
 **Managed warehouse for MLflow** (Beta)를 쓰면 Unity Catalog에 저장된 트레이스를 SQL 웨어하우스를 고르지 않고 MLflow UI에서 볼 수 있습니다. 워크스페이스가 지원하면 MLflow가 워크스페이스에 만드는 SQL 웨어하우스에서, 그렇지 않으면 서버리스 컴퓨트에서 트레이스 쿼리를 실행합니다. 워크스페이스 관리자가 Previews 페이지에서 활성화합니다.
 
@@ -165,3 +165,4 @@ set_databricks_monitoring_sql_warehouse_id(
 - [Evaluate and improve](https://docs.databricks.com/aws/en/mlflow3/genai/eval-monitor/)
 - [Set up production monitoring](https://docs.databricks.com/aws/en/mlflow3/genai/eval-monitor/production-monitoring)
 - [Databricks release notes, November 2026 — Managed warehouse for MLflow (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#managed-warehouse-for-mlflow-beta)
+- [Claude Platform now supports native OpenTelemetry observability with Databricks MLflow (Databricks 블로그)](https://www.databricks.com/blog/claude-platform-now-supports-native-opentelemetry-observability-databricks-mlflow)

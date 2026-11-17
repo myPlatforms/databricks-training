@@ -1,6 +1,6 @@
 # Delta Lake 동작 원리
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 Delta Lake는 Parquet 데이터 파일 위에 **트랜잭션 로그(Transaction log)** 를 얹은 오픈 테이블 포맷입니다. Databricks에서 테이블을 만들 때 별도로 지정하지 않으면 기본 형식이 Delta Lake입니다. 이 페이지는 로그가 어떻게 버전과 ACID를 만드는지, 스키마가 쓰기 시점에 어떻게 검증되고 변경되는지, 여러 문장을 하나의 트랜잭션으로 묶는 방법을 다룹니다.
 
@@ -169,6 +169,8 @@ COMMIT;
 | 대화형 제한 | 10분 동안 비활성이면 롤백, 전체 48시간 초과 시 롤백 |
 | 규모 | 한 트랜잭션은 합쳐서 테이블 100개까지, 뷰 100개까지 읽기 가능 |
 
+> **참고** What's coming 문서에 따르면, Databricks Runtime 15.4 LTS 지원이 2027-08-19에 끝난 뒤 Databricks는 모든 Unity Catalog 관리형 테이블을 카탈로그 커밋으로 업그레이드합니다. 카탈로그 커밋을 쓰면 Unity Catalog가 테이블의 조정 시스템(system of coordination)이 되어 멀티 문장·멀티 테이블 트랜잭션, 외부 엔진의 쓰기, 엔진 간 일관된 거버넌스가 가능해집니다.
+
 > **참고** 트랜잭션 기능의 릴리스 상태는 릴리스 노트 2026-10-14 항목 "Transactions support both managed Delta Lake and Apache Iceberg tables"에서 확인했습니다. 릴리스 노트는 Delta 관리형 테이블의 트랜잭션이 GA라고 명시하며, 기능 페이지 본문에는 상태 라벨이 없습니다. 적용 전 원문을 다시 확인하십시오.
 
 ## 4. 트레이드오프
@@ -202,3 +204,4 @@ Delta와 Iceberg는 둘 다 파일 목록을 메타데이터로 관리하는 오
 - [Upsert into a Delta Lake table using merge](https://docs.databricks.com/aws/en/delta/merge)
 - [Transactions](https://docs.databricks.com/aws/en/transactions)
 - [Work with table history](https://docs.databricks.com/aws/en/tables/history)
+- [What's coming — All Unity Catalog managed tables will be upgraded to catalog commits](https://docs.databricks.com/aws/en/release-notes/whats-coming#all-unity-catalog-managed-tables-will-be-upgraded-to-catalog-commits)

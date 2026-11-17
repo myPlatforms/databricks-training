@@ -1,6 +1,6 @@
 # 권한 모델과 소유권
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -58,6 +58,7 @@ UC는 권한을 **객체 계층에 한 번만 정의** 하도록 합니다. 권�
 | 확인된 사실 | 출처 |
 |---|---|
 | 메타스토어 수준에서 부여한 권한은 하위 객체로 상속되지 않습니다. | 객체 종류 페이지: "Privileges granted at the metastore level do not inherit to child objects in the hierarchy." |
+| 예외: 메타스토어에 부여한 `READ METADATA`는 메타스토어의 모든 객체로 상속됩니다. 다른 메타스토어 수준 권한과 다른 점입니다. | 권한 참조 페이지: "When granted on the metastore , READ METADATA inherits down to all objects in the metastore." |
 | 카탈로그나 스키마의 소유자는 그 안에 있는 객체에 대해 권한을 줄 수 있습니다. | 권한 관리 페이지 |
 | `CREATE VOLUME` 권한을 카탈로그에 주면 그 카탈로그의 기존 스키마와 앞으로 만들어질 스키마에 볼륨을 만들 수 있습니다. | 권한 참조 페이지 |
 
@@ -84,12 +85,16 @@ UC는 권한을 **객체 계층에 한 번만 정의** 하도록 합니다. 권�
 | `USE SCHEMA` | 스키마 | 스키마 안의 객체와 상호작용하는 데 필요합니다. 스키마나 객체 데이터에 대한 접근 권한은 주지 않습니다. | 문서에 상태 라벨 없음 |
 | `MANAGE` | Clean Room, 연결, 외부 위치, 테이블, 볼륨 등 다수 | 소유하지 않아도 권한을 관리하고, 소유권을 이전하고, 이름을 바꾸고, 삭제합니다. `ALL PRIVILEGES`에는 포함되지 않습니다. | 문서에 상태 라벨 없음 |
 | `READ METADATA` | 대부분의 객체, 메타스토어, 스키마, 카탈로그 | 데이터를 읽지 않고 소유자 수준 메타데이터(권한, 행 필터, 열 마스크, ABAC 정책)를 봅니다. | GA (릴리즈 노트 2026-08-10) |
-| `BROWSE` | Clean Room, 외부 위치, 외부 메타데이터 | `USE CATALOG`나 `USE SCHEMA` 없이 객체를 찾고 메타데이터를 봅니다. | 문서에 상태 라벨 없음 |
+| `BROWSE` | Clean Room, 외부 위치, 외부 메타데이터 | `USE CATALOG`나 `USE SCHEMA` 없이 객체를 찾고 메타데이터를 봅니다. 카탈로그의 `BROWSE`는 UC 시크릿에도 적용되어, 값을 읽거나 코드에서 참조하지 않고 시크릿과 메타데이터를 찾을 수 있습니다. | 문서에 상태 라벨 없음 |
 | `APPLY TAG` | 테이블, 뷰, 볼륨, 모델, 시크릿 등 | 태그를 추가하고 수정합니다. 테이블과 뷰에서는 열 태그도 포함합니다. | 문서에 상태 라벨 없음 |
 | `EXECUTE` | 함수 | 함수를 호출하거나 등록된 모델로 추론합니다. 정의와 메타데이터도 봅니다. | 문서에 상태 라벨 없음 |
 | `READ VOLUME` / `WRITE VOLUME` | 볼륨 | 볼륨의 파일을 읽거나, 추가·수정·삭제합니다. | 문서에 상태 라벨 없음 |
 | `CREATE VOLUME` | 스키마, 카탈로그 | 스키마나 카탈로그 안에 볼륨을 만듭니다. | 문서에 상태 라벨 없음 |
+| `CREATE SECRET`, `READ SECRET`, `WRITE SECRET`, `REFERENCE SECRET` | 시크릿(스키마 안의 securable) | 시크릿을 만들고, 값을 가져오고, 값을 갱신하고, 값 없이 시크릿과 메타데이터를 봅니다. 상위 `USE CATALOG`, `USE SCHEMA`도 필요합니다. | 문서에 상태 라벨 없음 |
+| `READ FLOW`, `REFRESH FLOW`, `WRITE FLOW`, `CREATE FLOW` | 흐름(flow), 스키마 | 흐름을 설명하고 상태를 읽고, 새로 고치고, 스트리밍 체크포인트를 리셋·되감기합니다. 흐름을 만들려면 스키마의 `CREATE FLOW`와 대상 테이블의 `MODIFY`가 필요합니다. | Beta |
 | `INSERT`, `UPDATE`, `DELETE` | 테이블 | 테이블 데이터를 추가, 수정, 삭제합니다. | Beta |
+
+> **참고** UC 시크릿 한도는 스키마당 1,000개, 메타스토어당 10,000개입니다(이전 100개, 1,000개). Databricks 관리 시크릿과 AWS Secrets Manager 기반 시크릿에 적용됩니다.
 
 > **주의** `INSERT`, `UPDATE`, `DELETE`는 Beta입니다. 운영 권한 설계에 넣기 전에 해당 워크스페이스에서 기능이 열려 있는지 확인하십시오.
 
@@ -188,6 +193,7 @@ SHOW GRANTS ON METASTORE;
 > **주의** 권한을 회수하기 전에 그 권한을 쓰는 소비자(노트북, 잡, 대시보드, Genie 공간, 다른 리포의 코드)가 있는지 먼저 확인하십시오. 권한을 줄이면 소비자가 조용히 실패하고, 실패 원인을 찾기 어렵습니다.
 
 - 권한은 그룹에 주고, 그룹 구성은 신원 제공자(IdP)나 계정 콘솔에서 관리하는 것을 권장합니다.
+- 접근 요청(Request for access)은 GA입니다. 사용자는 Databricks 어디서든 UC 객체 권한을 요청하고 Catalog Explorer에서 요청 상태를 추적할 수 있습니다.
 - 서비스 프린시펄은 자동화 작업의 실행 주체로 쓰고, 사람 계정에 자동화를 묶지 않습니다.
 - `ALL PRIVILEGES`는 `MANAGE`를 포함하지 않는다는 점을 기억하십시오. 공식 문서는 `MANAGE`를 `ALL PRIVILEGES`에 포함하지 않는다고 설명합니다.
 - 권한 변경은 코드(예: 잡이나 DAB 설정)로 관리해 감사 이력을 남기는 것을 권장합니다.
@@ -198,3 +204,6 @@ SHOW GRANTS ON METASTORE;
 - [Unity Catalog privileges and securable objects](https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/privileges)
 - [Securable objects in Unity Catalog](https://docs.databricks.com/aws/en/data-governance/unity-catalog/securable-objects)
 - [Access control in Unity Catalog](https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control/)
+- [Higher limits and BROWSE support for Unity Catalog secrets (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#higher-limits-and-browse-support-for-unity-catalog-secrets)
+- [Flows are securable objects in Unity Catalog (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#flows-are-securable-objects-in-unity-catalog-beta)
+- [Request for access is now generally available (릴리즈 노트, 2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#request-for-access-is-now-generally-available)
