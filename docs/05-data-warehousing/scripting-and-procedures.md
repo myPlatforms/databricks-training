@@ -1,6 +1,6 @@
 # SQL 스크립팅과 저장 프로시저
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 SQL 스크립팅(SQL scripting)은 여러 SQL 문장을 `BEGIN ... END` 블록으로 묶고, 변수·조건문·반복문·예외 처리를 SQL 안에서 쓰게 해주는 기능입니다. 저장 프로시저(Stored procedure)는 이 스크립트를 Unity Catalog 객체로 저장해 `CALL`로 재사용하는 방식입니다.
 
@@ -49,6 +49,8 @@ SQL 스크립팅(SQL scripting)은 여러 SQL 문장을 `BEGIN ... END` 블록�
 | 필수 절 | `LANGUAGE SQL`, `SQL SECURITY` (INVOKER 또는 DEFINER) |
 | 본문 | `BEGIN ... END` 복합 문장 |
 | 선택 특성 | `COMMENT`, `NOT DETERMINISTIC`, `DEFAULT COLLATION`, `MODIFIES SQL DATA` |
+| 생성 권한 | 카탈로그의 `USE CATALOG`, 스키마의 `USE SCHEMA`와 `CREATE FUNCTION`. 본문이 참조하는 객체의 권한은 생성 시 필요 없음 |
+| 교체 권한 | `CREATE OR REPLACE PROCEDURE`는 위 권한에 더해 프로시저, 상위 스키마, 상위 카탈로그 중 하나의 소유권 또는 `MANAGE` 필요 |
 
 **매개변수 모드**
 
@@ -64,6 +66,8 @@ SQL 스크립팅(SQL scripting)은 여러 SQL 문장을 `BEGIN ... END` 블록�
 |---|---|
 | `INVOKER` | 호출한 사용자의 권한으로 실행. 호출자는 프로시저에 `EXECUTE` 권한만 있으면 됨 |
 | `DEFINER` | 프로시저 소유자의 권한으로 실행 |
+
+본문이 실행될 때 각 문장은 자체 권한이 필요하며, `INVOKER`는 호출자, `DEFINER`는 프로시저 소유자를 기준으로 검사됩니다.
 
 관련 명령은 `CALL`(실행), `SHOW PROCEDURES`, `DESCRIBE PROCEDURE`, `DROP PROCEDURE`입니다. 공식 문서의 관련 문서 목록에는 이 명령들이 나오지만, 각 명령의 세부 동작은 해당 레퍼런스 페이지를 따릅니다.
 
@@ -104,7 +108,7 @@ CALL main.sales.add_nums(2, 3, result);
 SELECT result;
 ```
 
-> **주의** 위 예시는 문서의 구문 요소를 조합한 설명용 코드입니다. 세션 변수 선언 문법은 `DECLARE VARIABLE` 레퍼런스에서 한 번 더 확인하십시오. 이 페이지는 실행 결과를 검증하지 않았습니다. 실행 전 Databricks Runtime 17.0 이상과 Unity Catalog 환경을 확인하십시오. 프로시저를 만들 때 필요한 권한은 문서 원문에 명시되어 있지 않으므로, 워크스페이스 관리자와 확인합니다.
+> **주의** 위 예시는 문서의 구문 요소를 조합한 설명용 코드입니다. 세션 변수 선언 문법은 `DECLARE VARIABLE` 레퍼런스에서 한 번 더 확인하십시오. 이 페이지는 실행 결과를 검증하지 않았습니다. 실행 전 Databricks Runtime 17.0 이상과 Unity Catalog 환경을 확인하십시오. 프로시저를 만들 때 필요한 권한은 위 "저장 프로시저" 표의 생성 권한 행을 참고하십시오.
 
 ### 예 3: 실행 권한을 정하는 방법
 

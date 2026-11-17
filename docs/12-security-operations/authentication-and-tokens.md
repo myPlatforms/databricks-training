@@ -1,6 +1,6 @@
 # 인증과 토큰
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -51,7 +51,11 @@ export DATABRICKS_CLIENT_SECRET="<client-secret>"
 
 ### OAuth OBO (On-behalf-of)
 
-서비스 프린시펄을 관리하는 사용자가 그 프린시펄의 권한으로 작업하는 방식입니다. 문서는 이 방식이 긴 수명의 서비스 프린시펄 시크릿 필요를 줄인다고 설명합니다. 상태 표기는 페이지마다 다릅니다. OAuth M2M 페이지는 **Beta** 로 표기하고, 인증 개요 페이지는 상태 라벨을 두지 않습니다. 실제 사용 전 원문에서 다시 확인하십시오.
+서비스 프린시펄을 관리하는 사용자가 그 프린시펄의 권한으로 작업하는 방식입니다. 문서는 이 방식이 긴 수명의 서비스 프린시펄 시크릿 필요를 줄인다고 설명합니다. 2026년 11월 릴리즈 노트에 따르면 서비스 프린시펄용 OAuth OBO는 GA이며 기본으로 켜져 있습니다. 표준 U2M OAuth 흐름으로 OAuth 시크릿을 만들지 않고 관리하는 서비스 프린시펄로 동작하며, 해당 서비스 프린시펄에 Service Principal Manager 역할이 있어야 합니다. 워크스페이스 관리자가 Previews 페이지에서 켤 필요가 없습니다. 인증 개요 문서는 시크릿 없이 서비스 프린시펄로 대화형 접근을 할 때 OBO를 쓰라고 안내합니다.
+
+### OAuth 디바이스 코드 흐름 (Beta)
+
+원격 VM이나 컨테이너 같은 헤드리스 머신에서, 다른 기기의 브라우저로 로그인을 마쳐 워크스페이스 수준 OAuth 토큰을 받을 수 있습니다. 워크스페이스 관리자가 Previews 페이지에서 켭니다.
 
 ### 사용 권한 전제
 
@@ -126,3 +130,5 @@ databricks token-management delete TOKEN_ID
 - [Manage personal access token permissions](https://docs.databricks.com/aws/en/security/auth/api-access-permissions)
 - [Monitor and revoke personal access tokens](https://docs.databricks.com/aws/en/admin/access-control/tokens)
 - [Release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [OAuth on-behalf-of for service principals is generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#oauth-on-behalf-of-for-service-principals-is-generally-available)
+- [Authorize headless machines with the OAuth device code flow (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#authorize-headless-machines-with-the-oauth-device-code-flow-beta)

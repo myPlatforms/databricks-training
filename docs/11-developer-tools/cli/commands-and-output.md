@@ -1,6 +1,6 @@
 # 명령 그룹과 출력 형식
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 이 페이지는 Databricks CLI의 명령 구조, 자주 쓰는 명령 그룹, 출력 형식(`-o`), 그리고 스크립트에서 결과를 안전하게 쓰는 방법을 다룹니다. 설치와 인증은 [설치와 인증](install-and-auth.md)을 먼저 보십시오.
 
@@ -127,6 +127,7 @@ databricks bundle deploy -t dev -p "$PROFILE"
 - **`--help`로 버전 확인.** 문서 예시와 설치된 CLI 버전이 다르면 `--help` 결과를 우선합니다.
 - **`text` 출력을 파싱하지 않기.** 자동화는 `json`만 씁니다.
 - **변경 명령은 읽기로 먼저 확인.** `deploy`, `destroy`, `run` 전에 대상 워크스페이스와 타깃을 확인합니다.
+- **CLI를 최신 릴리스로 유지.** What's coming 문서에 따르면 Databricks는 곧 list catalogs, list schemas, list tables 같은 일부 Unity Catalog REST API 작업의 페이지네이션 없는 요청을 HTTP 400으로 거부합니다. 그 전까지는 점점 엄격해지는 속도 제한으로 HTTP 429를 받을 수 있습니다. 현재 릴리스의 Databricks CLI와 SDK는 기본으로 페이지네이션 필드를 쓰므로, 오래된 CLI를 쓰는 스크립트는 업그레이드합니다.
 - **디버그 로그 공유 주의.** `--debug`와 로그 파일에는 요청 정보가 들어갈 수 있으므로 외부에 공유하기 전에 점검합니다.
 
 ## 참고 문서
@@ -134,3 +135,4 @@ databricks bundle deploy -t dev -p "$PROFILE"
 - [Databricks CLI 개요](https://docs.databricks.com/aws/en/dev-tools/cli/)
 - [Databricks 번들 명령 (bundle-commands)](https://docs.databricks.com/aws/en/dev-tools/cli/bundle-commands)
 - [Databricks CLI 인증](https://docs.databricks.com/aws/en/dev-tools/cli/authentication)
+- [What's coming — Unpaginated requests to some Unity Catalog REST API operations will soon be rejected](https://docs.databricks.com/aws/en/release-notes/whats-coming#unpaginated-requests-to-some-unity-catalog-rest-api-operations-will-soon-be-rejected)

@@ -1,6 +1,6 @@
 # 관리형 vs 외부 테이블
 
-> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 Unity Catalog에서 테이블은 **관리형(Managed)** 과 **외부(External)** 두 유형으로 나뉩니다. 두 유형의 차이는 "데이터 파일의 수명을 누가 관리하는가"입니다. 관리형 테이블은 Databricks(Unity Catalog)가 데이터 파일의 저장, 최적화, 삭제까지 맡고, 외부 테이블은 메타데이터만 관리하고 데이터 파일은 사용자가 소유한 클라우드 스토리지에 둡니다. 이 페이지는 두 유형을 구분하는 기준, 생성 문법, 삭제 동작, 외부 쓰기의 주의점을 다룹니다.
 
@@ -85,7 +85,7 @@ LOCATION 's3://<bucket-path>/<table-directory>';
 
 Unity Catalog 관리형 Delta 테이블은 외부 엔진에서 생성과 쓰기가 가능합니다. 2026-10-13 릴리스 노트는 "External writes to managed Delta tables are now generally available"을 GA로 발표했으며, 외부 Apache Spark 클라이언트가 대상입니다. 이 쓰기에는 **카탈로그 커밋(Catalog commits)** 이 켜져 있어야 합니다.
 
-> **참고** 관리형 테이블 문서 기준으로 카탈로그 커밋은 기본으로 꺼져 있으며, `delta.feature.catalogManaged` 테이블 속성으로 켭니다. 다만 자동 업그레이드가 새 스키마의 새 테이블에서 카탈로그 커밋을 켤 수 있습니다. 같은 문서는 관리형 테이블의 예측 최적화(Predictive optimization)가 기본으로 활성화되어 있다고 설명합니다.
+> **참고** 관리형 테이블 문서 기준으로 카탈로그 커밋은 기본으로 꺼져 있으며, `delta.feature.catalogManaged` 테이블 속성으로 켭니다. 다만 자동 업그레이드가 새 스키마의 새 테이블에서 카탈로그 커밋을 켤 수 있습니다. What's coming 문서에 따르면 Databricks Runtime 15.4 LTS 지원이 2027-08-19에 끝난 뒤 Databricks는 모든 Unity Catalog 관리형 테이블을 카탈로그 커밋으로 업그레이드합니다. 같은 문서는 관리형 테이블의 예측 최적화(Predictive optimization)가 기본으로 활성화되어 있다고 설명합니다.
 
 테이블 유형별로 외부 클라이언트가 할 수 있는 작업은 다음과 같습니다.
 
@@ -95,6 +95,8 @@ Unity Catalog 관리형 Delta 테이블은 외부 엔진에서 생성과 쓰기�
 | 관리형 Iceberg | Iceberg REST 카탈로그 | 가능 | 가능 |
 | Delta, Iceberg 읽기 활성화 | Iceberg REST 카탈로그 | 가능 | 불가 |
 | 외부 Delta, Iceberg 읽기 활성화 | Iceberg REST 카탈로그 | 가능 | 불가 |
+
+> **참고** 2026-12-10 이후, 컴플라이언스 보안 프로필이 켜진 대상 워크스페이스에서도 관리형 Delta 테이블에 대한 외부 접근이 기본으로 제공됩니다. 메타스토어의 외부 데이터 접근 설정과 Unity Catalog 권한이 계속 접근을 통제합니다.
 
 > **참고** 관리형 테이블의 외부 쓰기 GA 발표는 2026-10 릴리스 노트에 있습니다. 이전에 "관리형 테이블은 외부에서 조작할 수 없다"는 식으로 정리된 자료가 있다면, 현재 기준으로는 그 설명이 맞지 않으므로 갱신이 필요합니다.
 
@@ -141,7 +143,7 @@ MSCK REPAIR TABLE main.raw.clickstream_ext SYNC METADATA;
 
 - **외부 위치를 여러 메타스토어에 붙이지 않습니다.** 공식 문서는 S3 외부 위치 하나가 여러 메타스토어에 연결되어 있으면, 그 위치의 외부 테이블에 여러 메타스토어에서 쓰기를 하면 일관성 문제가 생길 수 있다고 설명합니다. 읽기는 안전하다고 합니다.
 - **스키마 강제는 Delta 테이블에 적용됩니다.** 외부 테이블의 메타데이터가 외부에서 바뀌면 스키마 강제가 제대로 동작하지 않을 수 있습니다. 동기화 명령을 확인하십시오 ([Delta Lake 동작 원리](delta-lake-internals.md) 참고).
-- **관리형 테이블을 외부 경로처럼 쓰지 마십시오.** 파일 경로를 직접 읽거나 쓰는 방식은 Compatibility Mode 외에는 지원되지 않습니다.
+- **관리형 테이블을 외부 경로처럼 쓰지 마십시오.** 관리형 테이블의 모든 읽기와 쓰기는 `catalog_name.schema_name.table_name` 같은 테이블 이름을 써야 합니다. 경로 기반 접근은 Unity Catalog 접근 제어를 우회하므로 지원되지 않으며, 런타임이나 오픈소스 클라이언트 버전에 따라 데이터 손상이나 손실을 일으킬 수도 있습니다. 외부 클라이언트에 경로로 읽기 접근을 줘야 하면 테이블의 읽기 전용 사본을 만드는 Compatibility Mode를 씁니다.
 - **외부 테이블을 새로 만들기 전에 외부 위치와 권한을 먼저 확인합니다.** 외부 위치가 없으면 `LOCATION` 생성이 실패합니다.
 
 ## 참고 문서
@@ -151,3 +153,5 @@ MSCK REPAIR TABLE main.raw.clickstream_ext SYNC METADATA;
 - [Work with external tables](https://docs.databricks.com/aws/en/tables/external)
 - [Access Databricks tables from Apache Iceberg clients](https://docs.databricks.com/aws/en/external-access/iceberg)
 - [Transactions](https://docs.databricks.com/aws/en/transactions)
+- [What's coming — All Unity Catalog managed tables will be upgraded to catalog commits](https://docs.databricks.com/aws/en/release-notes/whats-coming#all-unity-catalog-managed-tables-will-be-upgraded-to-catalog-commits)
+- [What's coming — External access to Unity Catalog managed Delta tables (compliance security profile)](https://docs.databricks.com/aws/en/release-notes/whats-coming#external-access-to-unity-catalog-managed-delta-tables-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)

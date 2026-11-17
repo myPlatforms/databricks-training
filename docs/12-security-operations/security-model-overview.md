@@ -1,6 +1,6 @@
 # 보안 모델 개요
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100
 
 ## 한눈에 보기
 
@@ -35,7 +35,7 @@ Databricks는 ID를 계정에서 중앙 관리하고, 권한은 Unity Catalog에
 | 인증과 접근 제어 (Authentication and access control) | SSO, MFA, 접근 제어 목록(ACL) | [ID와 접근](identity-and-access.md), [인증과 토큰](authentication-and-tokens.md) |
 | 네트워크 (Networking) | 프런트엔드 PrivateLink, 서버리스 이그레스 제어, 서버리스 방화벽, 고객 관리 VPC | [인바운드 네트워크 접근](network-inbound-access.md), [서버리스 이그레스와 NCC](serverless-egress-and-ncc.md) |
 | 데이터 보안과 암호화 (Data security and encryption) | 고객 관리 키(Customer-managed keys), 노드 간 암호화, 자격증명 편집(redaction) | [암호화·시크릿·컴플라이언스](encryption-secrets-and-compliance.md) |
-| 시크릿 관리 (Secret management) | Databricks 시크릿 스코프 | [암호화·시크릿·컴플라이언스](encryption-secrets-and-compliance.md) |
+| 시크릿 관리 (Secret management) | Databricks 시크릿 스코프, Unity Catalog 시크릿(만들고, 접근을 부여하고, 노트북·잡·UDF에서 읽음) | [암호화·시크릿·컴플라이언스](encryption-secrets-and-compliance.md) |
 | 컴플라이언스 (Compliance) | 컴플라이언스 보안 프로필, 향상된 보안 모니터링, FedRAMP High GovCloud | [암호화·시크릿·컴플라이언스](encryption-secrets-and-compliance.md) |
 
 공식 목차의 인증 영역은 SSO 설정, MFA 설정, 접근 제어 목록(ACL)을 각각 하위 페이지로 둡니다. 시크릿 영역은 개요, 시크릿 생성·사용 튜토리얼, Spark 설정과 환경 변수에서 시크릿을 쓰는 방법 페이지로 나뉩니다. 이 장에서는 이 구분을 "상세 페이지" 열에 묶었습니다.
@@ -120,7 +120,7 @@ LIMIT 50;
 
 - **관리 경계를 문서로 정하십시오.** 계정 관리자와 워크스페이스 관리자 중 누가 어떤 설정을 바꾸는지 표로 정리해 두면 감사 때 설명하기 쉽습니다.
 - **기본 제공과 설정 완료를 구분하십시오.** 2.3절의 원문대로, 기능이 기본 제공되어도 관리자가 설정해야 효과가 있고 기존 구성은 자동으로 바뀌지 않습니다.
-- **보안 설정은 한 번 바꾸면 워크스페이스 전체에 영향을 줍니다.** 특히 네트워크 설정은 사용자 접속을 끊을 수 있으므로 변경 전 롤백 경로를 준비하십시오. 컨텍스트 기반 인그레스 정책은 등록된 VPC 엔드포인트 단위로 접근을 가르므로 엔드포인트 등록 순서를 먼저 확인하십시오.
+- **보안 설정은 한 번 바꾸면 워크스페이스 전체에 영향을 줍니다.** 특히 네트워크 설정은 사용자 접속을 끊을 수 있으므로 변경 전 롤백 경로를 준비하십시오. 컨텍스트 기반 인그레스 정책은 등록된 VPC 엔드포인트 단위로 접근을 가르므로 엔드포인트 등록 순서를 먼저 확인하십시오. 컨텍스트 기반 인그레스 사설 접근 정책은 리전에 묶이지 않아 다른 리전의 엔드포인트를 허용 목록에 넣을 수 있지만, 사설 접근 설정(private access settings)은 전부 허용 또는 전부 차단 방식이며 리전에 묶입니다.
 - **시스템 테이블 접근 권한도 보안 설정의 일부입니다.** 감사 로그를 누구나 읽을 수 있으면 민감한 요청 파라미터가 노출될 수 있습니다.
 - **감사 테이블은 Public Preview입니다.** 운영 감사 절차에 넣기 전에 상태와 보존 기간을 확인하고, 장기 보관이 필요하면 별도 적재 계획을 세우십시오. 보관 기간 관련 세부 내용은 [감사 로그와 시스템 테이블](audit-logs-and-system-tables.md)을 참고하십시오.
 

@@ -1,6 +1,6 @@
 # 컴퓨트 종류와 선택 기준
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100
 
 Databricks의 컴퓨트는 크게 세 가지로 나뉩니다. 서버리스 컴퓨트(Serverless compute), 클래식 컴퓨트(Classic compute), SQL 웨어하우스(SQL warehouses)입니다. 공식 Compute 개요 페이지는 세 가지 옵션을 각각 "Databricks가 관리하는 온디맨드 자원", "직접 만들고 설정하고 관리하는 자원", "SQL과 BI 작업에 최적화된 자원으로, 서버리스 또는 클래식으로 제공"으로 요약합니다. 이 페이지는 세 분류를 구분하고, 워크로드에 맞는 선택 기준을 정리합니다.
 
@@ -45,7 +45,7 @@ Databricks는 이 문제를 세 가지 컴퓨트 유형으로 나눠서 풀도�
 | 워크로드 | 1순위 선택 | 근거(원문) | 대안과 조건 |
 |---|---|---|---|
 | 대화형 노트북 탐색과 개발 | 서버리스 노트북 | 노트북의 컴퓨트 드롭다운에서 **Serverless** 를 선택해 붙입니다. 워크스페이스에 Unity Catalog가 필요합니다. 기본 실행 시간 제한은 2.5시간(9,000초)입니다 | Scala·R, JAR 라이브러리, Spark UI가 필요하면 클래식 |
-| 정기 배치 Job | 서버리스 Job | 성능 모드 두 가지(Standard는 시작 지연 4~6분, Performance optimized는 더 빠른 시작). 두 모드는 같은 SKU이며 Standard가 DBU를 덜 씁니다 | 서버리스 제약(컴퓨트 범위 라이브러리·init 스크립트, 최대 7일 실행 등)에 걸리면 클래식 Job 컴퓨트 |
+| 정기 배치 Job | 서버리스 Job | 성능 모드 두 가지(Standard는 시작 지연 4~6분, Performance optimized는 더 빠른 시작). 기본값은 Performance optimized입니다. 두 모드는 같은 SKU이며 Standard가 DBU를 덜 씁니다 | 서버리스 제약(컴퓨트 범위 라이브러리·init 스크립트, 최대 7일 실행 등)에 걸리면 클래식 Job 컴퓨트 |
 | Lakeflow 파이프라인 | 서버리스 파이프라인 | 인프라를 Databricks가 관리해 설정 옵션이 적습니다. 트리거·연속·실시간 모드 지원. `ADVANCED` 에디션과 서버리스 지원 리전이 필요합니다 | Hive 메타스토어 등 일부 워크로드는 클래식 파이프라인 컴퓨트 |
 | SQL·BI 쿼리 | 서버리스 SQL 웨어하우스 | 문서: "Databricks recommends using serverless SQL warehouses when available." 시작 시간 보통 2~6초 | 서버리스가 불가하면 Pro(Predictive IO), 그다음 Classic |
 | R, RDD API, GPU, 분산 ML, 권한 높은 시스템 접근 | 클래식 Dedicated | Standard 문서가 이 항목들을 Dedicated 대상으로 명시합니다 | 서버리스 GPU(AI Runtime)가 있으나 별도 제품 페이지에서 확인 |
@@ -72,7 +72,7 @@ SQL 웨어하우스는 자격 증명 패스스루(credential passthrough)를 지
 | 언어 | Python·SQL 전 버전, Scala는 Databricks Runtime 13.3 LTS 이상, R 미지원 | 문서에 전체 목록 없음. R 사용 시 Dedicated 권장 |
 | RDD API | 미지원 | 지원 대상으로 안내 |
 | GPU, Databricks Runtime for ML | 미지원 | 지원 대상으로 안내 |
-| 기타 제약 | Hive UDF, spark-submit 태스크, 소켓 소스 미지원 | 세분화 접근 제어(fine-grain access control)는 Databricks Runtime 15.4 LTS 이상과 서버리스 활성화 필요 |
+| 기타 제약 | Hive UDF, spark-submit 태스크, 소켓 소스 미지원. 워크스페이스 VPC CIDR 범위 안의 IP로는 포트 53, 80, 443, 5432로만 아웃바운드 연결 가능. 파이프라인의 Python UDF는 직렬화 크기가 약 1 MB를 넘으면 실패 | 세분화 접근 제어(fine-grain access control)는 Databricks Runtime 15.4 LTS 이상과 서버리스 활성화 필요 |
 
 API에서는 `data_security_mode`로 지정하며, 값은 `DATA_SECURITY_MODE_AUTO`, `DATA_SECURITY_MODE_STANDARD`, `DATA_SECURITY_MODE_DEDICATED`입니다. `USER_ISOLATION`과 `SINGLE_USER`는 각각 Standard, Dedicated의 레거시 별칭입니다.
 
@@ -82,7 +82,7 @@ UI 기본값은 **Auto** 입니다. Auto는 Standard를 고르되, ML 런타임�
 
 실제 선택은 다음 순서로 확인하는 방법이 실용적입니다.
 
-1. **서버리스 가능 여부 확인**: 문서는 서버리스 컴퓨트가 대부분의 워크스페이스에서 기본 제공되며 별도 활성화가 필요 없다고 설명합니다. 다만 Unity Catalog가 없는 레거시 워크스페이스는 접근할 수 없습니다. 서버리스 파이프라인은 서버리스 지원 리전이 필요합니다.
+1. **서버리스 가능 여부 확인**: 문서는 서버리스 컴퓨트가 대부분의 워크스페이스에서 기본 제공되며 별도 활성화가 필요 없다고 설명합니다. 서버리스 Job과 파이프라인에는 클러스터 생성 권한이 필요 없고, 기본적으로 모든 워크스페이스 사용자가 기본 자동화 서버리스 컴퓨트에 접근할 수 있습니다(워크스페이스 관리자가 제한 가능). 서버리스 컴퓨트 속도 제한(rate limit)은 Beta입니다. 다만 Unity Catalog가 없는 레거시 워크스페이스는 접근할 수 없습니다. 서버리스 파이프라인은 서버리스 지원 리전이 필요합니다.
 2. **워크로드가 서버리스 제약에 걸리는지 확인**: 언어(R, 노트북의 Scala), Spark RDD API, 컴퓨트 범위 라이브러리·init 스크립트, Databricks Container Services, 7일을 넘는 실행, Spark UI·Spark 로그 의존 여부를 봅니다. 하나라도 걸리면 클래식으로 갑니다.
 3. **SQL 워크로드인지 확인**: SQL과 BI 쿼리만 있다면 SQL 웨어하우스를 고릅니다. 문서는 Databricks가 가능하면 서버리스 SQL 웨어하우스를 권장한다고 설명합니다.
 4. **클래식이면 액세스 모드 결정**: 문서는 대부분의 워크로드에 Standard를 권장합니다. R, GPU, RDD API, 시스템 저수준 접근이 필요하면 Dedicated를 씁니다.

@@ -1,6 +1,6 @@
 # 데이터 품질 모니터링
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 데이터 품질 모니터링(Data quality monitoring)은 Unity Catalog의 데이터 자산 품질을 감시하는 기능입니다. 두 가지 기능으로 구성됩니다. **이상 탐지(Anomaly detection)** 는 테이블의 신선도(freshness)와 완전성(completeness)을 과거 패턴과 비교합니다. **데이터 프로파일링(Data profiling)** 은 요약 통계를 계산하고, 시간에 따른 분포 변화(드리프트)를 비교합니다. 프로파일링은 추론 테이블(inference table)을 감시해 ML 모델과 모델 서빙 엔드포인트도 추적합니다.
 
@@ -23,7 +23,7 @@
 | 설정 단위 | 스키마 (카탈로그 단위도 가능) | 테이블 또는 추론 테이블 |
 | 결과 | 시스템 테이블, 상태 표시, 인시던트 목록 | Delta 메트릭 테이블 2개와 프로파일별 대시보드 |
 | ML과의 관계 | 직접 관계는 문서에 명시 없음 | 추론 테이블로 모델 입력, 예측, 성능을 추적 |
-| 상태 라벨 | 문서에 명시 없음 (아래 상태 값은 기능 내부 표시) | 문서에 명시 없음 |
+| 상태 라벨 | GA (2026년 10월 릴리즈 노트). 아래 상태 값은 기능 내부 표시 | 문서에 명시 없음 |
 
 ## 이상 탐지 (Anomaly detection)
 
@@ -55,7 +55,7 @@
 
 | 위치 | 내용 |
 |---|---|
-| 시스템 테이블 `system.data_quality_monitoring.table_results` | 결과 저장. 컬럼 목록은 문서에 없음 |
+| 시스템 테이블 `system.data_quality_monitoring.table_results` | 결과 저장. 이 시스템 테이블도 GA. 컬럼 목록은 문서에 없음 |
 | Catalog Explorer의 스키마·테이블 페이지, 계보 그래프의 테이블 노드 | 상태 표시(health indicator) |
 | Data Quality Monitoring UI (**View results**) | 상태, First Detected, Last Scanned, Reason, Root Cause, Impact, Scan Frequency, Results, Error State, Details 열 |
 | Recently Resolved Incidents | Resolution 열: Auto-resolved 또는 Not an issue |
@@ -135,3 +135,4 @@
 - [Anomaly detection](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-quality-monitoring/anomaly-detection/)
 - [Data profiling](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-quality-monitoring/data-profiling/)
 - [Machine learning on Databricks](https://docs.databricks.com/aws/en/machine-learning/)
+- [Data quality monitoring anomaly detection is now generally available (릴리즈 노트, 2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#data-quality-monitoring-anomaly-detection-is-now-generally-available)

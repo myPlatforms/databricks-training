@@ -1,6 +1,6 @@
 # 연결과 인증
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 Lakebase에 접속하는 방법은 두 가지입니다. **OAuth 토큰** 을 Postgres 비밀번호로 쓰는 방식과, Postgres **네이티브 비밀번호 역할** 을 쓰는 방식입니다. 이 페이지는 두 방식의 차이, 토큰 만료와 연결 수명, 역할과 권한, 커넥션 풀링을 다룹니다.
 
@@ -39,7 +39,7 @@ Lakebase는 Databricks 아이디(사용자, 서비스 프린시펄, 그룹)를 P
 
 발급된 토큰 응답에는 `token`과 `expire_time`이 들어 있습니다.
 
-UI에서는 Lakebase 앱에서 **Connect** 를 열고, Role 드롭다운의 OAuth 역할을 고른 뒤, psql이 비밀번호를 물으면 **Copy OAuth token** 버튼으로 복사한 값을 붙여 넣습니다. 이 버튼은 **현재 로그인한 아이덴티티** 의 토큰만 만들며, 서비스 프린시펄이나 다른 사용자의 토큰은 만들지 않습니다. 그런 경우에는 CLI나 SDK를 씁니다.
+UI에서는 Lakebase 앱에서 **Connect** 를 열고, Role 드롭다운의 OAuth 역할을 고른 뒤, **Copy OAuth token** 버튼으로 복사한 값을 터미널에서 `PGPASSWORD` 환경 변수로 내보내고 psql 스니펫을 실행합니다. 문서는 토큰이 길어 일부 터미널에서는 비밀번호 프롬프트에 붙여 넣으면 psql이 멈출 수 있다고 설명합니다. `PGPASSWORD`를 설정했는데도 비밀번호를 물으면 `PGSERVICE`나 `PGSERVICEFILE` 같은 다른 설정이 우선하는지 확인합니다. 이 버튼은 **현재 로그인한 아이덴티티** 의 토큰만 만들며, 서비스 프린시펄이나 다른 사용자의 토큰은 만들지 않습니다. 그런 경우에는 CLI나 SDK를 씁니다.
 
 ### 토큰 발급 (CLI)
 
@@ -193,7 +193,8 @@ databricks postgres create-role projects/my-project/branches/production \
 | 작업 | 방법 |
 |---|---|
 | 권한 부여 | 역할을 만든 뒤 GRANT를 별도로 실행 (역할은 LOGIN만 가짐) |
-| 관리자 역할 부여 | `databricks postgres update-role`로 `spec.membership_roles`에 `DATABRICKS_SUPERUSER` 지정. 빈 배열이면 제거 |
+| 관리자 역할 부여 | `databricks postgres update-role`로 `spec.membership_roles`에 `DATABRICKS_SUPERUSER` 지정. `update_mask`에 넣으면 기존 멤버십 전체를 대체하며, 빈 목록이나 생략은 `DATABRICKS_SUPERUSER`를 포함한 모든 멤버십을 지움 |
+| 변경 불가 필드 | `spec.identity_type`, `spec.auth_method`, `spec.postgres_role`은 생성 후 바꿀 수 없음. 수정·삭제에는 list roles가 돌려준 리소스 이름을 씀 |
 | 역할 삭제 | `DROP ROLE` 또는 `databricks postgres delete-role`. 객체를 소유한 역할은 소유권을 먼저 넘겨야 함 |
 | 사용자·그룹 이름 변경 | 인증이 깨지므로 역할을 삭제하고 다시 만든 뒤 권한과 연결 문자열을 갱신 |
 

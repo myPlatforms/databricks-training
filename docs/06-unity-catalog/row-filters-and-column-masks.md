@@ -1,6 +1,6 @@
 # 행 필터와 열 마스크
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -151,6 +151,9 @@ USING COLUMNS (region);
 | 성능 | 행 필터와 열 마스크는 조회 시 함수를 실행합니다. 함수가 무거우면 쿼리가 느려질 수 있습니다. 공식 문서는 성능 영향을 별도로 명시하지 않으므로, 대용량 테이블은 실측으로 확인하십시오. |
 | 우회 | 원본 테이블에 여전히 `SELECT`가 있으면 필터가 적용된 결과를 받게 되므로, 우회 문제는 권한 설계로 막아야 합니다. |
 | 타입 캐스트 | 공식 문서는 ANSI 모드(`spark.sql.ansi.enabled = true`)를 켜서 실패한 타입 캐스트가 `NULL`을 조용히 반환하지 않고 오류를 내게 하라고 권장합니다. |
+| 외부 접근 | 행 필터나 열 마스크가 있는 테이블은 Iceberg REST 카탈로그나 Unity REST API로 접근할 수 없습니다. 교차 엔진 ABAC를 통한 외부 엔진 읽기는 예외입니다. |
+| OpenSharing | ABAC 정책이 있는 테이블, 또는 그런 테이블을 참조하는 뷰는 공유 소유자가 정책에서 제외(`EXCEPT` 절)된 경우에만 공유할 수 있습니다. 정책은 수신자의 접근을 통제하지 않으며, 수신자가 공유받은 테이블, 뷰(Beta), 구체화된 뷰, 스트리밍 테이블에 자체 ABAC 정책을 적용할 수 있습니다. |
+| Lakehouse//RT | 행 필터, 열 마스크, ABAC 정책으로 보호된 테이블에 Lakehouse//RT로 읽기 쿼리를 실행할 수 있습니다(Beta). |
 
 ## 5. 주의사항
 
@@ -171,3 +174,5 @@ USING COLUMNS (region);
 - [Row filters and column masks](https://docs.databricks.com/aws/en/tables/row-and-column-filters)
 - [Create and manage row filter and column mask policies](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/policies)
 - [Requirements, quotas, and limitations for row filter and column mask policies](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/requirements)
+- [Apply ABAC policies to shared views, materialized views, and streaming tables](https://docs.databricks.com/aws/en/release-notes/product/2026/october#apply-abac-policies-to-shared-views-materialized-views-and-streaming-tables)
+- [Lakehouse//RT supports fine-grained access control (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#lakehousert-supports-fine-grained-access-control-beta)

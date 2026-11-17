@@ -1,6 +1,6 @@
 # 대시보드 작성: 데이터셋·위젯·필터·파라미터
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -70,9 +70,13 @@ AI/BI 대시보드는 데이터셋을 공유 단위로 만들고, 필터와 파�
 
 활성 필터 바(Active filter bar)에는 "All"이 아닌 글로벌 필터, 페이지 필터, 교차 필터가 표시됩니다.
 
+위젯 필터 표시기(widget filter indicator)는 시각화에 영향을 주는 대시보드 필터의 수를 위젯 헤더에 보여 줍니다. 글로벌 필터, 필터 위젯, 다른 위젯의 교차 필터 선택, 다른 페이지의 드릴 스루 선택을 셉니다. 위젯 자체의 선택, 위젯 필터, 위젯이 무시하는 필터, All로 설정된 필터는 세지 않습니다. 소스가 9개를 넘으면 9+로 표시합니다.
+
+> **주의** 필터는 대시보드가 보여 주는 내용을 정할 뿐, 사용자가 접근할 수 있는 데이터를 정하지 않습니다. 작은 데이터셋은 전체 데이터가 뷰어의 브라우저로 전송된 뒤 필터가 적용되고, 뷰어는 대시보드 URL을 포함해 필터 값을 바꿀 수 있습니다. 보이는 행이나 열을 제한하려면 Unity Catalog의 원본 테이블에 행 필터와 열 마스크를 적용하십시오.
+
 ### 관계 범위 필터(Relationship-scoped filtering)
 
-대시보드 관계(dashboard relationships)로 정의한 의미 모델을 쓰면, 선택 값이 조인 그래프를 따라 관련 데이터셋으로 흐릅니다. 2026-09-10 릴리즈 노트는 "Relationship-scoped filters"를 Public Preview로, 2026-09-03 릴리즈 노트는 "Cross-dataset filtering through relationships"를 Public Preview로 표기합니다. 두 항목은 이름이 달라 같은 기능인지 확인이 필요합니다. 릴리즈 노트의 설명은 "각 위젯은 자신과 관련된 데이터셋의 필터에만 반응한다"와 "한 데이터셋의 필터가 관련 데이터셋 위젯으로 넘어간다"입니다.
+대시보드 관계(dashboard relationships)로 정의한 의미 모델을 쓰면, 선택 값이 조인 그래프를 따라 관련 데이터셋으로 흐릅니다. 2026-09-10 릴리즈 노트는 "Relationship-scoped filters"를 Public Preview로, 2026-09-03 릴리즈 노트는 "Cross-dataset filtering through relationships"를 Public Preview로 표기합니다. 두 항목은 이름이 달라 같은 기능인지 확인이 필요합니다. 대시보드 범위의 다중 팩트 데이터 모델을 만드는 대시보드 관계 자체는 2026년 11월 AI/BI 릴리즈 노트에서 GA로 발표되었습니다. 릴리즈 노트의 설명은 "각 위젯은 자신과 관련된 데이터셋의 필터에만 반응한다"와 "한 데이터셋의 필터가 관련 데이터셋 위젯으로 넘어간다"입니다.
 
 > **주의** 관계 범위 필터는 Public Preview입니다. 운영 대시보드에 의존하기 전에 대상 워크스페이스에서 동작을 확인하십시오.
 
@@ -187,3 +191,4 @@ FROM catalog.schema.metric_view(discount => :discount)
 - [대시보드 한도(Dashboard limits)](https://docs.databricks.com/aws/en/dashboards/limits)
 - [메트릭 뷰 쿼리(Query metric views)](https://docs.databricks.com/aws/en/uc-semantics/metric-views/query)
 - [AI/BI 릴리즈 노트 (2026)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026)
+- [Dashboard relationships are now generally available (AI/BI 릴리즈 노트)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#dashboard-relationships-are-now-generally-available)

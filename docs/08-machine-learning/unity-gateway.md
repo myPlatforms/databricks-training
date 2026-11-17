@@ -1,6 +1,6 @@
 # Unity Gateway
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
 
 Unity Gateway는 Unity Catalog 위에서 모델, 모델 제공자 서비스, MCP 서버, 에이전트 도구의 **런타임 호출** 을 관리하는 엔터프라이즈 AI 거버넌스 계층입니다. 접근 제어, 트래픽 한도, 가드레일(서비스 정책), 사용량 추적을 한 체계로 묶습니다. 문서는 Unity Gateway를 "엔터프라이즈 AI 거버넌스 솔루션"이라고 소개하며, 2026-08-04에 일반 공개(GA)되었다고 릴리즈 노트가 밝힙니다.
 
@@ -71,6 +71,8 @@ Unity Catalog 권한이 "누가 서비스를 호출할 수 있는가"를 정하�
 2. **Rate limits** 를 선택합니다.
 3. 서비스, 기본 사용자, 커스텀 사용자 또는 그룹 단위로 한도를 설정합니다.
 
+이 서비스 한도는 모델의 Metrics 탭에 보이는 워크스페이스 수준 pay-per-token 할당량(quota)과 별개입니다.
+
 문서는 REST API, Databricks SDK, CLI, Terraform으로도 설정할 수 있다고 설명하지만 코드 예제는 싣지 않았습니다. 이 장도 예제를 추정하지 않았습니다.
 
 | 항목 | 값 (문서 원문) |
@@ -88,7 +90,7 @@ Unity Catalog 권한이 "누가 서비스를 호출할 수 있는가"를 정하�
 - 초과하면 HTTP **429** 가 반환됩니다. 클라이언트는 지수 백오프로 재시도해야 합니다.
 - 동시 요청은 미리 검사되지 않으므로 순간 폭주는 사용량 집계 전에 통과할 수 있습니다. 한도는 서비스 인스턴스마다 따로 적용되어, 특히 생성 직후에는 짧은 초과가 생길 수 있고 평균은 설정 한도로 수렴한다고 문서가 설명합니다.
 
-> **주의** 한도는 "정확한 상한"이 아니라 평균 수렴 방식입니다. 비용이나 계약상 상한이 필요하면 예산 기능(Manage budgets, 문서 목차에 있음)과 사용량 대시보드를 함께 확인하십시오.
+> **주의** 한도는 "정확한 상한"이 아니라 평균 수렴 방식입니다. 비용이나 계약상 상한이 필요하면 예산 기능(Manage budgets, 문서 목차에 있음)과 사용량 대시보드를 함께 확인하십시오. 2026-11-01부터 예산에는 `ai_parse_document`, `ai_extract`, `ai_classify` 같은 작업별 AI Functions 지출도 포함됩니다. Spend Status API로 예산 대비 사용량을 조회할 수 있고, 지출 임계값 소진 시 웹훅을 호출하는 예산 알림은 Beta입니다.
 
 ## 사용량 추적 (Usage tracking)
 
@@ -114,7 +116,9 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 |---|---|
 | `service_type` | `MODEL_SERVICE`, `MCP_SERVICE`, `MODEL_PROVIDER_SERVICE` |
 | `auth_mode` | `PAT` 또는 `OAUTH` |
-| `invocation_metadata.source` | `AI_PLAYGROUND`, `EXTERNAL_CLIENT`, `AI_QUERY`, `GUARDRAIL`, `MANAGED_AGENT` 등 |
+| `invocation_metadata.source` | `AI_PLAYGROUND`, `EXTERNAL_CLIENT`, `AI_QUERY`, `DATABRICKS_APPS`, `GUARDRAIL`, `MANAGED_AGENT`, `ROUTER`, `WEB_SEARCH`, `SAFEGUARD_CLASSIFIER` |
+| `invocation_metadata.service_tier` | 모델 제공자가 응답에 보고한 서비스 티어(예: `default`, `priority`) |
+| AI Functions | `ai_parse_document`, `ai_extract` 같은 작업별 AI Functions 사용량은 Unity Gateway 예산에 포함되지만 `system.ai_gateway.usage`에는 기록되지 않음 |
 | 반영 시간 | 보통 1시간 이내. 새 워크스페이스는 더 걸릴 수 있다 |
 | 대시보드 갱신 | 예약 갱신은 6시간마다 |
 | 토큰 미추적 | 스트리밍이 아니고 임베딩도 아닌 응답이 1 MiB를 넘으면 토큰을 추적하지 않음 |
@@ -130,7 +134,7 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 
 ## 가드레일과 서비스 정책 (Service policies, Beta)
 
-서비스 정책은 등록된 AI 서비스와의 상호작용 **내용** 을 제어합니다. 요청 또는 응답 내용과 호출자를 기준으로 각 상호작용의 처리 방식을 **ALLOW, DENY, ASK** 중 하나로 결정합니다. ASK는 MCP 서비스에만 적용됩니다.
+서비스 정책은 등록된 AI 서비스와의 상호작용 **내용** 을 제어합니다. 요청 또는 응답 내용과 호출자를 기준으로 각 상호작용의 처리 방식을 **ALLOW, DENY, ASK** 중 하나로 결정합니다. ASK는 MCP 서비스에만 적용됩니다. 커스텀 정책 함수가 모델 서비스나 모델 제공자 서비스에서 ASK를 반환하면 요청 또는 응답이 차단됩니다. 채팅형 API에서 DENY는 오류 상태 대신 **HTTP 200** 응답으로 돌아오며, 차단한 정책 이름과 차단 사유가 함께 담깁니다. 전체 대화 이력을 다시 보내는 코딩 에이전트가 이후 턴마다 같은 차단을 다시 일으키지 않도록 하기 위해서입니다.
 
 ### 정책 종류
 
@@ -139,8 +143,10 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 | 내장 정책 | `system.ai.block_unsafe_content` | 안전하지 않거나 유해한 내용을 거부 |
 | 내장 정책 | `system.ai.block_jailbreak` | 탈옥과 프롬프트 인젝션 탐지 |
 | 내장 정책 | `system.ai.block_hallucination` | 환각(hallucination) 응답을 거부 |
-| 내장 정책 | `system.ai.detect_sensitive_data` | 신용카드, 주민번호 같은 구조화된 민감 정보를 탐지하고 차단 또는 마스킹 |
+| 내장 정책 | `system.ai.detect_sensitive_data` | 신용카드, 주민번호 같은 구조화된 민감 정보를 탐지하고 차단 또는 마스킹. 평가 모델 없이 정규식·체크섬·문맥 키워드로 결정적으로 탐지하므로 지연이 50 ms 미만이고 결과가 매번 같음 |
+| 내장 정책 | `system.ai.github_policy` | Unity Catalog 권한과 함께 코딩 에이전트의 GitHub MCP 도구 접근을 제한 |
 | 커스텀 정책 | SQL 사용자 정의 함수 | 직접 정한 규칙으로 판단 |
+| 커스텀 정책 | Python 함수 (Beta) | 정규식, Python 패키지, 서비스 자격 증명을 통한 외부 가드레일 호출처럼 SQL로 표현하기 어려운 규칙. 일부 리전에서만 제공 |
 | 커스텀 정책 | LLM-as-a-judge | 자연어 기준으로 내용을 분류 |
 | 외부 서비스 정책 | 제3자 가드레일 벤더 | 벤더의 판단을 따름. ALLOW 또는 DENY만 반환 |
 
@@ -156,10 +162,11 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 
 | 항목 | 내용 (문서 원문) |
 |---|---|
-| 순서 | 각 연결에 **rank** 가 있으며, 입력은 오름차순, 출력은 내림차순으로 평가 |
+| 순서 | 각 연결에 **rank** 가 있으며, 입력은 오름차순, 출력은 내림차순으로 평가. 한 rank에서 DENY가 나오면 이후 rank는 평가하지 않음 |
+| 같은 rank | 두 단계로 평가. 첫 단계에서 DENY가 없을 때만 커스텀 정책 함수, 외부 서비스 정책, `system.ai.detect_sensitive_data`, ASK 정책이 순차 단계에서 실행됨. 순차 단계는 DENY가 나와도 멈추지 않고 모두 실행됨 |
 | 로그 모드 | 정책을 Log 모드로 두면 차단하지 않고 결정만 기록 |
 | 평가 실패 | "평가 중 발생한 오류는 DENY"로 처리 (fail closed). 타임아웃도 오류에 포함 |
-| 외부 정책 | 벤더 엔드포인트에 닿지 않거나 오류가 나도 DENY |
+| 외부 정책 | Enforce 모드에서 벤더 엔드포인트에 닿지 않거나 쓸 수 없는 응답이 와도 DENY. 벤더 장애 시 통과시키도록 설정할 수 없음. 호출자의 인증된 신원은 보내지 않지만, 호출자가 붙인 요청 태그(request tags)는 Log 모드에서도 보냄 |
 
 > **주의** fail closed는 보안에는 안전하지만, 정책 평가 모델이 장애 나면 정상 요청도 모두 차단됩니다. 운영 전에 타임아웃과 장애 시 동작을 테스트하고, 로그 모드로 먼저 관찰하십시오.
 
@@ -178,6 +185,8 @@ Model Serving 엔드포인트 생성 화면의 **AI Gateway** 섹션은 문서�
 | 폴백 | "Enable fallbacks" 선택 | 429 또는 5XX에서 발동. 트래픽 비율이 아니라 나열 순서대로 시도. 최대 2개. 외부 모델에서만 지원 |
 | 안전 필터 (Public Preview) | "Safety" 선택 | 안전하지 않은 내용 필터링 |
 | PII 탐지 (Public Preview) | Block, Mask, None 중 선택 | 이름, 주소, 카드번호 등 |
+
+> **주의** 내장 안전·PII 가드레일은 OpenAI 호환 Chat Completions·Completions 요청과 비스트리밍 응답을 지원하고, 임베딩 요청은 입력 가드레일만 지원합니다. 네이티브 Anthropic Messages 형식이나 Gemini `generateContent`·`streamGenerateContent` 형식 요청은 엔드포인트에 가드레일을 설정해도 내장·커스텀 가드레일이 평가하지 않습니다.
 
 - 엔드포인트 관리 작업에는 `CAN MANAGE`가 필요합니다. 생성자에게 자동 부여됩니다.
 - 가드레일과 한도를 우회하지 못하도록 엔드포인트 생성과 `CAN MANAGE`는 관리자에게만 주고, 나머지는 쿼리 권한만 주라고 문서가 권장합니다.
@@ -210,3 +219,7 @@ Model Serving 엔드포인트 생성 화면의 **AI Gateway** 섹션은 문서�
 - [Enforce a partner guardrail with an external service policy](https://docs.databricks.com/aws/en/data-governance/unity-catalog/service-policies/external-policies)
 - [Configure governance on model serving endpoints (legacy)](https://docs.databricks.com/aws/en/ai-gateway/configure-ai-gateway-endpoints)
 - [Unity Gateway 릴리즈 노트](https://docs.databricks.com/aws/en/release-notes/unity-gateway)
+- [Write custom service policies in Python (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#write-custom-service-policies-in-python-beta)
+- [AI Functions usage is now included in Unity Gateway budgets](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-usage-is-now-included-in-unity-gateway-budgets)
+- [Check budget usage with the Spend Status API](https://docs.databricks.com/aws/en/release-notes/product/2026/october#check-budget-usage-with-the-spend-status-api)
+- [Budget alerts can now trigger webhooks (Beta)](https://docs.databricks.com/aws/en/release-notes/unity-gateway#budget-alerts-can-now-trigger-webhooks-beta)
