@@ -45,7 +45,8 @@
 
 | 그룹 | 포함 항목 |
 |---|---|
-| SQL | SQL Editor, Queries, Dashboards, Genie Agents, Alerts, Query History, SQL Warehouses |
+| Analytics | Dashboards, Genie Agents, Alerts, Visual Data Prep |
+| Lakehouse | SQL Editor, Queries, Query History, SQL Warehouses |
 | Data Engineering | Runs(잡 실행 모니터링), Data Ingestion(데이터 적재) |
 | AI/ML | Playground, Agents, AI Gateway, Experiments, Features, Models, Serving |
 
@@ -58,9 +59,9 @@
 | 노트북 파일을 찾거나 새로 만든다 | Workspace |
 | 테이블과 볼륨을 찾는다 | Catalog |
 | 잡이나 파이프라인을 만든다 | Jobs & Pipelines |
-| 실행 이력을 본다 | SQL 그룹의 Query History, 또는 Data Engineering 그룹의 Runs |
-| SQL 쿼리를 작성한다 | SQL 그룹의 SQL Editor |
-| 웨어하우스를 시작하거나 설정을 본다 | SQL 그룹의 SQL Warehouses 또는 Compute |
+| 실행 이력을 본다 | Lakehouse 그룹의 Query History, 또는 Data Engineering 그룹의 Runs |
+| SQL 쿼리를 작성한다 | Lakehouse 그룹의 SQL Editor |
+| 웨어하우스를 시작하거나 설정을 본다 | Lakehouse 그룹의 SQL Warehouses 또는 Compute |
 
 ## 3. 상단바
 
@@ -75,7 +76,7 @@
 | 사용자 메뉴 | 설정(언어, 테마 등)을 엽니다. 조직에 Databricks Support 계약이 있으면 사용자 아이콘에서 **Get support** 를 눌러 지원 케이스를 열 수 있습니다. Genie Code 창의 **Need additional help?** 배너에 있는 **Get Support** 로도 열 수 있습니다. |
 | Help | Genie Code 메뉴 안에 있으며 도움말 센터, 설정, 피드백으로 연결됩니다. |
 
-> **참고** 문서에서 "Genie"는 사이드바의 독립 항목이 아닙니다. 홈 화면에서는 "Ask Genie", SQL 그룹에서는 "Genie Agents"로 표기됩니다. 같은 이름을 다른 위치에서 찾으면 헷갈릴 수 있습니다.
+> **참고** 문서에서 "Genie"는 사이드바의 독립 항목이 아닙니다. 홈 화면에서는 "Ask Genie", Analytics 그룹에서는 "Genie Agents"로 표기됩니다. 같은 이름을 다른 위치에서 찾으면 헷갈릴 수 있습니다.
 
 Genie Code의 사용법은 [Genie Code 소개](../11-developer-tools/genie-code/README.md)에서 다룹니다.
 
@@ -110,7 +111,7 @@ Search는 노트북, 쿼리, 대시보드, 파일, 테이블 같은 객체를 �
 | 헷갈리는 점 | 정확한 이해 |
 |---|---|
 | Catalog와 Workspace가 같은 곳이라고 생각한다 | Workspace는 파일과 노트북, Catalog는 Unity Catalog에 등록된 데이터 자산입니다. 저장 위치가 다릅니다. |
-| 사이드바의 SQL 그룹에 있으면 SQL 전용이다 | SQL 그룹의 항목은 SQL 작업 중심이지만, Genie Agents처럼 다른 영역과 겹치는 항목도 있습니다. |
+| 사이드바 그룹 하나에 관련 항목이 다 모여 있다 | 그룹은 제품 영역별 묶음입니다. 예를 들어 Dashboards·Genie Agents·Alerts는 Analytics 그룹에, SQL Editor·SQL Warehouses는 Lakehouse 그룹에 나뉘어 있습니다. |
 | 화면에 메뉴가 없으니 기능이 없다 | 자물쇠 아이콘이나 권한, 워크스페이스 유형(서버리스·클래식)에 따라 메뉴가 보이지 않을 수 있습니다. |
 | 홈 화면의 추천이 전체 목록이다 | Suggested, Popular는 사용 이력 기반의 일부 목록입니다. 전체는 사이드바에서 찾으십시오. |
 
