@@ -5513,7 +5513,7 @@
 
 <h1 id="databricks-에이전트-제품-지도">Databricks 에이전트 제품 지도<a class="headerlink" href="#databricks-에이전트-제품-지도" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <h2 id="왜-필요한가">왜 필요한가<a class="headerlink" href="#왜-필요한가" title="Permanent link">&para;</a></h2>
 <p>에이전트 관련 제품은 이름이 자주 바뀌고, 같은 기능이 여러 이름으로 불렸습니다. 예전 자료를 보고 Knowledge Assistant나 Supervisor Agent로 새 에이전트를 만들면 공식 문서가 권장하지 않는 방식을 택하게 됩니다. 반대로 최신 기능을 모르면 제품이 이미 해주는 일을 코드로 다시 구현하게 됩니다.</p>
@@ -5621,7 +5621,7 @@
 </tr>
 </tbody>
 </table>
-<p>프레임워크 옵션은 <code>langgraph</code>와 <code>openai</code> 두 가지입니다. 서버 옵션은 <code>agentbricks</code>(DurableAgentServer)와 <code>custom</code> 두 가지이며, <code>agent.toml</code>의 <code>server</code> 값으로 정합니다. 문서는 서버 종류를 바꾸려면 <code>agentbricks init --server</code>로 새 프로젝트를 만들라고 안내합니다. <code>--existing</code> 이전에는 <code>custom</code> 서버를 쓸 수 없습니다. 자세한 명령은 <a href="../build-agent-with-cli/">Agent Bricks CLI로 에이전트 개발하기</a>에 있습니다.</p>
+<p>프레임워크 옵션은 <code>langgraph</code>와 <code>openai</code> 두 가지입니다. 서버 옵션은 <code>agentbricks</code>(DurableAgentServer)와 <code>custom</code> 두 가지이며, <code>agent.toml</code>의 <code>server</code> 값으로 정합니다. 문서는 서버 종류를 바꾸려면 <code>agentbricks init --server</code>로 새 프로젝트를 만들라고 안내합니다. <code>--existing</code> 이전에는 <code>custom</code> 서버를 쓸 수 없습니다. Agent Bricks 개념 문서는 <strong>Databricks Sandbox</strong> 를 에이전트가 작성한 코드를 Unity Catalog 권한으로 접근이 통제되는 격리 환경에서 실행하는 도구로 설명합니다. 자세한 명령은 <a href="../build-agent-with-cli/">Agent Bricks CLI로 에이전트 개발하기</a>에 있습니다.</p>
 <h3 id="2-genie-agents-구-genie-spaces">2. Genie Agents (구 Genie Spaces)<a class="headerlink" href="#2-genie-agents-구-genie-spaces" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -5641,7 +5641,7 @@
 </tr>
 <tr>
 <td>상태</td>
-<td>제품 라벨 없음. 기능별로 Inspect는 Public Preview, Flash는 Beta, 볼륨 접근은 Beta, Agent 모드는 리전 가용성이 다름</td>
+<td>제품 라벨 없음. 기능별로 Inspect는 Public Preview, Flash는 Beta, 볼륨 접근은 Public Preview, Agent 모드는 리전 가용성이 다름</td>
 </tr>
 <tr>
 <td>대체 경로</td>
@@ -5758,7 +5758,7 @@
 <tbody>
 <tr>
 <td>새 에이전트 배포</td>
-<td>Agent Runtime. 배포마다 <code>agent-bricks-&lt;name&gt;</code>이라는 앱이 생기고 고유 URL을 가짐</td>
+<td>Agent Runtime. 배포마다 <code>agent-bricks-&lt;name&gt;</code>이라는 앱이 생기고 고유 URL을 가짐. 여러 인스턴스에 걸쳐 에이전트를 확장 실행할 수 있음(Databricks Apps 수평 확장)</td>
 </tr>
 <tr>
 <td>실행 위치 설명</td>

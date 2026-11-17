@@ -5471,7 +5471,7 @@
 
 <h1 id="foundation-model-apis">Foundation Model APIs<a class="headerlink" href="#foundation-model-apis" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300</p>
 </blockquote>
 <p>Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(foundation model)을 엔드포인트로 호출하는 기능입니다. 모델을 직접 배포하지 않고 쓸 수 있으며, 과금 방식은 <strong>pay-per-token</strong>, <strong>우선순위 pay-per-token</strong>, <strong>provisioned throughput</strong> 세 가지입니다. 문서는 Foundation Model APIs를 Databricks 지정 서비스(Databricks Designated Service)로 분류하며, 데이터 거주를 위해 Databricks Geo를 사용한다고 설명합니다.</p>
 <h2 id="왜-필요한가">왜 필요한가<a class="headerlink" href="#왜-필요한가" title="Permanent link">&para;</a></h2>
@@ -5526,7 +5526,7 @@
 </tr>
 <tr>
 <td><strong>provisioned throughput</strong></td>
-<td>모든 운영 워크로드에 권장. 온디맨드와 예약 두 옵션</td>
+<td>높은 처리량, 성능 보장, 파인튜닝 모델, 추가 보안 요건이 필요한 운영 워크로드에 권장. HIPAA 같은 컴플라이언스 인증으로 사용 가능. 온디맨드와 예약 두 옵션</td>
 <td>온디맨드는 없음, 예약은 1개월 또는 3개월</td>
 <td>운영 워크로드, 성능 보장 필요</td>
 </tr>
@@ -5611,6 +5611,21 @@
 <td>pay-per-token</td>
 <td>제공자 호스팅. 계정 관리자가 TypeSafe AI Models 프리뷰를 켜야 함. System One API 사용</td>
 </tr>
+<tr>
+<td>Google Gemini 4 Hydrogen (<code>system.ai.gemini-4-hydrogen</code>)</td>
+<td>pay-per-token (Chat Completions API)</td>
+<td>Google Vertex AI로 제공. Databricks에서는 텍스트 입력만 지원. 글로벌 엔드포인트, 교차 지역 라우팅 필요</td>
+</tr>
+<tr>
+<td>Google Gemini 4 Carbon (<code>system.ai.gemini-4-carbon</code>)</td>
+<td>pay-per-token</td>
+<td>Databricks 호스팅. Unity Gateway로만 사용 가능하며 <code>databricks-gemini-4-carbon</code> 서빙 엔드포인트 조회는 미지원. 추론을 끌 수 없음</td>
+</tr>
+<tr>
+<td>Anthropic Claude Fable 5.2 (<code>system.ai.claude-fable-5-2</code>)</td>
+<td>pay-per-token, AI Functions(배치 추론)</td>
+<td>Amazon Bedrock을 통해 호스팅. Unity Gateway로만 사용 가능. 프롬프트와 응답을 30일 보존하며, 데이터 보존을 옵트아웃한 고객은 사용할 수 없음</td>
+</tr>
 </tbody>
 </table>
 <blockquote>
@@ -5627,15 +5642,23 @@
 <tbody>
 <tr>
 <td>DeepSeek V4 Pro (0813)</td>
-<td>2026-10-30 종료</td>
+<td>2026-10-30 종료. 권장 대체: DeepSeek V4.1 Flash (1017)</td>
 </tr>
 <tr>
 <td>Thinking Machine Labs Inkling</td>
-<td>2026-10-30 종료</td>
+<td>2026-10-30 종료. 권장 대체: GLM 5.3 또는 Kimi K3</td>
+</tr>
+<tr>
+<td>Moonshot AI Kimi K2.7</td>
+<td>2026-10-30 종료. 권장 대체: Kimi K3</td>
 </tr>
 <tr>
 <td>DeepSeek V4 Flash (0731)</td>
-<td>deprecated, 2026-11-05 종료</td>
+<td>2026-11-05 종료. 권장 대체: DeepSeek V4.1 Flash (1017)</td>
+</tr>
+<tr>
+<td>Google Gemini 3.6 Flash</td>
+<td>2026-11-19 종료. 이날부터 API 호출이 같은 가격의 Gemini 3.8 Flash로 자동 리디렉션</td>
 </tr>
 <tr>
 <td>DeepSeek V4.1 Flash</td>
@@ -5643,7 +5666,7 @@
 </tr>
 <tr>
 <td>Zhipu AI GLM 5.2</td>
-<td>신규 워크로드에 권장하지 않음 (legacy)</td>
+<td>신규 워크로드에 권장하지 않음 (legacy). deprecated, 2027-02-04 종료 예정. 권장 대체: GLM 5.3</td>
 </tr>
 <tr>
 <td>Alibaba Cloud Qwen3.5 122B A10B, Qwen3-Embedding-0.6B, Qwen3-Next 80B A3B Instruct, Inkling</td>
@@ -5720,7 +5743,7 @@
 </tr>
 <tr>
 <td>런타임</td>
-<td>Databricks Runtime 15.4 LTS 이상. 18.2 이상 권장</td>
+<td>Databricks Runtime 15.4 LTS 이상. 18.2 이상 권장. 이 요구 사항은 AI Functions의 Databricks Runtime 17.3 LTS 이상 요구로 바뀔 예정</td>
 </tr>
 <tr>
 <td>리전</td>
@@ -5826,7 +5849,7 @@
 <h2 id="주의사항">주의사항<a class="headerlink" href="#주의사항" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>호출 한도를 확인하십시오.</strong> 문서는 Foundation Model APIs 한도 페이지를 링크하지만, 페이지에는 수치가 없습니다. 이 장은 수치를 쓰지 않았습니다.</li>
-<li><strong>종료 날짜를 코드 리뷰에 넣으십시오.</strong> 2026-10-30, 11-05, 11-19 종료 항목이 있습니다.</li>
+<li><strong>종료 날짜를 코드 리뷰에 넣으십시오.</strong> 2026-10-30, 11-05, 11-19, 2027-02-04 종료 항목이 있습니다.</li>
 <li><strong>Gemini 이미지 모델의 제외 기능을 확인하십시오.</strong> <code>ai_query</code>와 배치 추론에서 쓸 수 없습니다.</li>
 <li><strong>데이터 보존은 원문 문장만 인용하십시오.</strong> 일부 모델(예: Claude Fable 5, 5.1)은 보존 정책이 다르다고 원문이 설명하며, 세부는 최신 공식 문서를 기준으로 확인하십시오.</li>
 <li><strong>게이트웨이 정책을 함께 검토하십시오.</strong> 사용량 추적, 한도, 가드레일은 <a href="../unity-gateway/">Unity Gateway</a>에서 다룹니다.</li>
@@ -5839,6 +5862,8 @@
 <li><a href="https://docs.databricks.com/aws/en/machine-learning/model-serving/score-foundation-models">Use foundation models (score-foundation-models)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_query">ai_query 함수</a></li>
 <li><a href="https://docs.databricks.com/aws/en/large-language-models/ai-functions">AI Functions</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november">Legacy, deprecated, and retired models 관련 릴리즈 노트 (2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october">Databricks release notes, October 2026</a></li>
 </ul>
 
 

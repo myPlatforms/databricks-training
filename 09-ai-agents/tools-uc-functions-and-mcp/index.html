@@ -5437,7 +5437,7 @@
 
 <h1 id="도구-uc-함수와-mcp-서버">도구: UC 함수와 MCP 서버<a class="headerlink" href="#도구-uc-함수와-mcp-서버" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300</p>
 </blockquote>
 <h2 id="왜-필요한가">왜 필요한가<a class="headerlink" href="#왜-필요한가" title="Permanent link">&para;</a></h2>
 <p>에이전트가 답만 하면 쓸모가 제한됩니다. 실제 업무는 데이터를 조회하고, 계산하고, 외부 시스템에 요청하고, 때로는 결과를 기록하는 일이기 때문입니다. 도구(Tool)는 이 실행 능력을 에이전트에 붙이는 단위입니다.</p>
@@ -5499,22 +5499,23 @@
 </tr>
 <tr>
 <td><code>system.ai.dbsql</code> (Databricks SQL)</td>
-<td>Unity Gateway Beta</td>
-<td>계정 관리자가 계정 콘솔 Previews에서 Unity Gateway 베타를 켬. 호출자의 UC 권한과 웨어하우스 권한 사용</td>
+<td>Beta</td>
+<td>계정 관리자가 계정 콘솔 Previews에서 <strong>Enhanced Unity Gateway</strong> 프리뷰를 켬. 호출자의 UC 권한과 웨어하우스 권한 사용</td>
 </tr>
 <tr>
 <td><code>system.ai.web_search</code></td>
-<td>Unity Gateway Beta</td>
-<td>같은 베타 필요. HIPAA/BAA 규정 준수 설정이 켜져 있으면 사용 불가</td>
+<td>Beta</td>
+<td>같은 프리뷰 필요. HIPAA/BAA 규정 준수 설정이 켜져 있으면 사용 불가</td>
 </tr>
 <tr>
 <td><code>system.ai.sandbox</code></td>
-<td>Unity Gateway Beta</td>
-<td>같은 베타 필요. 네트워크 송신 없음</td>
+<td>Beta</td>
+<td>같은 프리뷰 필요. 네트워크 송신 없음</td>
 </tr>
 </tbody>
 </table>
-<p>외부 서비스 MCP(<code>system.ai.slack</code>, <code>system.ai.github</code>, <code>system.ai.atlassian</code>, <code>system.ai.google_drive</code>, <code>system.ai.google_calendar</code>, <code>system.ai.gmail</code>, <code>system.ai.microsoft_365</code>)는 페이지에 상태 라벨이 없습니다. GitHub는 기본으로 공개 저장소만 읽고, 비공개 저장소나 쓰기 작업에는 GitHub 커넥터 앱 설치가 필요하다고 문서가 설명합니다.</p>
+<p>Unity Gateway 자체는 generally available입니다. Beta인 것은 위 세 MCP입니다.</p>
+<p>외부 서비스 MCP(<code>system.ai.slack</code>, <code>system.ai.github</code>, <code>system.ai.atlassian</code>, <code>system.ai.asana</code>, <code>system.ai.google_drive</code>, <code>system.ai.google_calendar</code>, <code>system.ai.gmail</code>, <code>system.ai.microsoft_365</code>)는 페이지에 상태 라벨이 없습니다. GitHub는 기본으로 공개 저장소만 읽고, 비공개 저장소나 쓰기 작업에는 GitHub 커넥터 앱 설치가 필요하다고 문서가 설명합니다.</p>
 <p>워크스페이스 MCP 엔드포인트는 Public Preview이며, 워크스페이스 관리자가 Previews 페이지에서 <strong>Managed MCP Servers</strong> 를 켜야 합니다.</p>
 <table>
 <thead>
@@ -5596,7 +5597,7 @@
 <li>앱 이름에 <code>mcp-</code> 접두사를 붙입니다. 예: <code>mcp-my-server</code>. 접두사가 있어야 AI Playground가 이 서버를 인식합니다.</li>
 <li>배포가 끝나면 앱 URL 뒤에 <code>/mcp</code>를 붙입니다.</li>
 </ol>
-<p>템플릿에는 <code>health</code> 도구가 들어 있습니다. 도구를 추가하려면 <code>server/tools.py</code>의 <code>load_tools(mcp_server)</code> 안에 다음을 넣습니다.</p>
+<p>템플릿에는 서버 동작을 확인하는 <code>health</code> 도구와 호출한 사용자의 신원을 돌려주는 <code>get_current_user</code> 도구가 들어 있습니다. <code>get_current_user</code>는 앱에 사용자 권한 범위(user authorization scopes)가 있을 때만 동작합니다. 도구를 추가하려면 <code>server/tools.py</code>의 <code>load_tools(mcp_server)</code> 안에 다음을 넣습니다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@mcp_server</span><span class="o">.</span><span class="n">tool</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">uppercase</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="sd">"""Convert a string to uppercase."""</span>
@@ -5625,6 +5626,9 @@
 <p>호출자에게는 앱에 <strong>CAN USE</strong> 를, HTTP 연결에는 <strong>USE CONNECTION</strong> 을 줍니다. 템플릿의 도구는 <code>list_api_endpoints</code>와 엔드포인트 호출 도구입니다.</p>
 <h3 id="에이전트에서-mcp-도구-호출">에이전트에서 MCP 도구 호출<a class="headerlink" href="#에이전트에서-mcp-도구-호출" title="Permanent link">&para;</a></h3>
 <p>Python 에이전트가 MCP 도구를 쓰는 기본 구성은 다음과 같습니다. 문서가 예시로 드는 패키지는 <code>databricks-mcp</code>(<code>DatabricksMCPClient</code>)와 <code>databricks-sdk</code>(<code>WorkspaceClient</code>)입니다. MCP 클라이언트는 <code>list_tools()</code>로 도구 이름, 설명, 입력 스키마를 얻고, <code>call_tool(tool_name, arguments)</code>로 호출합니다. 결과는 <code>structuredContent</code> 또는 <code>content</code> 블록에 오므로, 사용 전에 <code>isError</code>를 확인하라고 문서가 안내합니다.</p>
+<p>Agent Bricks CLI로 에이전트를 만들 때는 <code>agentbricks tools add mcp &lt;catalog&gt;.&lt;schema&gt;.&lt;service&gt;</code> 로 MCP 서비스를 프로젝트에 추가합니다. 내장 <code>system.ai</code> 서비스와 다른 카탈로그·스키마의 MCP 서비스도 받으며, 서비스가 있는지 확인한 뒤 <code>agent.toml</code>에 도구를 기록합니다. 에이전트는 런타임에 도구에 연결하므로 연결 코드를 쓰지 않습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>agentbricks<span class="w"> </span>tools<span class="w"> </span>add<span class="w"> </span>mcp<span class="w"> </span>main.tools.ticket_search<span class="w"> </span>--name<span class="w"> </span>tickets
+</code></pre></div>
 <p>Claude Code, Codex, Cursor 같은 코딩 에이전트에 연결하는 방법은 <code>ug mcp add --names "app:mcp-my-server"</code> 명령으로 안내됩니다. 코딩 에이전트 구성은 <a href="../../11-developer-tools/genie-code/">11장 Genie Code</a>와 함께 보십시오.</p>
 <h2 id="인증-주체">인증 주체<a class="headerlink" href="#인증-주체" title="Permanent link">&para;</a></h2>
 <p>이 표가 이 페이지에서 가장 중요합니다. 같은 도구라도 어느 신원으로 호출되는지에 따라 접근 범위가 달라집니다.</p>
@@ -5749,7 +5753,7 @@
 <li><strong>Global Search에 안 보임</strong>: Unity Catalog 전역 검색에는 MCP가 나오지 않으므로 MCPs 페이지에서 찾습니다.</li>
 <li><strong>OpenAPI 명세 위치</strong>: <code>spec.json</code>은 볼륨 루트에 있어야 하고, OpenAPI 3.x 형식이어야 합니다.</li>
 <li><strong>서버 요구사항</strong>: Streamable HTTP, <code>0.0.0.0</code> listen, <code>DATABRICKS_APP_PORT</code> 사용을 지키지 않으면 배포가 동작하지 않습니다.</li>
-<li><strong>Beta 항목 주의</strong>: <code>system.ai.dbsql</code>, <code>system.ai.web_search</code>, <code>system.ai.sandbox</code>는 계정 베타가 필요합니다. 고객 환경에서 쓰기 전에 베타 활성 여부를 확인하십시오.</li>
+<li><strong>Beta 항목 주의</strong>: <code>system.ai.dbsql</code>, <code>system.ai.web_search</code>, <code>system.ai.sandbox</code>는 계정 콘솔의 Enhanced Unity Gateway 프리뷰가 필요합니다. 고객 환경에서 쓰기 전에 베타 활성 여부를 확인하십시오.</li>
 </ul>
 <h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
 <ul>

@@ -5393,7 +5393,7 @@
 
 <h1 id="sql-스크립팅과-저장-프로시저">SQL 스크립팅과 저장 프로시저<a class="headerlink" href="#sql-스크립팅과-저장-프로시저" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <p>SQL 스크립팅(SQL scripting)은 여러 SQL 문장을 <code>BEGIN ... END</code> 블록으로 묶고, 변수·조건문·반복문·예외 처리를 SQL 안에서 쓰게 해주는 기능입니다. 저장 프로시저(Stored procedure)는 이 스크립트를 Unity Catalog 객체로 저장해 <code>CALL</code>로 재사용하는 방식입니다.</p>
 <blockquote>
@@ -5504,6 +5504,14 @@
 <td>선택 특성</td>
 <td><code>COMMENT</code>, <code>NOT DETERMINISTIC</code>, <code>DEFAULT COLLATION</code>, <code>MODIFIES SQL DATA</code></td>
 </tr>
+<tr>
+<td>생성 권한</td>
+<td>카탈로그의 <code>USE CATALOG</code>, 스키마의 <code>USE SCHEMA</code>와 <code>CREATE FUNCTION</code>. 본문이 참조하는 객체의 권한은 생성 시 필요 없음</td>
+</tr>
+<tr>
+<td>교체 권한</td>
+<td><code>CREATE OR REPLACE PROCEDURE</code>는 위 권한에 더해 프로시저, 상위 스키마, 상위 카탈로그 중 하나의 소유권 또는 <code>MANAGE</code> 필요</td>
+</tr>
 </tbody>
 </table>
 <p><strong>매개변수 모드</strong></p>
@@ -5540,14 +5548,15 @@
 <tbody>
 <tr>
 <td><code>INVOKER</code></td>
-<td>호출한 사용자의 권한으로 실행. 호출자는 프로시저에 <code>EXECUTE</code> 권한만 있으면 됨</td>
+<td>호출한 사용자의 권한으로 실행. 호출자는 프로시저의 <code>EXECUTE</code> 권한과 본문이 참조하는 객체의 권한이 필요</td>
 </tr>
 <tr>
 <td><code>DEFINER</code></td>
-<td>프로시저 소유자의 권한으로 실행</td>
+<td>프로시저 소유자의 권한으로 실행. 호출자는 프로시저의 <code>EXECUTE</code> 권한만 있으면 됨</td>
 </tr>
 </tbody>
 </table>
+<p>본문이 실행될 때 각 문장은 자체 권한이 필요하며, <code>INVOKER</code>는 호출자, <code>DEFINER</code>는 프로시저 소유자를 기준으로 검사됩니다.</p>
 <p>관련 명령은 <code>CALL</code>(실행), <code>SHOW PROCEDURES</code>, <code>DESCRIBE PROCEDURE</code>, <code>DROP PROCEDURE</code>입니다. 공식 문서의 관련 문서 목록에는 이 명령들이 나오지만, 각 명령의 세부 동작은 해당 레퍼런스 페이지를 따릅니다.</p>
 <h2 id="어떻게-쓰는가">어떻게 쓰는가<a class="headerlink" href="#어떻게-쓰는가" title="Permanent link">&para;</a></h2>
 <h3 id="예-1-스크립트-블록으로-변수와-분기-쓰기">예 1: 스크립트 블록으로 변수와 분기 쓰기<a class="headerlink" href="#예-1-스크립트-블록으로-변수와-분기-쓰기" title="Permanent link">&para;</a></h3>
@@ -5579,7 +5588,7 @@
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">result</span><span class="p">;</span>
 </code></pre></div>
 <blockquote>
-<p><strong>주의</strong> 위 예시는 문서의 구문 요소를 조합한 설명용 코드입니다. 세션 변수 선언 문법은 <code>DECLARE VARIABLE</code> 레퍼런스에서 한 번 더 확인하십시오. 이 페이지는 실행 결과를 검증하지 않았습니다. 실행 전 Databricks Runtime 17.0 이상과 Unity Catalog 환경을 확인하십시오. 프로시저를 만들 때 필요한 권한은 문서 원문에 명시되어 있지 않으므로, 워크스페이스 관리자와 확인합니다.</p>
+<p><strong>주의</strong> 위 예시는 문서의 구문 요소를 조합한 설명용 코드입니다. 세션 변수 선언 문법은 <code>DECLARE VARIABLE</code> 레퍼런스에서 한 번 더 확인하십시오. 이 페이지는 실행 결과를 검증하지 않았습니다. 실행 전 Databricks Runtime 17.0 이상과 Unity Catalog 환경을 확인하십시오. 프로시저를 만들 때 필요한 권한은 위 "저장 프로시저" 표의 생성 권한 행을 참고하십시오.</p>
 </blockquote>
 <h3 id="예-3-실행-권한을-정하는-방법">예 3: 실행 권한을 정하는 방법<a class="headerlink" href="#예-3-실행-권한을-정하는-방법" title="Permanent link">&para;</a></h3>
 <ul>

@@ -5637,7 +5637,7 @@
 
 <h1 id="genie-agents-만들기">Genie Agents 만들기<a class="headerlink" href="#genie-agents-만들기" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
 <p><strong>Genie Agents</strong> 는 데이터 분석가가 설정하는 도메인별 자연어 대화 인터페이스입니다. 사용자가 질문하면 Genie가 관련 데이터 소스를 찾고, 읽기 전용 SQL을 만들어 SQL 웨어하우스에서 실행하고, 쿼리와 결과 표, 시각화를 돌려줍니다. 문서는 Genie Agents가 이전에 <strong>Genie Spaces</strong> 라고 불렸다고 명시합니다.</p>
@@ -5723,7 +5723,7 @@
 </table>
 <p>문서는 Agent mode가 이전에 "Research Agent"로 불렸다고 명시합니다. Flash(Beta)는 단순한 질문에 속도를 우선하는 Agent mode 옵션이며, 워크스페이스 관리자가 "Genie Agents Flash Mode"를 켜야 합니다. Inspect(Public Preview)는 생성된 SQL을 검토해 필터, 날짜 범위, 조인을 점검하고 더 정확한 쿼리를 반환할 수 있습니다.</p>
 <blockquote>
-<p><strong>주의</strong> 비정형 파일이나 MCP 커넥터가 필요하면 Chat mode가 아니라 Agent mode여야 합니다. 볼륨 파일 조회는 Beta입니다.</p>
+<p><strong>주의</strong> 비정형 파일이나 MCP 커넥터가 필요하면 Chat mode가 아니라 Agent mode여야 합니다. Unity Catalog 볼륨 파일 분석은 Public Preview입니다. PDF, 슬라이드, 이미지 같은 비정형 파일을 분석하고 원본 페이지를 가리키는 인용과 함께 답하며, 워크스페이스 관리자가 Previews 페이지에서 접근을 제어합니다.</p>
 </blockquote>
 <h2 id="3-어떻게-쓰는가">3. 어떻게 쓰는가<a class="headerlink" href="#3-어떻게-쓰는가" title="Permanent link">&para;</a></h2>
 <p><img alt="Genie Agent 첫 화면 — 설명, 질문 입력창, 추천 질문" src="../../assets/shots/genie-space.png" /></p>
@@ -5770,6 +5770,8 @@
 <li><strong>Configure &gt; Data</strong> 로 이동해 <strong>Add</strong> 로 테이블을 추가합니다. 휴지통 아이콘으로 제거합니다.</li>
 <li>객체 이름을 누르면 <strong>Overview</strong>(열과 타입)와 <strong>Sample data</strong> 탭을 볼 수 있습니다.</li>
 <li>에이전트는 <strong>자신에게 붙은 데이터 소스만</strong> 조회합니다. 2026-09-17 릴리즈 노트는 이 동작을 명시합니다.</li>
+<li>사용자가 에이전트에 붙은 볼륨이나 MCP 연결 중 일부에만 접근할 수 있으면, 에이전트는 그 사용자가 접근할 수 있는 소스만으로 답합니다. 일부 소스에 권한이 없다는 이유로 사용이 막히지 않습니다(AI/BI 릴리즈 노트 2026-11-05).</li>
+<li><strong>Configure</strong> 설정에 커넥터를 추가하는 전용 섹션이 있습니다(Beta, AI/BI 릴리즈 노트 2026-11-12).</li>
 <li>2026-08-27 릴리즈 노트에 따르면 UC의 스칼라 함수와 테이블 반환 함수를 에이전트 도구로 붙일 수 있습니다.</li>
 <li>2026-08-27 릴리즈 노트에 따르면 UC 테이블을 Genie에서 직접 열 수 있습니다. 채팅, Discover, Ask Genie 진입점을 제공합니다.</li>
 </ul>
@@ -5859,6 +5861,7 @@
 <li>새 에이전트는 사용자 폴더에 저장되며, 폴더의 권한을 상속합니다.</li>
 <li>대화(conversation)는 별도로 공유할 수 있습니다.</li>
 <li>외부 공유는 OpenSharing을 씁니다.</li>
+<li>Slack용 Databricks Genie 앱과 Microsoft Teams용 Databricks Genie 앱은 GA입니다. 블로그에 따르면 Slack 채널에 특정 Genie Agent를 고정(pin)하면 답이 그 에이전트의 데이터와 인스트럭션 범위로 한정됩니다.</li>
 </ol>
 <p>Genie Agent를 웹사이트나 앱에 넣는 방식(iframe 임베딩)은 <a href="../schedule-subscribe-embed/">4페이지</a>에서 다룹니다.</p>
 <h3 id="인증서certification-표시">인증서(Certification) 표시<a class="headerlink" href="#인증서certification-표시" title="Permanent link">&para;</a></h3>
@@ -5911,7 +5914,7 @@
 <li><strong>Databricks SQL 엔타이틀먼트를 확인합니다.</strong> 엔타이틀먼트가 없는 사용자는 대화할 수 없습니다. Consumer access 사용자는 대화는 가능하지만 새 객체를 만들 수 없습니다.</li>
 <li><strong>계정 전체 공유는 신중하게 씁니다.</strong> All account users는 계정의 모든 사용자에게 열립니다. 데이터 접근은 사용자별 UC 권한으로 검사된다고 문서가 설명하지만, 에이전트 설정이 어디까지 보이는지는 이 장에서 확인하지 않았습니다.</li>
 <li><strong>인증서 표시를 운영 절차에 넣습니다.</strong> Certified, Deprecated, None 표시를 누가 관리하는지 정해 두십시오.</li>
-<li><strong>라벨을 확인합니다.</strong> Genie Agents 전체에는 GA 또는 Public Preview 라벨이 붙어 있지 않습니다. Flash(Beta), Inspect(Public Preview), 외부 도구 연결(Beta)처럼 기능별로 라벨이 다릅니다.</li>
+<li><strong>라벨을 확인합니다.</strong> Genie Agents 전체에는 GA 또는 Public Preview 라벨이 붙어 있지 않습니다. Flash(Beta), Inspect(Public Preview), 볼륨 파일 분석(Public Preview), 외부 도구 연결(Beta)처럼 기능별로 라벨이 다릅니다.</li>
 </ul>
 <h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
 <ul>
@@ -5921,6 +5924,9 @@
 <li><a href="https://docs.databricks.com/aws/en/ai-bi/">AI/BI 개요와 Genie 제품 구분</a></li>
 <li><a href="https://docs.databricks.com/aws/en/ai-bi/consumers/">Consumer access</a></li>
 <li><a href="https://docs.databricks.com/aws/en/ai-bi/release-notes/2026">AI/BI 릴리즈 노트 (2026)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#databricks-genie-app-for-slack-is-now-generally-available">Databricks Genie app for Slack is now generally available (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#databricks-genie-app-in-microsoft-teams-is-now-generally-available">Databricks Genie app in Microsoft Teams is now generally available (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://www.databricks.com/blog/genie-slack-now-generally-available-governed-ai-cowork-right-where-work-happens">Genie in Slack is now generally available (Databricks 블로그)</a></li>
 </ul>
 
 

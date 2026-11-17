@@ -5337,7 +5337,7 @@
 
 <h1 id="명령-그룹과-출력-형식">명령 그룹과 출력 형식<a class="headerlink" href="#명령-그룹과-출력-형식" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <p>이 페이지는 Databricks CLI의 명령 구조, 자주 쓰는 명령 그룹, 출력 형식(<code>-o</code>), 그리고 스크립트에서 결과를 안전하게 쓰는 방법을 다룹니다. 설치와 인증은 <a href="../install-and-auth/">설치와 인증</a>을 먼저 보십시오.</p>
 <h2 id="1-왜-필요한가">1. 왜 필요한가<a class="headerlink" href="#1-왜-필요한가" title="Permanent link">&para;</a></h2>
@@ -5528,6 +5528,7 @@
 <li><strong><code>--help</code>로 버전 확인.</strong> 문서 예시와 설치된 CLI 버전이 다르면 <code>--help</code> 결과를 우선합니다.</li>
 <li><strong><code>text</code> 출력을 파싱하지 않기.</strong> 자동화는 <code>json</code>만 씁니다.</li>
 <li><strong>변경 명령은 읽기로 먼저 확인.</strong> <code>deploy</code>, <code>destroy</code>, <code>run</code> 전에 대상 워크스페이스와 타깃을 확인합니다.</li>
+<li><strong>CLI를 최신 릴리스로 유지.</strong> What's coming 문서에 따르면 Databricks는 곧 list catalogs, list schemas, list tables 같은 일부 Unity Catalog REST API 작업의 페이지네이션 없는 요청을 HTTP 400으로 거부합니다. 그 전까지는 점점 엄격해지는 속도 제한으로 HTTP 429를 받을 수 있습니다. 현재 릴리스의 Databricks CLI와 SDK는 기본으로 페이지네이션 필드를 쓰므로, 오래된 CLI를 쓰는 스크립트는 업그레이드합니다.</li>
 <li><strong>디버그 로그 공유 주의.</strong> <code>--debug</code>와 로그 파일에는 요청 정보가 들어갈 수 있으므로 외부에 공유하기 전에 점검합니다.</li>
 </ul>
 <h2 id="참고-문서">참고 문서<a class="headerlink" href="#참고-문서" title="Permanent link">&para;</a></h2>
@@ -5535,6 +5536,7 @@
 <li><a href="https://docs.databricks.com/aws/en/dev-tools/cli/">Databricks CLI 개요</a></li>
 <li><a href="https://docs.databricks.com/aws/en/dev-tools/cli/bundle-commands">Databricks 번들 명령 (bundle-commands)</a></li>
 <li><a href="https://docs.databricks.com/aws/en/dev-tools/cli/authentication">Databricks CLI 인증</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/whats-coming#unpaginated-requests-to-some-unity-catalog-rest-api-operations-will-soon-be-rejected">What's coming — Unpaginated requests to some Unity Catalog REST API operations will soon be rejected</a></li>
 </ul>
 
 

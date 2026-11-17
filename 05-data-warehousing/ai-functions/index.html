@@ -5415,7 +5415,7 @@
 
 <h1 id="ai-functions">AI Functions<a class="headerlink" href="#ai-functions" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <p>AI Functions는 SQL 함수 호출만으로 텍스트 요약, 분류, 문서 파싱, 필드 추출, 모델 호출을 수행하는 함수 묶음입니다. 공식 문서는 함수를 문서 처리, 텍스트 변환, 텍스트 분석, 콘텐츠 생성, 예측, 시계열 예측, 메트릭 변화 분석, 검색 임베딩 등으로 묶어 제공합니다. 이 페이지는 함수 목록과 상태 라벨, 범용 함수인 <code>ai_query</code>와 문서 처리 함수인 <code>ai_extract</code>, <code>ai_parse_document</code>의 요구 사항과 권한을 다룹니다.</p>
 <h2 id="왜-필요한가">왜 필요한가<a class="headerlink" href="#왜-필요한가" title="Permanent link">&para;</a></h2>
@@ -5544,7 +5544,7 @@
 </tr>
 <tr>
 <td>런타임</td>
-<td>Databricks Runtime 15.4 LTS 이상 필요. 18.2 이상을 권장</td>
+<td>Databricks Runtime 15.4 LTS 이상 필요. 18.2 이상을 권장. 2027-02-01부터 15.4 LTS 이상이 필요한 AI Functions는 17.3 LTS 이상이 필요하며, 17.3 미만에서의 SQL 호출은 지원되지 않고 오류를 반환함. <code>ai_forecast</code>, <code>ai_top_drivers</code>, <code>ai_detect_anomalies</code>, <code>ai_predict_class</code>, <code>ai_predict_value</code>, <code>vector_search</code>, AI Functions REST API는 영향 없음</td>
 </tr>
 <tr>
 <td>배치 워크로드의 <code>ai_query</code> 모델</td>
@@ -5553,6 +5553,10 @@
 <tr>
 <td>권한 제한</td>
 <td>작업별 함수 접근은 "AI Functions Unity Catalog permissions" 문서를 따라 제한 가능</td>
+</tr>
+<tr>
+<td>비동기 실행</td>
+<td>AI Functions Asynchronous API (Beta)로 <code>ai_parse_document</code>, <code>ai_extract</code>, <code>ai_classify</code>를 Unity Catalog 볼륨의 JSONL 파일에 담긴 최대 50,000개 요청에 대해 비동기로 실행. 요청마다 결과 하나를 볼륨의 파일에 씀. 워크스페이스 관리자가 Previews 페이지에서 켬</td>
 </tr>
 </tbody>
 </table>
@@ -5737,7 +5741,7 @@
 </tr>
 <tr>
 <td>비용 구조</td>
-<td>문서 원문에서 함수별 단가를 확인하지 않음. 과금은 해당 함수의 과금 페이지를 따름</td>
+<td>문서 원문에서 함수별 단가를 확인하지 않음. 과금은 해당 함수의 과금 페이지를 따름. 2026-11-01부터 <code>ai_parse_document</code>, <code>ai_extract</code>, <code>ai_classify</code> 같은 작업별 AI Functions 지출은 배치·실시간 경로 모두 Unity Gateway 예산에 포함됨</td>
 </tr>
 <tr>
 <td>대안</td>
@@ -5748,6 +5752,7 @@
 <h2 id="주의사항">주의사항<a class="headerlink" href="#주의사항" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>상태 라벨을 확인합니다.</strong> <code>(Beta)</code> 함수를 핵심 파이프라인에 넣기 전 상세 문서와 릴리즈 노트를 확인합니다.</li>
+<li><strong>런타임 업그레이드를 계획합니다.</strong> 2027-02-01 이전에 영향받는 SQL 쿼리를 실행하는 컴퓨트를 Databricks Runtime 17.3 LTS 이상으로 올리십시오.</li>
 <li><strong><code>ai_query</code>의 권한 오류는 엔드포인트 권한부터 봅니다.</strong> <code>CAN QUERY</code>가 정의자에게 있는지, 관리자가 미리보기 기능을 껐는지 확인합니다.</li>
 <li><strong>배치 처리는 프로비저닝 처리량이 아닌 호스팅 모델을 씁니다.</strong> 문서가 그렇게 권장합니다.</li>
 <li><strong>민감 데이터를 프롬프트에 넣기 전 거버넌스를 확인합니다.</strong> 데이터가 모델 엔드포인트로 전달되므로, 허용 정책과 데이터 분류를 먼저 정합니다.</li>
@@ -5760,6 +5765,10 @@
 <li><a href="https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_extract">ai_extract 함수</a></li>
 <li><a href="https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_parse_document">ai_parse_document 함수</a></li>
 <li><a href="https://docs.databricks.com/aws/en/sql/">Data warehousing on Databricks</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#upcoming-removal-of-ai-functions-support-on-older-runtimes">Upcoming removal of AI Functions support on older runtimes (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-asynchronous-api-beta">AI Functions Asynchronous API (Beta) (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-usage-is-now-included-in-unity-gateway-budgets">AI Functions usage is now included in Unity Gateway budgets</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/whats-coming#ai-functions-require-databricks-runtime-173-lts-or-above">What's coming — AI Functions require Databricks Runtime 17.3 LTS or above</a></li>
 </ul>
 
 

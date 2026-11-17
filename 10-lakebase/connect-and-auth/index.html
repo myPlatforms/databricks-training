@@ -5581,7 +5581,7 @@
 
 <h1 id="연결과-인증">연결과 인증<a class="headerlink" href="#연결과-인증" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <p>Lakebase에 접속하는 방법은 두 가지입니다. <strong>OAuth 토큰</strong> 을 Postgres 비밀번호로 쓰는 방식과, Postgres <strong>네이티브 비밀번호 역할</strong> 을 쓰는 방식입니다. 이 페이지는 두 방식의 차이, 토큰 만료와 연결 수명, 역할과 권한, 커넥션 풀링을 다룹니다.</p>
 <h2 id="1-왜-이-구조가-필요한가">1. 왜 이 구조가 필요한가<a class="headerlink" href="#1-왜-이-구조가-필요한가" title="Permanent link">&para;</a></h2>
@@ -5646,7 +5646,7 @@
 <li>Postgres는 토큰이 유효한지 로그인 시점에 확인하고, 역할이 있는지 확인합니다.</li>
 </ol>
 <p>발급된 토큰 응답에는 <code>token</code>과 <code>expire_time</code>이 들어 있습니다.</p>
-<p>UI에서는 Lakebase 앱에서 <strong>Connect</strong> 를 열고, Role 드롭다운의 OAuth 역할을 고른 뒤, psql이 비밀번호를 물으면 <strong>Copy OAuth token</strong> 버튼으로 복사한 값을 붙여 넣습니다. 이 버튼은 <strong>현재 로그인한 아이덴티티</strong> 의 토큰만 만들며, 서비스 프린시펄이나 다른 사용자의 토큰은 만들지 않습니다. 그런 경우에는 CLI나 SDK를 씁니다.</p>
+<p>UI에서는 Lakebase 앱에서 <strong>Connect</strong> 를 열고, Role 드롭다운의 OAuth 역할을 고른 뒤, <strong>Copy OAuth token</strong> 버튼으로 복사한 값을 터미널에서 <code>PGPASSWORD</code> 환경 변수로 내보내고 psql 스니펫을 실행합니다. 문서는 토큰이 길어 일부 터미널에서는 비밀번호 프롬프트에 붙여 넣으면 psql이 멈출 수 있다고 설명합니다. <code>PGPASSWORD</code>를 설정했는데도 비밀번호를 물으면 <code>PGSERVICE</code>나 <code>PGSERVICEFILE</code> 같은 다른 설정이 우선하는지 확인합니다. 이 버튼은 <strong>현재 로그인한 아이덴티티</strong> 의 토큰만 만들며, 서비스 프린시펄이나 다른 사용자의 토큰은 만들지 않습니다. 그런 경우에는 CLI나 SDK를 씁니다.</p>
 <h3 id="토큰-발급-cli">토큰 발급 (CLI)<a class="headerlink" href="#토큰-발급-cli" title="Permanent link">&para;</a></h3>
 <p>엔드포인트 경로 형식은 <code>projects/{project-id}/branches/{branch-id}/endpoints/{endpoint-id}</code>입니다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>databricks<span class="w"> </span>postgres<span class="w"> </span>generate-database-credential<span class="w"> </span><span class="se">\</span>
@@ -5795,7 +5795,11 @@
 </tr>
 <tr>
 <td>관리자 역할 부여</td>
-<td><code>databricks postgres update-role</code>로 <code>spec.membership_roles</code>에 <code>DATABRICKS_SUPERUSER</code> 지정. 빈 배열이면 제거</td>
+<td><code>databricks postgres update-role</code>로 <code>spec.membership_roles</code>에 <code>DATABRICKS_SUPERUSER</code> 지정. <code>update_mask</code>에 <code>spec.membership_roles</code>를 넣으면 기존 멤버십 전체를 대체함. 이때 목록을 비우거나 값을 빼면 <code>DATABRICKS_SUPERUSER</code>를 포함한 모든 멤버십이 지워짐</td>
+</tr>
+<tr>
+<td>변경 불가 필드</td>
+<td><code>spec.identity_type</code>, <code>spec.auth_method</code>, <code>spec.postgres_role</code>은 생성 후 바꿀 수 없음. 수정·삭제에는 list roles가 돌려준 리소스 이름을 씀</td>
 </tr>
 <tr>
 <td>역할 삭제</td>

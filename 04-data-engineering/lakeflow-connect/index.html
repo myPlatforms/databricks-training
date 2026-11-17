@@ -5393,7 +5393,7 @@
 
 <h1 id="lakeflow-connect">Lakeflow Connect<a class="headerlink" href="#lakeflow-connect" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 100</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
 <p>Lakeflow Connect는 SaaS 애플리케이션, 데이터베이스, 파일 서비스, 메시지 버스에서 데이터를 수집하는 <strong>관리형 커넥터(managed connectors)</strong> 모음입니다. 공식 문서는 Lakeflow Connect가 "local files, popular enterprise applications, databases, cloud storage, message buses, and more"에서 데이터를 수집하는 커넥터를 제공한다고 설명합니다. 수집 결과는 스트리밍 테이블(Delta 테이블에 증분 처리 기능이 추가된 형태)에 저장됩니다.</p>
@@ -5462,9 +5462,9 @@
 </table>
 <h3 id="saas-커넥터-목록">SaaS 커넥터 목록<a class="headerlink" href="#saas-커넥터-목록" title="Permanent link">&para;</a></h3>
 <p>"SaaS connectors" 개요 페이지(saas-overview)에 나열된 커넥터 이름은 다음과 같습니다. 원문 표기 그대로 옮겼습니다. 이 목록에는 상태 라벨이 표시되지 않습니다.</p>
-<p>1Password Event Logs, Aha!, Akamai WAF, Amplitude, Anaplan, Anthropic, Anysphere Audit Logs, Anysphere Organization, Asana, Atlassian Audit Logs, Azure DevOps, Box Audit Logs, Celigo, Confluence, Cribl, CrowdStrike Falcon Event Stream, Microsoft Dynamics 365, GitHub, GitLab, Glean, Gmail, Google Ads, Google Analytics, Google Analytics Aggregated, Google Search Console, Google Workspace, HubSpot, Jira, LinkedIn Ads, Marketo, Meta Ads, Microsoft 365 Unified Audit Logs, Microsoft Entra ID, Monday.com, Netskope Logs, NetSuite, Notion, Okta System Logs, OpenAI, Oracle Eloqua, Outlook, PagerDuty, PayPal, Pendo, Productboard, QuickBooks, Reddit Ads, Salesforce, Salesforce Marketing Cloud, SendGrid, ServiceNow, SharePoint, Shopify, Smartsheet, Square, Strac, SurveyMonkey, TikTok Ads, Veeva Vault, Verkada, Vimeo, Wiz Audit Logs, Workday Activity Logging, Workday HCM, Workday Reports, Workiva, Zendesk Support, Zip, Zoho Books, Zoho CRM</p>
+<p>1Password Event Logs, Aha!, Akamai WAF, Amplitude, Anaplan, Anthropic, Anysphere Audit Logs, Anysphere Organization, Asana, Atlassian Audit Logs, Azure DevOps, Box Audit Logs, Celigo, Confluence, Cribl, CrowdStrike Falcon Event Stream, Microsoft Dynamics 365, GitHub, GitLab, Glean, Gmail, Google Ads, Google Analytics, Google Analytics Aggregated, Google Search Console, Google Workspace, HubSpot, Jira, LinkedIn Ads, Marketo, Meta Ads, Microsoft 365 Unified Audit Logs, Microsoft Entra ID, Microsoft Graph Logs, Monday.com, Netskope Logs, NetSuite, Notion, Okta, Okta System Logs, OpenAI, Oracle Eloqua, Outlook, PagerDuty, PayPal, Pendo, Productboard, QuickBooks, Reddit Ads, Salesforce, Salesforce Marketing Cloud, SendGrid, ServiceNow, SharePoint, Shopify, Smartsheet, Square, Strac, SurveyMonkey, TikTok Ads, Veeva Vault, Verkada, Vimeo, Wiz Audit Logs, Workday Activity Logging, Workday HCM, Workday Reports, Workiva, Xero, Zendesk Support, Zip, Zoho Books, Zoho CRM</p>
 <blockquote>
-<p><strong>참고</strong> 위 목록에는 70개 커넥터가 있습니다. 목록은 문서 기준 시점의 것이며 커넥터는 계속 추가됩니다. 최신 목록은 <a href="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/saas-overview">saas-overview</a>에서 확인하십시오.</p>
+<p><strong>참고</strong> 위 목록은 saas-overview 2026-11-03 갱신본 기준 73개이며, 커넥터는 계속 추가됩니다. 이 갱신본에는 Okta가 추가되었습니다. 최신 목록은 <a href="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/saas-overview">saas-overview</a>에서 확인하십시오.</p>
 </blockquote>
 <p>SAP Business Data Cloud 공유는 Lakeflow Connect가 아니라 OpenSharing 기반이라고 문서가 따로 설명합니다.</p>
 <h3 id="상태-라벨-ga--public-preview--beta">상태 라벨 (GA / Public Preview / Beta)<a class="headerlink" href="#상태-라벨-ga--public-preview--beta" title="Permanent link">&para;</a></h3>
@@ -5479,6 +5479,18 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Okta</td>
+<td>Beta</td>
+<td>11-03</td>
+<td>사용자, 그룹, 그룹 멤버십, 앱 통합, 디바이스, 정책, 관리자 역할 수집(Okta System Logs와 별개 커넥터). SSWS API 토큰 인증, 증분 수집 지원. 관리자가 Previews 페이지에서 활성화</td>
+</tr>
+<tr>
+<td>Zerobus Ingest의 기본 스토리지 테이블 수집</td>
+<td>GA</td>
+<td>11-02</td>
+<td>기본 스토리지 기반 테이블로 수집</td>
+</tr>
 <tr>
 <td>MySQL integrated CDC pipeline</td>
 <td>GA</td>
@@ -5599,7 +5611,7 @@
 <li><strong>원천 준비</strong>: 원천 시스템에서 API 권한, 서비스 계정, OAuth 클라이언트 등을 만듭니다. Box Audit Logs는 OAuth M2M(Server Authentication, Client Credentials Grant)만 지원하며 OAuth U2M과 사용자 이름·비밀번호 인증은 지원하지 않는다고 문서가 명시합니다.</li>
 <li><strong>연결(Connection) 생성</strong>: Catalog Explorer에서 자격 증명을 저장하는 Unity Catalog 연결을 만듭니다. <code>USE CONNECTION</code> 권한이 있는 사용자는 자격 증명을 보지 않고 파이프라인을 만들 수 있습니다. Google Analytics Aggregated 문서도 같은 방식을 설명합니다.</li>
 <li><strong>수집 파이프라인 생성</strong>: 연결을 선택하고 수집할 테이블과 대상 카탈로그·스키마를 지정합니다.</li>
-<li><strong>실행과 모니터링</strong>: 수집 파이프라인은 서버리스 컴퓨트에서 실행된다고 문서가 설명합니다. 진행 상황은 게이트웨이 이벤트 로그(gateway-event-logs)와 비용 페이지로 확인합니다.</li>
+<li><strong>실행과 모니터링</strong>: 수집 파이프라인은 서버리스 컴퓨트에서 실행된다고 문서가 설명합니다. 진행 상황은 게이트웨이 이벤트 로그(gateway-event-logs)와 비용 페이지로 확인합니다. 데이터베이스 커넥터 파이프라인에서는 테이블 목록의 <strong>Data freshness</strong> 열로 CDC 테이블마다 마지막으로 수집한 원천 커밋 이후 경과 시간을 볼 수 있습니다(Public Preview, SQL Server·PostgreSQL·MySQL·Oracle). 이벤트 로그에서 데이터 신선도와 엔드투엔드 지연을 조회하고 알림을 만들 수도 있습니다.</li>
 </ol>
 <h3 id="과금-구조">과금 구조<a class="headerlink" href="#과금-구조" title="Permanent link">&para;</a></h3>
 <p>문서에 명시된 과금 구조는 다음과 같습니다.</p>
@@ -5666,7 +5678,7 @@
 <h2 id="주의사항">주의사항<a class="headerlink" href="#주의사항" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>상태 라벨을 확인하십시오</strong>: Beta 커넥터는 SLA와 안정적인 인터페이스가 보장되지 않습니다. 릴리즈 상태 정의는 release-types 페이지에 있습니다.</li>
-<li><strong>Beta 활성화</strong>: Beta 커넥터는 관리자가 Previews 페이지에서 활성화해야 하는 경우가 있습니다 (Box Audit Logs, Google Analytics Aggregated 문서, Xero 릴리즈 노트 명시).</li>
+<li><strong>Beta 활성화</strong>: Beta 커넥터는 관리자가 Previews 페이지에서 활성화해야 하는 경우가 있습니다 (Box Audit Logs, Google Analytics Aggregated 문서, Xero·Okta 릴리즈 노트 명시).</li>
 <li><strong>권한 분리</strong>: 연결은 관리자가 만들고 <code>USE CONNECTION</code> 권한으로 공유하는 방식이 권장됩니다. 자격 증명을 파이프라인 작성자에게 노출하지 않도록 설계합니다.</li>
 <li><strong>과금 추적</strong>: 수집 비용은 <code>system.billing.usage</code>에서 <code>LAKEFLOW_CONNECT</code>로 따로 집계하십시오. 유지 관리 요금이 있어 처리 시간만으로는 전체 비용이 맞지 않을 수 있습니다.</li>
 <li><strong>원천 준비 항목</strong>: 원천 측 관리자 권한이 필요한 커넥터가 많습니다. 설정 전에 커넥터별 <code>-source-setup</code> 페이지의 요구 사항을 먼저 확인하십시오.</li>
@@ -5684,6 +5696,9 @@
 <li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october">Release notes, 2026년 10월</a></li>
 <li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/september">Release notes, 2026년 9월</a></li>
 <li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/august">Release notes, 2026년 8월</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#okta-connector-is-available-in-beta">Okta connector is available in Beta (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#zerobus-ingest-into-default-storage-is-now-generally-available">Zerobus Ingest into default storage is now generally available</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october#monitor-data-freshness-in-lakeflow-connect-database-connector-pipelines-public-preview">Monitor data freshness in Lakeflow Connect database connector pipelines (Public Preview)</a></li>
 </ul>
 
 

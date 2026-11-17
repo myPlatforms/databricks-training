@@ -5437,7 +5437,7 @@
 
 <h1 id="structured-streaming-기초">Structured Streaming 기초<a class="headerlink" href="#structured-streaming-기초" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
 <p>Structured Streaming은 Apache Spark의 스트리밍 엔진입니다. 공식 문서는 배치 처리에 쓰는 것과 <strong>같은 Spark API</strong> 로 스트리밍 애플리케이션과 파이프라인을 만들 수 있다고 설명합니다. 이 장의 Auto Loader와 Lakeflow 파이프라인도 내부적으로 Structured Streaming 위에서 동작합니다. 이 페이지는 직접 스트리밍 쿼리를 작성할 때 알아야 할 네 가지, 즉 <strong>처리 모드와 트리거, 체크포인트, 워터마크, 출력 모드</strong> 를 다룹니다.</p>
@@ -5460,7 +5460,7 @@
 <tbody>
 <tr>
 <td>실시간 모드 (real-time mode)</td>
-<td>서브 초 단위 워크로드용. 엔드투엔드 지연이 최소 5밀리초 수준. 트리거와 컴퓨트 설정으로 활성화</td>
+<td>서브 초 단위 워크로드용. 엔드투엔드 지연이 최소 5밀리초 수준. 트리거와 컴퓨트 설정으로 활성화. update 출력 모드만 지원. 소스는 Kafka·Event Hubs(Kafka 커넥터)·Kinesis·AWS MSK, 싱크는 Kafka·Event Hubs·<code>forEachWriter</code> 임의 싱크이며 Delta는 소스·싱크 모두 미지원 (reference 문서). 상태 저장 연산자(스트리밍 집계, <code>dropDuplicates</code>, <code>transformWithState</code>)도 Databricks에서 GA로 지원 (블로그)</td>
 </tr>
 <tr>
 <td>마이크로 배치 모드 (micro-batch, 기본)</td>
@@ -5597,6 +5597,9 @@
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="o">.</span><span class="n">toTable</span><span class="p">(</span><span class="s2">"&lt;table-name3&gt;"</span><span class="p">))</span>
 </code></pre></div>
 <p>이 예시는 <code>trigger(availableNow=True)</code>를 쓰므로 실행 후 종료합니다. 상시 실행이 필요하면 트리거를 바꾸거나 생략하고, 운영에서는 Lakeflow 파이프라인이나 Jobs를 쓰는 편이 관리하기 쉽습니다(<a href="../pipelines-streaming-tables-and-mvs/">스트리밍 테이블과 구체화된 뷰</a>, <a href="../jobs-tasks-and-triggers/">Lakeflow Jobs 태스크와 트리거</a> 참고).</p>
+<blockquote>
+<p><strong>참고</strong> Structured Streaming에서 Lakebase로 쓸 때 병합 전략(merge strategies)으로 upsert가 개별 컬럼을 갱신하는 방식을 정할 수 있습니다. 첫 값 또는 마지막 값 유지, null 무시, 정렬 컬럼 기준 값 선택이 가능하며 Databricks Runtime 19 이상이 필요합니다.</p>
+</blockquote>
 <h2 id="트레이드오프">트레이드오프<a class="headerlink" href="#트레이드오프" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -5645,6 +5648,10 @@
 <li><a href="https://docs.databricks.com/aws/en/structured-streaming/watermarks">Watermarks</a></li>
 <li><a href="https://docs.databricks.com/aws/en/structured-streaming/tutorial">Structured Streaming tutorial</a></li>
 <li><a href="../auto-loader/">Auto Loader (이 장)</a></li>
+<li><a href="https://www.databricks.com/blog/spark-vs-flink">Spark vs Flink (Databricks 블로그)</a></li>
+<li><a href="https://www.databricks.com/blog/introducing-apache-spark-43-now-available-databricks-runtime-19">Introducing Apache Spark 4.3, now available in Databricks Runtime 19 (Databricks 블로그)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/structured-streaming/real-time/reference">Real-time mode reference</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#control-lakebase-sink-upserts-with-merge-strategies">Control Lakebase sink upserts with merge strategies (릴리즈 노트, 2026년 11월)</a></li>
 </ul>
 
 

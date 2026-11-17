@@ -5615,7 +5615,7 @@
 
 <h1 id="권한-모델과-소유권">권한 모델과 소유권<a class="headerlink" href="#권한-모델과-소유권" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200</p>
+<p>기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200</p>
 </blockquote>
 <h2 id="한눈에-보기">한눈에 보기<a class="headerlink" href="#한눈에-보기" title="Permanent link">&para;</a></h2>
 <p>UC의 권한 모델은 <strong>모든 securable 객체는 소유자(owner)를 가지며, 소유자나 권한을 위임받은 주체가 <code>GRANT</code>로 다른 주체에게 권한을 준다</strong> 는 구조입니다. 권한은 객체에 붙고, 주체(사용자, 서비스 프린시펄, 그룹)에게 부여됩니다. 노트북이나 클러스터의 설정이 권한을 결정하지 않습니다.</p>
@@ -5686,6 +5686,10 @@
 <td>객체 종류 페이지: "Privileges granted at the metastore level do not inherit to child objects in the hierarchy."</td>
 </tr>
 <tr>
+<td>예외: 메타스토어에 부여한 <code>READ METADATA</code>는 메타스토어의 모든 객체로 상속됩니다. 다른 메타스토어 수준 권한과 다른 점입니다.</td>
+<td>권한 참조 페이지: "When granted on the metastore , READ METADATA inherits down to all objects in the metastore."</td>
+</tr>
+<tr>
 <td>카탈로그나 스키마의 소유자는 그 안에 있는 객체에 대해 권한을 줄 수 있습니다.</td>
 <td>권한 관리 페이지</td>
 </tr>
@@ -5752,7 +5756,7 @@
 <tr>
 <td><code>BROWSE</code></td>
 <td>Clean Room, 외부 위치, 외부 메타데이터</td>
-<td><code>USE CATALOG</code>나 <code>USE SCHEMA</code> 없이 객체를 찾고 메타데이터를 봅니다.</td>
+<td><code>USE CATALOG</code>나 <code>USE SCHEMA</code> 없이 객체를 찾고 메타데이터를 봅니다. 카탈로그의 <code>BROWSE</code>는 UC 시크릿에도 적용되어, 값을 읽거나 코드에서 참조하지 않고 시크릿과 메타데이터를 찾을 수 있습니다.</td>
 <td>문서에 상태 라벨 없음</td>
 </tr>
 <tr>
@@ -5780,6 +5784,18 @@
 <td>문서에 상태 라벨 없음</td>
 </tr>
 <tr>
+<td><code>CREATE SECRET</code>, <code>READ SECRET</code>, <code>WRITE SECRET</code>, <code>REFERENCE SECRET</code></td>
+<td>시크릿(스키마 안의 securable)</td>
+<td>시크릿을 만들고, 값을 가져오고, 값을 갱신하고, 값 없이 시크릿과 메타데이터를 봅니다. 상위 <code>USE CATALOG</code>, <code>USE SCHEMA</code>도 필요합니다.</td>
+<td>문서에 상태 라벨 없음</td>
+</tr>
+<tr>
+<td><code>READ FLOW</code>, <code>REFRESH FLOW</code>, <code>WRITE FLOW</code>, <code>CREATE FLOW</code></td>
+<td>흐름(flow), 스키마</td>
+<td>흐름을 설명하고 상태를 읽고, 새로 고치고, 스트리밍 체크포인트를 리셋·되감기합니다. 흐름을 만들려면 스키마의 <code>CREATE FLOW</code>와 대상 테이블의 <code>MODIFY</code>가 필요합니다.</td>
+<td>Beta</td>
+</tr>
+<tr>
 <td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
 <td>테이블</td>
 <td>테이블 데이터를 추가, 수정, 삭제합니다.</td>
@@ -5788,6 +5804,7 @@
 </tbody>
 </table>
 <blockquote>
+<p><strong>참고</strong> UC 시크릿 한도는 스키마당 1,000개, 메타스토어당 10,000개입니다(이전 100개, 1,000개). Databricks 관리 시크릿과 AWS Secrets Manager 기반 시크릿에 적용됩니다.</p>
 <p><strong>주의</strong> <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>는 Beta입니다. 운영 권한 설계에 넣기 전에 해당 워크스페이스에서 기능이 열려 있는지 확인하십시오.</p>
 <p><strong>주의</strong> 권한 목록의 <code>MANAGE</code>는 "관리자 권한"이 아닙니다. 객체를 소유하지 않아도 권한을 바꿀 수 있으므로, 개발자에게 넓게 주면 권한 체계가 빠르게 흐트러집니다.</p>
 </blockquote>
@@ -5918,6 +5935,7 @@
 </blockquote>
 <ul>
 <li>권한은 그룹에 주고, 그룹 구성은 신원 제공자(IdP)나 계정 콘솔에서 관리하는 것을 권장합니다.</li>
+<li>접근 요청(Request for access)은 GA입니다. 사용자는 Databricks 어디서든 UC 객체 권한을 요청하고 Catalog Explorer에서 요청 상태를 추적할 수 있습니다.</li>
 <li>서비스 프린시펄은 자동화 작업의 실행 주체로 쓰고, 사람 계정에 자동화를 묶지 않습니다.</li>
 <li><code>ALL PRIVILEGES</code>는 <code>MANAGE</code>를 포함하지 않는다는 점을 기억하십시오. 공식 문서는 <code>MANAGE</code>를 <code>ALL PRIVILEGES</code>에 포함하지 않는다고 설명합니다.</li>
 <li>권한 변경은 코드(예: 잡이나 DAB 설정)로 관리해 감사 이력을 남기는 것을 권장합니다.</li>
@@ -5928,6 +5946,9 @@
 <li><a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/privileges">Unity Catalog privileges and securable objects</a></li>
 <li><a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/securable-objects">Securable objects in Unity Catalog</a></li>
 <li><a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control/">Access control in Unity Catalog</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#higher-limits-and-browse-support-for-unity-catalog-secrets">Higher limits and BROWSE support for Unity Catalog secrets (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/november#flows-are-securable-objects-in-unity-catalog-beta">Flows are securable objects in Unity Catalog (Beta) (릴리즈 노트, 2026년 11월)</a></li>
+<li><a href="https://docs.databricks.com/aws/en/release-notes/product/2026/october#request-for-access-is-now-generally-available">Request for access is now generally available (릴리즈 노트, 2026년 10월)</a></li>
 </ul>
 
 
