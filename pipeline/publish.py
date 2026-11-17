@@ -9,6 +9,13 @@ Safety:
              (the site is public)
 The PR is never merged here; a human reviews and merges.
 
+Review guard: the Genie Code review task ends SUCCESS even when it stops early (e.g. it asked a
+question nobody can answer, 2026-11-16 run: 108 pages queued, 0 rows written). After publishing,
+this task compares the rows that review wrote for this job run (rationale ends with
+"(job run <id>)") with min(review_pages from classify, review_cap) and fails the task when short.
+The Genie Code task also stops at its per-turn step limit (2026-11-17 repair: 36 of 40 pages in
+25 min), so keep review_cap below that — the job default is 30.
+
 Job usage (spark_python_task parameters):
   --catalog C --schema S --repo owner/name --secret-scope S --secret-key K
 """
@@ -221,6 +228,51 @@ def _finish(spark: SparkSession, fq: str, proposals: list, status: dict, ok: lis
     return counts
 
 
+def job_param(run_id: str, name: str) -> str | None:
+    """Read a job parameter of this run (publish does not receive review_cap as an argument)."""
+    from databricks.sdk import WorkspaceClient
+    from databricks.sdk.errors import DatabricksError
+
+    try:
+        for p in WorkspaceClient().jobs.get_run(int(run_id)).job_parameters or []:
+            if p.name == name:
+                return p.value if p.value is not None else p.default
+    except (DatabricksError, ValueError) as e:  # auth/config errors are ValueError; guard falls back to 1 row
+        print(f"job_param {name}: {e!r}")
+    return None
+
+
+def review_shortfall(spark: SparkSession, fq: str, run_id: str) -> str | None:
+    """Message when the review task wrote fewer rows than it was asked to, else None."""
+    if not run_id.isdigit():
+        return None
+    row = spark.sql(
+        f"""SELECT get_json_object(stats, '$.review_pages') AS n FROM {fq}.run_log
+            WHERE job_run_id = :rid AND task = 'classify' ORDER BY started_at DESC LIMIT 1""",
+        args={"rid": run_id},
+    ).first()
+    queued = int(row.n) if row and row.n else 0
+    if queued == 0:  # review was skipped (has_review_pages = false)
+        return None
+    cap = job_param(run_id, "review_cap")
+    expected = min(queued, int(cap)) if cap and cap.isdigit() else 1
+    written = (
+        spark.sql(
+            f"SELECT count(*) AS c FROM {fq}.revision_proposals WHERE rationale LIKE :pat",
+            args={"pat": f"%(job run {run_id})%"},
+        )
+        .first()
+        .c
+    )
+    if written >= expected:
+        return None
+    return (
+        f"review wrote {written} of {expected} expected proposal rows for job run {run_id} "
+        f"(queued pages {queued}, review_cap {cap}). The Genie Code task likely stopped early — "
+        "read its output in the run page, then repair the review and publish tasks."
+    )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--catalog", required=True)
@@ -244,6 +296,11 @@ def main() -> None:
         ).strip()  # pasted values may end in \n
         stats = publish(spark, fq, args.repo, token, args.job_run_id)
         print("publish", stats)
+        # Checked after publishing so the proposals that were written still reach a PR.
+        shortfall = review_shortfall(spark, fq, args.job_run_id)
+        if shortfall:
+            stats["review_shortfall"] = shortfall
+            raise RuntimeError(shortfall)
     except Exception:
         error = traceback.format_exc()[-4000:]
         raise

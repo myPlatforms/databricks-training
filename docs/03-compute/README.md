@@ -60,4 +60,4 @@
 - [Serverless compute limitations (AWS)](https://docs.databricks.com/aws/en/compute/serverless/limitations)
 - [SQL warehouses 개요 (AWS)](https://docs.databricks.com/aws/en/compute/sql-warehouse/)
 - [Access mode limitations (AWS)](https://docs.databricks.com/aws/en/compute/access-mode-limitations)
-- [Release notes (AWS, 2026)](https://docs.databricks.com/aws/en/release-notes/product/2026/)
+- [Release notes (AWS)](https://docs.databricks.com/aws/en/release-notes/product/)
