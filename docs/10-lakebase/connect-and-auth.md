@@ -193,7 +193,7 @@ databricks postgres create-role projects/my-project/branches/production \
 | 작업 | 방법 |
 |---|---|
 | 권한 부여 | 역할을 만든 뒤 GRANT를 별도로 실행 (역할은 LOGIN만 가짐) |
-| 관리자 역할 부여 | `databricks postgres update-role`로 `spec.membership_roles`에 `DATABRICKS_SUPERUSER` 지정. `update_mask`에 넣으면 기존 멤버십 전체를 대체하며, 빈 목록이나 생략은 `DATABRICKS_SUPERUSER`를 포함한 모든 멤버십을 지움 |
+| 관리자 역할 부여 | `databricks postgres update-role`로 `spec.membership_roles`에 `DATABRICKS_SUPERUSER` 지정. `update_mask`에 `spec.membership_roles`를 넣으면 기존 멤버십 전체를 대체함. 이때 목록을 비우거나 값을 빼면 `DATABRICKS_SUPERUSER`를 포함한 모든 멤버십이 지워짐 |
 | 변경 불가 필드 | `spec.identity_type`, `spec.auth_method`, `spec.postgres_role`은 생성 후 바꿀 수 없음. 수정·삭제에는 list roles가 돌려준 리소스 이름을 씀 |
 | 역할 삭제 | `DROP ROLE` 또는 `databricks postgres delete-role`. 객체를 소유한 역할은 소유권을 먼저 넘겨야 함 |
 | 사용자·그룹 이름 변경 | 인증이 깨지므로 역할을 삭제하고 다시 만든 뒤 권한과 연결 문자열을 갱신 |

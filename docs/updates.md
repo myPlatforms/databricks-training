@@ -4,6 +4,8 @@
 
 | 날짜 | 페이지 | 변경 | 근거 |
 |---|---|---|---|
+| 2026-11-17 | 11-developer-tools/genie-code/README.md | 기능별 상태 표의 Genie Ontology를 Public Preview에서 GA(2026-11-09 릴리즈 노트)로 고쳤습니다. | [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-ontology-is-now-generally-available) |
+| 2026-11-17 | 05-data-warehousing/scripting-and-procedures.md | 실행 권한 모델 표에서 INVOKER·DEFINER의 호출자 권한 설명이 뒤바뀌어 있던 것을 CREATE PROCEDURE 문서 기준으로 바로잡았습니다(DEFINER는 EXECUTE만, INVOKER는 참조 객체 권한도 필요). | [원문](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-procedure) |
 | 2026-11-17 | 01-platform-overview/architecture.md | DBFS 절을 DBFS 루트와 마운트가 모두 deprecated이고 새 워크스페이스는 접근 없이 프로비저닝된다는 최신 문서 표기로 고쳤습니다. | [원문](https://docs.databricks.com/aws/en/dbfs/) [원문](https://docs.databricks.com/aws/en/storage/default-storage) [원문](https://docs.databricks.com/aws/en/security/network/classic/) |
 | 2026-11-17 | 01-platform-overview/getting-started.md | 막혔을 때 표의 공식 지원 행에, 지원 문서가 새로 안내하는 워크스페이스 내 Get support 경로(사용자 아이콘, Genie Code 패널)와 이메일 접수 제한을 보강했습니다. | [원문](https://docs.databricks.com/aws/en/resources/support) |
 | 2026-11-17 | 01-platform-overview/workspace-ui.md | 상단바 사용자 메뉴 행에 지원 케이스를 여는 두 경로(사용자 아이콘의 Get support, Genie Code 창의 Get Support 배너)와 Support 계약 조건을 원문대로 반영했습니다. | [원문](https://docs.databricks.com/aws/en/workspace/navigate-workspace) |

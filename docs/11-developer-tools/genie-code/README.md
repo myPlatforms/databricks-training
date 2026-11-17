@@ -1,6 +1,6 @@
 # Genie Code
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 100~300
+> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100~300
 
 ## Genie Code란
 
@@ -54,7 +54,7 @@ Genie Code를 쓰면 데이터 엔지니어와 분석가가 노트북이나 SQL 
 | 예약 작업 | 페이지에 라벨 없음 | 릴리즈 노트 2026-09-01 GA |
 | Lakeflow Jobs의 Genie Code 태스크 | 페이지에 라벨 없음 | 릴리즈 노트 2026-10-21 GA (2026-08-27에는 Beta) |
 | Genie Code CLI | Beta | 페이지 및 릴리즈 노트 2026-10-06 |
-| Genie Ontology | Public Preview | 기능 페이지 |
+| Genie Ontology | GA | 릴리즈 노트 2026-11-09 GA (이전에는 기능 페이지에 Public Preview) |
 | 세션 간 메모리, 인스트럭션, 스킬, MCP 서버 | 페이지에 라벨 없음 | 릴리즈 노트에서 별도 항목 확인되지 않음 |
 | 웹 검색 | Beta | 릴리즈 노트 2026-08-06 |
 | AI Runtime 노트북 지원 | Public Preview | 릴리즈 노트 2026-08-27 |
@@ -70,5 +70,6 @@ Genie Code를 쓰면 데이터 엔지니어와 분석가가 노트북이나 SQL 
 - [Features and capabilities](https://docs.databricks.com/aws/en/genie-code/features-capabilities)
 - [Genie Code 릴리즈 노트 (2026년 8월)](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
 - [Genie Code 릴리즈 노트 (2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Genie Ontology is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-ontology-is-now-generally-available)
 - [AI/BI 릴리즈 노트 (2026) — Dashboard enhancements](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#dashboard-enhancements)
 - [What's coming — Improved Lakeflow Performance Observability](https://docs.databricks.com/aws/en/release-notes/whats-coming#improved-lakeflow-performance-observability-will-soon-be-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)

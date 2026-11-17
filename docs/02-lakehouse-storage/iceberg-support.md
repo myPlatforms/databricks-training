@@ -30,7 +30,7 @@ Iceberg를 Unity Catalog와 함께 쓰면 하나의 테이블을 여러 엔진�
 
 ### Iceberg REST 카탈로그 (IRC)
 
-외부 Iceberg 클라이언트는 Unity Catalog의 Iceberg REST 카탈로그 API로 접근합니다. 엔드포인트 경로 패턴은 `/api/2.1/unity-catalog/iceberg-rest`이며, 인증은 Databricks 개인 액세스 토큰(PAT) 또는 OAuth를 사용합니다. Iceberg 클라이언트는 Unity Catalog의 테이블 태그와 컬럼 태그도 읽을 수 있으며, Iceberg 테이블 위의 뷰를 조회하는 방법은 "External access to views" 문서에서 다룹니다.
+외부 Iceberg 클라이언트는 Unity Catalog의 Iceberg REST 카탈로그 API로 접근합니다. 엔드포인트 경로 패턴은 `/api/2.1/unity-catalog/iceberg-rest`이며, 인증은 Databricks 개인 액세스 토큰(PAT) 또는 OAuth를 사용합니다. Iceberg 클라이언트는 Unity Catalog의 테이블 태그와 컬럼 태그도 읽을 수 있으며, Iceberg REST 카탈로그를 통한 뷰 외부 접근(Iceberg 호환 테이블 위의 Unity Catalog 뷰 조회)은 **Beta** 이며(2026-11-13 릴리즈 노트), 방법은 "External access to views" 문서에서 다룹니다.
 
 ### 외부 클라이언트가 할 수 있는 작업
 
@@ -215,3 +215,4 @@ ALTER TABLE main.sales.orders SET TBLPROPERTIES (
 - [Transactions](https://docs.databricks.com/aws/en/transactions)
 - [Use liquid clustering for tables](https://docs.databricks.com/aws/en/delta/clustering)
 - [CREATE TABLE [USING]](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)
+- [External access to views through the Iceberg REST catalog is in Beta (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#external-access-to-views-through-the-iceberg-rest-catalog-is-in-beta)

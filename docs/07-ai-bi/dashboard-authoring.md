@@ -76,7 +76,7 @@ AI/BI 대시보드는 데이터셋을 공유 단위로 만들고, 필터와 파�
 
 ### 관계 범위 필터(Relationship-scoped filtering)
 
-대시보드 관계(dashboard relationships)로 정의한 의미 모델을 쓰면, 선택 값이 조인 그래프를 따라 관련 데이터셋으로 흐릅니다. 2026-09-10 릴리즈 노트는 "Relationship-scoped filters"를 Public Preview로, 2026-09-03 릴리즈 노트는 "Cross-dataset filtering through relationships"를 Public Preview로 표기합니다. 두 항목은 이름이 달라 같은 기능인지 확인이 필요합니다. 대시보드 범위의 다중 팩트 데이터 모델을 만드는 대시보드 관계 자체는 2026년 11월 AI/BI 릴리즈 노트에서 GA로 발표되었습니다. 릴리즈 노트의 설명은 "각 위젯은 자신과 관련된 데이터셋의 필터에만 반응한다"와 "한 데이터셋의 필터가 관련 데이터셋 위젯으로 넘어간다"입니다.
+대시보드 관계(dashboard relationships)로 정의한 의미 모델을 쓰면, 선택 값이 조인 그래프를 따라 관련 데이터셋으로 흐릅니다. 2026-09-10 릴리즈 노트는 "Relationship-scoped filters"를 Public Preview로, 2026-09-03 릴리즈 노트는 "Cross-dataset filtering through relationships"를 Public Preview로 표기합니다. 두 항목은 이름이 달라 같은 기능인지 확인이 필요합니다. 대시보드 범위의 다중 팩트 데이터 모델을 만드는 대시보드 관계 자체는 2026-10-29 AI/BI 릴리즈 노트에서 GA로 발표되었습니다. 릴리즈 노트의 설명은 "각 위젯은 자신과 관련된 데이터셋의 필터에만 반응한다"와 "한 데이터셋의 필터가 관련 데이터셋 위젯으로 넘어간다"입니다.
 
 > **주의** 관계 범위 필터는 Public Preview입니다. 운영 대시보드에 의존하기 전에 대상 워크스페이스에서 동작을 확인하십시오.
 

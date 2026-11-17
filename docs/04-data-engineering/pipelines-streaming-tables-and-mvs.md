@@ -91,7 +91,7 @@ def users():
 dp.create_streaming_table("users_history")
 ```
 
-> **참고** What's coming 문서에 따르면, 이후 릴리즈에서 Python Lakeflow 파이프라인이 부분 스키마 추론(partial schema inference)을 Beta로 지원할 예정입니다. `table`, `materialized_view`, `create_streaming_table`의 `override_schema` 인수로 타입·제약·주석을 직접 정할 컬럼만 선언하고, 나머지 컬럼은 쿼리 출력에서 추론합니다.
+> **참고** What's coming 문서에 따르면, 이후 릴리즈에서 Python Lakeflow 파이프라인이 부분 스키마 추론(partial schema inference)을 Beta로 지원할 예정입니다. `table`, `materialized_view`, `create_streaming_table`의 `override_schema` 인수로 타입·제약·주석을 직접 정할 컬럼만 선언할 수 있게 되고, 나머지 컬럼은 쿼리 출력에서 추론합니다.
 
 ### 구체화된 뷰 (Python)
 
@@ -167,3 +167,5 @@ CREATE OR REPLACE MATERIALIZED VIEW regional_sales
 - [Real-time mode in Lakeflow pipelines is now generally available (릴리즈 노트, 2026년 10월)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#real-time-mode-in-lakeflow-pipelines-is-now-generally-available)
 - [Standalone pipelines on serverless general compute are now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#standalone-pipelines-on-serverless-general-compute-are-now-generally-available)
 - [What's coming — Partial schema inference for Python Lakeflow pipelines](https://docs.databricks.com/aws/en/release-notes/whats-coming#partial-schema-inference-for-python-lakeflow-pipelines)
+- [Flows are securable objects in Unity Catalog (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#flows-are-securable-objects-in-unity-catalog-beta)
+- [Announcing General Availability of Real-Time Mode on Spark Declarative Pipelines (Databricks 블로그)](https://www.databricks.com/blog/announcing-general-availability-real-time-mode-spark-declarative-pipelines-databricks)

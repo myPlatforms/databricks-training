@@ -85,7 +85,7 @@ LOCATION 's3://<bucket-path>/<table-directory>';
 
 Unity Catalog 관리형 Delta 테이블은 외부 엔진에서 생성과 쓰기가 가능합니다. 2026-10-13 릴리스 노트는 "External writes to managed Delta tables are now generally available"을 GA로 발표했으며, 외부 Apache Spark 클라이언트가 대상입니다. 이 쓰기에는 **카탈로그 커밋(Catalog commits)** 이 켜져 있어야 합니다.
 
-> **참고** 관리형 테이블 문서 기준으로 카탈로그 커밋은 기본으로 꺼져 있으며, `delta.feature.catalogManaged` 테이블 속성으로 켭니다. 다만 자동 업그레이드가 새 스키마의 새 테이블에서 카탈로그 커밋을 켤 수 있습니다. What's coming 문서에 따르면 Databricks Runtime 15.4 LTS 지원이 2027-08-19에 끝난 뒤 Databricks는 모든 Unity Catalog 관리형 테이블을 카탈로그 커밋으로 업그레이드합니다. 같은 문서는 관리형 테이블의 예측 최적화(Predictive optimization)가 기본으로 활성화되어 있다고 설명합니다.
+> **참고** 관리형 테이블 문서 기준으로 카탈로그 커밋은 기본으로 꺼져 있으며, `delta.feature.catalogManaged` 테이블 속성으로 켭니다. 다만 자동 업그레이드가 새 스키마의 새 테이블에서 카탈로그 커밋을 켤 수 있습니다. 관리형 테이블 문서는 관리형 테이블의 예측 최적화(Predictive optimization)가 기본으로 활성화되어 있다고 설명합니다. What's coming 문서에 따르면 Databricks Runtime 15.4 LTS 지원이 2027-08-19에 끝난 뒤 Databricks는 모든 Unity Catalog 관리형 테이블을 카탈로그 커밋으로 업그레이드할 예정입니다.
 
 테이블 유형별로 외부 클라이언트가 할 수 있는 작업은 다음과 같습니다.
 
@@ -96,7 +96,7 @@ Unity Catalog 관리형 Delta 테이블은 외부 엔진에서 생성과 쓰기�
 | Delta, Iceberg 읽기 활성화 | Iceberg REST 카탈로그 | 가능 | 불가 |
 | 외부 Delta, Iceberg 읽기 활성화 | Iceberg REST 카탈로그 | 가능 | 불가 |
 
-> **참고** 2026-12-10 이후, 컴플라이언스 보안 프로필이 켜진 대상 워크스페이스에서도 관리형 Delta 테이블에 대한 외부 접근이 기본으로 제공됩니다. 메타스토어의 외부 데이터 접근 설정과 Unity Catalog 권한이 계속 접근을 통제합니다.
+> **참고** What's coming 문서에 따르면 2026-12-10 또는 그 이후부터, 컴플라이언스 보안 프로필이 켜진 대상(eligible) 워크스페이스에서 Unity Catalog 관리형 Delta 테이블에 대한 외부 접근이 기본으로 제공될 예정입니다. 메타스토어의 외부 데이터 접근 설정과 Unity Catalog 권한이 계속 접근을 통제합니다.
 
 > **참고** 관리형 테이블의 외부 쓰기 GA 발표는 2026-10 릴리스 노트에 있습니다. 이전에 "관리형 테이블은 외부에서 조작할 수 없다"는 식으로 정리된 자료가 있다면, 현재 기준으로는 그 설명이 맞지 않으므로 갱신이 필요합니다.
 

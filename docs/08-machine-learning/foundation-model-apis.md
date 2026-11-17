@@ -47,7 +47,7 @@ Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(fo
 | TypeSafe AI Jev 1.14.0 | pay-per-token | 제공자 호스팅. 계정 관리자가 TypeSafe AI Models 프리뷰를 켜야 함. System One API 사용 |
 | Google Gemini 4 Hydrogen (`system.ai.gemini-4-hydrogen`) | pay-per-token (Chat Completions API) | Google Vertex AI로 제공. Databricks에서는 텍스트 입력만 지원. 글로벌 엔드포인트, 교차 지역 라우팅 필요 |
 | Google Gemini 4 Carbon (`system.ai.gemini-4-carbon`) | pay-per-token | Databricks 호스팅. Unity Gateway로만 사용 가능하며 `databricks-gemini-4-carbon` 서빙 엔드포인트 조회는 미지원. 추론을 끌 수 없음 |
-| Anthropic Claude Fable 5.2 (`system.ai.claude-fable-5-2`) | pay-per-token, AI Functions(배치 추론) | Amazon Bedrock로 호스팅. Unity Gateway로만 사용 가능. 프롬프트와 응답을 30일 보존하며, 데이터 보존을 옵트아웃한 고객은 사용할 수 없음 |
+| Anthropic Claude Fable 5.2 (`system.ai.claude-fable-5-2`) | pay-per-token, AI Functions(배치 추론) | Amazon Bedrock을 통해 호스팅. Unity Gateway로만 사용 가능. 프롬프트와 응답을 30일 보존하며, 데이터 보존을 옵트아웃한 고객은 사용할 수 없음 |
 
 > **참고** 문서는 provisioned throughput이 "지원 아키텍처 계열의 모든 모델"을 포함한다고 설명하지만, 계열 목록은 다른 페이지에 있어 이 장에서 확인하지 못했습니다. 문서가 예약 provisioned throughput을 명시한 모델은 DeepSeek V4.1 Flash뿐입니다.
 
@@ -58,7 +58,7 @@ Foundation Model APIs는 Databricks가 호스팅하는 파운데이션 모델(fo
 | DeepSeek V4 Pro (0813) | 2026-10-30 종료. 권장 대체: DeepSeek V4.1 Flash (1017) |
 | Thinking Machine Labs Inkling | 2026-10-30 종료. 권장 대체: GLM 5.3 또는 Kimi K3 |
 | Moonshot AI Kimi K2.7 | 2026-10-30 종료. 권장 대체: Kimi K3 |
-| DeepSeek V4 Flash (0731) | deprecated, 2026-11-05 종료. 권장 대체: DeepSeek V4.1 Flash (1017) |
+| DeepSeek V4 Flash (0731) | 2026-11-05 종료. 권장 대체: DeepSeek V4.1 Flash (1017) |
 | Google Gemini 3.6 Flash | 2026-11-19 종료. 이날부터 API 호출이 같은 가격의 Gemini 3.8 Flash로 자동 리디렉션 |
 | DeepSeek V4.1 Flash | 2026-11-19 종료 |
 | Zhipu AI GLM 5.2 | 신규 워크로드에 권장하지 않음 (legacy). deprecated, 2027-02-04 종료 예정. 권장 대체: GLM 5.3 |
@@ -175,3 +175,4 @@ REST 호출은 엔드포인트 호출 경로 `POST /serving-endpoints/{name}/inv
 - [ai_query 함수](https://docs.databricks.com/aws/en/sql/language-manual/functions/ai_query)
 - [AI Functions](https://docs.databricks.com/aws/en/large-language-models/ai-functions)
 - [Legacy, deprecated, and retired models 관련 릴리즈 노트 (2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november)
+- [Databricks release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)

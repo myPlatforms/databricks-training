@@ -199,3 +199,4 @@ FROM main.docs.parsed;
 - [Upcoming removal of AI Functions support on older runtimes (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#upcoming-removal-of-ai-functions-support-on-older-runtimes)
 - [AI Functions Asynchronous API (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-asynchronous-api-beta)
 - [AI Functions usage is now included in Unity Gateway budgets](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-usage-is-now-included-in-unity-gateway-budgets)
+- [What's coming — AI Functions require Databricks Runtime 17.3 LTS or above](https://docs.databricks.com/aws/en/release-notes/whats-coming#ai-functions-require-databricks-runtime-173-lts-or-above)

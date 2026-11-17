@@ -158,12 +158,12 @@ REVOKE SELECT ON SHARE <share-name> FROM RECIPIENT <recipient-name>;
 | Clean Room: 공유 출력 | GA (2026-10-13 공지) | 릴리즈 노트 |
 | Clean Room: JAR 워크로드 | GA (2026-10-13 공지) | 릴리즈 노트 |
 | Clean Room: 서버리스 GPU 노트북 | GA (2026-10-28 공지). 2026-11-26 이후 Enterprise 가격 등급 계정에서 기본으로 켜질 예정이며, 그 전에는 계정 관리자가 계정 콘솔 Previews에서 Clean Rooms AI Runtime을 켬 | 릴리즈 노트, What's coming |
-| Marketplace 메트릭 뷰 리스팅 | GA (2026년 11월 공지). 공유된 메트릭 뷰는 Databricks 수신자만 사용 가능 | 릴리즈 노트 |
-| 공유 뷰·구체화된 뷰·스트리밍 테이블에 ABAC 행 필터·열 마스크 적용 | 공유 뷰는 Beta이며 ABAC on views 프리뷰 필요 | 릴리즈 노트 |
+| Marketplace 메트릭 뷰 리스팅 | GA (2026-11-05 공지). 공유된 메트릭 뷰는 Databricks 수신자만 사용 가능 | 릴리즈 노트 |
+| 공유받은 뷰·구체화된 뷰·스트리밍 테이블에 수신자가 ABAC 행 필터·열 마스크 적용 | 공유 뷰는 Beta이며 ABAC on views 프리뷰 필요 (2026-10-29 공지) | 릴리즈 노트 |
 | Genie Clean Rooms | Beta | 공식 문서 |
 | Clean Room: 신원 해석 프로바이더를 한 단계로 생성 | GA (2026-10-13 공지) | 릴리즈 노트 |
 
-> **참고** Clean Rooms 페이지 자체에는 상태 라벨이 없습니다(마지막 업데이트 2026-10-08). 위 표의 GA는 개별 릴리즈 노트 항목의 표기이며, Clean Rooms 기능 전체의 상태로 읽지 마십시오.
+> **참고** Clean Rooms 페이지 자체에는 상태 라벨이 없습니다(마지막 업데이트 2026-11-04). 위 표의 GA는 개별 릴리즈 노트 항목의 표기이며, Clean Rooms 기능 전체의 상태로 읽지 마십시오.
 
 ### Clean Rooms 요구 사항과 제약
 
@@ -182,7 +182,7 @@ REVOKE SELECT ON SHARE <share-name> FROM RECIPIENT <recipient-name>;
 
 > **주의** Clean Room 노트북은 참여자 승인을 받아야 실행되고, 최신 버전만 실행된다고 공식 문서가 설명합니다. 노트북을 고친 뒤의 승인 흐름을 참여자와 미리 합의하십시오.
 
-- 공유 자산에 열 마스크나 행 필터가 걸려 있을 때의 동작은 이 장에서 확인한 원문에 명시되지 않았습니다. 공유 설계 전에 공식 문서의 공유 페이지에서 직접 확인하십시오. 2026년 10월 릴리즈 노트는 OpenSharing으로 공유한 뷰, 구체화된 뷰, 스트리밍 테이블에 ABAC 행 필터와 열 마스크를 적용할 수 있다고 공지했습니다(공유 뷰는 Beta).
+- 테이블 수준 행 필터·열 마스크가 있는 테이블은 OpenSharing으로 공유할 수 없고, ABAC 기반 행 필터·열 마스크가 있는 테이블은 공유 소유자가 정책에서 제외(exempt)되어 있을 때만 공유할 수 있습니다. 제공자의 정책은 수신자의 접근을 통제하지 않으므로, 수신자가 공유받은 테이블, 뷰(Beta), 구체화된 뷰, 스트리밍 테이블에 자체 ABAC 정책을 적용합니다([행 필터와 열 마스크](row-filters-and-column-masks.md) 참고).
 - 공유 감사와 모니터링은 공식 문서의 Audit and monitor 페이지에 있으며, 감사 로그와 시스템 테이블 세부는 12장에서 다룹니다.
 - 참여자에게 돌아가는 결과는 노트북이 만든 출력 테이블입니다. 원본 데이터를 직접 내려받는 설계는 Clean Rooms 목적과 맞지 않으므로, 결과 테이블 설계를 먼저 하십시오.
 
@@ -201,3 +201,6 @@ REVOKE SELECT ON SHARE <share-name> FROM RECIPIENT <recipient-name>;
 - [Apply ABAC policies to shared views, materialized views, and streaming tables](https://docs.databricks.com/aws/en/release-notes/product/2026/october#apply-abac-policies-to-shared-views-materialized-views-and-streaming-tables)
 - [Metric view listings are generally available in Databricks Marketplace](https://docs.databricks.com/aws/en/release-notes/product/2026/november#metric-view-listings-are-generally-available-in-databricks-marketplace)
 - [What's coming — Serverless GPU in clean rooms](https://docs.databricks.com/aws/en/release-notes/whats-coming#serverless-gpu-in-clean-rooms-will-soon-be-on-by-default-for-accounts-where-its-turned-off)
+- [Row filters and column masks](https://docs.databricks.com/aws/en/tables/row-and-column-filters)
+- [ABAC requirements](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/requirements)
+- [Databricks SQL release notes 2026](https://docs.databricks.com/aws/en/sql/release-notes/2026)

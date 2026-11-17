@@ -38,9 +38,9 @@ Lakeflow Connect 문서는 각 커넥터가 이 네 가지를 처리한다고 �
 
 "SaaS connectors" 개요 페이지(saas-overview)에 나열된 커넥터 이름은 다음과 같습니다. 원문 표기 그대로 옮겼습니다. 이 목록에는 상태 라벨이 표시되지 않습니다.
 
-1Password Event Logs, Aha!, Akamai WAF, Amplitude, Anaplan, Anthropic, Anysphere Audit Logs, Anysphere Organization, Asana, Atlassian Audit Logs, Azure DevOps, Box Audit Logs, Celigo, Confluence, Cribl, CrowdStrike Falcon Event Stream, Microsoft Dynamics 365, GitHub, GitLab, Glean, Gmail, Google Ads, Google Analytics, Google Analytics Aggregated, Google Search Console, Google Workspace, HubSpot, Jira, LinkedIn Ads, Marketo, Meta Ads, Microsoft 365 Unified Audit Logs, Microsoft Entra ID, Monday.com, Netskope Logs, NetSuite, Notion, Okta System Logs, OpenAI, Okta, Oracle Eloqua, Outlook, PagerDuty, PayPal, Pendo, Productboard, QuickBooks, Reddit Ads, Salesforce, Salesforce Marketing Cloud, SendGrid, ServiceNow, SharePoint, Shopify, Smartsheet, Square, Strac, SurveyMonkey, TikTok Ads, Veeva Vault, Verkada, Vimeo, Wiz Audit Logs, Workday Activity Logging, Workday HCM, Workday Reports, Workiva, Zendesk Support, Zip, Zoho Books, Zoho CRM
+1Password Event Logs, Aha!, Akamai WAF, Amplitude, Anaplan, Anthropic, Anysphere Audit Logs, Anysphere Organization, Asana, Atlassian Audit Logs, Azure DevOps, Box Audit Logs, Celigo, Confluence, Cribl, CrowdStrike Falcon Event Stream, Microsoft Dynamics 365, GitHub, GitLab, Glean, Gmail, Google Ads, Google Analytics, Google Analytics Aggregated, Google Search Console, Google Workspace, HubSpot, Jira, LinkedIn Ads, Marketo, Meta Ads, Microsoft 365 Unified Audit Logs, Microsoft Entra ID, Microsoft Graph Logs, Monday.com, Netskope Logs, NetSuite, Notion, Okta, Okta System Logs, OpenAI, Oracle Eloqua, Outlook, PagerDuty, PayPal, Pendo, Productboard, QuickBooks, Reddit Ads, Salesforce, Salesforce Marketing Cloud, SendGrid, ServiceNow, SharePoint, Shopify, Smartsheet, Square, Strac, SurveyMonkey, TikTok Ads, Veeva Vault, Verkada, Vimeo, Wiz Audit Logs, Workday Activity Logging, Workday HCM, Workday Reports, Workiva, Xero, Zendesk Support, Zip, Zoho Books, Zoho CRM
 
-> **참고** 위 목록은 문서 기준 시점의 것이며 커넥터는 계속 추가됩니다. 2026-11-03 갱신본에는 Okta가 추가되었습니다. 최신 목록은 [saas-overview](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/saas-overview)에서 확인하십시오.
+> **참고** 위 목록은 saas-overview 2026-11-03 갱신본 기준 73개이며, 커넥터는 계속 추가됩니다. 이 갱신본에는 Okta가 추가되었습니다. 최신 목록은 [saas-overview](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/saas-overview)에서 확인하십시오.
 
 SAP Business Data Cloud 공유는 Lakeflow Connect가 아니라 OpenSharing 기반이라고 문서가 따로 설명합니다.
 
@@ -50,8 +50,8 @@ SAP Business Data Cloud 공유는 Lakeflow Connect가 아니라 OpenSharing 기�
 
 | 커넥터 | 상태 | 발표일 (2026) | 비고 |
 |---|---|---|---|
-| Zerobus Ingest의 기본 스토리지 테이블 수집 | GA | 2026년 11월 | 기본 스토리지 기반 테이블로 수집 |
-| Okta | Beta | 2026년 11월 | 사용자, 그룹, 그룹 멤버십, 앱 통합, 디바이스, 정책, 관리자 역할 수집. SSWS API 토큰 인증, 증분 수집 지원. 관리자가 Previews 페이지에서 활성화 |
+| Okta | Beta | 11-03 | 사용자, 그룹, 그룹 멤버십, 앱 통합, 디바이스, 정책, 관리자 역할 수집(Okta System Logs와 별개 커넥터). SSWS API 토큰 인증, 증분 수집 지원. 관리자가 Previews 페이지에서 활성화 |
+| Zerobus Ingest의 기본 스토리지 테이블 수집 | GA | 11-02 | 기본 스토리지 기반 테이블로 수집 |
 | MySQL integrated CDC pipeline | GA | 10-15 | 단일 파이프라인, 별도 수집 게이트웨이 없음 |
 | NetSuite | GA | 08-04 | |
 | Google Drive (managed, standard) | GA | 08-04 | 두 변형 모두 GA |

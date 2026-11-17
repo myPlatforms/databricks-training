@@ -189,3 +189,4 @@ Genie Agent를 웹사이트나 앱에 넣는 방식(iframe 임베딩)은 [4페�
 - [AI/BI 릴리즈 노트 (2026)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026)
 - [Databricks Genie app for Slack is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#databricks-genie-app-for-slack-is-now-generally-available)
 - [Databricks Genie app in Microsoft Teams is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#databricks-genie-app-in-microsoft-teams-is-now-generally-available)
+- [Genie in Slack is now generally available (Databricks 블로그)](https://www.databricks.com/blog/genie-slack-now-generally-available-governed-ai-cowork-right-where-work-happens)
