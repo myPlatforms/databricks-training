@@ -30,7 +30,7 @@ Unity Gateway에 등록된 시스템 MCP 서비스는 URL 패턴 `https://<works
 | `system.ai.genie_one_mcp` (Genie One) | generally available | Unity Gateway 권한과 정책, 기반 리소스 권한 필요 |
 | `system.ai.dbsql` (Databricks SQL) | Beta | 계정 관리자가 계정 콘솔 Previews에서 **Enhanced Unity Gateway** 프리뷰를 켬. 호출자의 UC 권한과 웨어하우스 권한 사용 |
 | `system.ai.web_search` | Beta | 같은 프리뷰 필요. HIPAA/BAA 규정 준수 설정이 켜져 있으면 사용 불가 |
-| `system.ai.sandbox` | Beta | 같은 프리뷰 필요. 네트워크 송신 없음 |
+| `system.ai.sandbox` | Beta | 같은 프리뷰 필요. 네트워크 송신은 보장되지 않으므로 패키지 다운로드나 외부 API 호출에 의존하지 않음 |
 
 Unity Gateway 자체는 generally available입니다. Beta인 것은 위 세 MCP입니다.
 

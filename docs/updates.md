@@ -4,6 +4,9 @@
 
 | 날짜 | 페이지 | 변경 | 근거 |
 |---|---|---|---|
+| 2026-11-17 | 01-platform-overview/workspace-ui.md | 사이드바 그룹 표를 현재 Navigate the workspace 문서(2026-11-14 갱신)의 Analytics·Lakehouse·Data Engineering·AI/ML 구성으로 고치고, 본문의 "SQL 그룹" 표기를 해당 그룹으로 바꿨습니다. | [원문](https://docs.databricks.com/aws/en/workspace/navigate-workspace) |
+| 2026-11-17 | 08-machine-learning/unity-gateway.md | 정책 종류 표에서 외부 서비스 정책이 MCP 도구 호출에 ASK도 반환할 수 있고 내용 가림은 할 수 없다는 점을 반영했습니다. | [원문](https://docs.databricks.com/aws/en/data-governance/unity-catalog/service-policies/) |
+| 2026-11-17 | 09-ai-agents/tools-uc-functions-and-mcp.md | system.ai.sandbox의 "네트워크 송신 없음"을 문서 표기대로 "송신이 보장되지 않음(패키지 다운로드·외부 API 호출에 의존하지 않음)"으로 고쳤습니다. | [원문](https://docs.databricks.com/aws/en/agents/mcp-tools/built-in-mcp-services) |
 | 2026-11-17 | 11-developer-tools/genie-code/README.md | 기능별 상태 표의 Genie Ontology를 Public Preview에서 GA(2026-11-09 릴리즈 노트)로 고쳤습니다. | [원문](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-ontology-is-now-generally-available) |
 | 2026-11-17 | 05-data-warehousing/scripting-and-procedures.md | 실행 권한 모델 표에서 INVOKER·DEFINER의 호출자 권한 설명이 뒤바뀌어 있던 것을 CREATE PROCEDURE 문서 기준으로 바로잡았습니다(DEFINER는 EXECUTE만, INVOKER는 참조 객체 권한도 필요). | [원문](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-procedure) |
 | 2026-11-17 | 01-platform-overview/architecture.md | DBFS 절을 DBFS 루트와 마운트가 모두 deprecated이고 새 워크스페이스는 접근 없이 프로비저닝된다는 최신 문서 표기로 고쳤습니다. | [원문](https://docs.databricks.com/aws/en/dbfs/) [원문](https://docs.databricks.com/aws/en/storage/default-storage) [원문](https://docs.databricks.com/aws/en/security/network/classic/) |
