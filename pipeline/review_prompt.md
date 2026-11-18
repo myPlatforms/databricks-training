@@ -9,6 +9,13 @@
 - `{{job.parameters.catalog}}.{{job.parameters.schema}}.pages` — 현재 페이지 본문 (path, title, basis_date, body)
 - `{{job.parameters.catalog}}.{{job.parameters.schema}}.source_items` — 항목 원문 (item_id, url, title, published_date, body)
 
+## 무인 실행 — 묻지 말고 끝까지
+이 작업은 스케줄로 혼자 실행됩니다. 답해 줄 사람이 없으므로 확인 질문을 하거나 선택지를 내놓고 멈추지 마세요. 질문으로 끝나면 그 주 수정안이 통째로 사라집니다.
+- 판단이 애매한 페이지는 status='needs_research'로 기록하고(무엇이 애매한지 rationale에 씀) 다음 페이지로 넘어갑니다.
+- 수정안 쓰기가 승인되지 않거나 실패하면, 같은 페이지를 proposed_markdown=NULL, status='needs_research'로 다시 기록하고(막힌 이유를 rationale에 씀) 다음 페이지로 넘어갑니다. 그것마저 실패해도 다음 페이지로 넘어갑니다.
+- 한 페이지에서 막혀도 나머지 페이지 처리를 멈추지 않습니다.
+- status='proposed'인 수정안은 rationale의 `(job run ...)` 바로 앞에 `근거: "..."`로, 바꾼 사실마다 근거 원문 문장(diff라면 추가된 줄)을 영어 원문 그대로 짧게 인용합니다. 인용할 문장이 원문에 없으면 그 사실은 쓰지 않습니다.
+
 ## 할 일
 1. review_queue 에서 `pick_order <= {{job.parameters.review_cap}}` 인 페이지를 `pick_order` 순서대로 처리합니다. 순서는 뷰가 정합니다(장을 돌아가며, 가장 오래 기다린 페이지부터). 다른 기준으로 다시 고르거나 순서를 바꾸지 마세요.
 2. 페이지마다 현재 본문(pages.body)과 해당 항목들의 원문(source_items.body)을 끝까지 읽고 판단합니다.
@@ -24,4 +31,4 @@
    - 컬럼: proposal_id(uuid 문자열), item_ids(해당 item_id 배열), page_path, change_type(대표 유형), rationale(한국어 2~4문장: 무엇을 왜 바꿨는지 또는 왜 거절했는지, 끝에 "(job run {{job.run_id}})"), proposed_markdown(status='proposed'일 때 페이지 전체, 아니면 NULL), source_urls(근거 URL 배열), status('proposed' | 'rejected' | 'needs_research'), conversation_url(NULL), pr_url(NULL), created_at(현재 시각)
    - 긴 마크다운을 SQL 문자열 리터럴로 넣지 마세요. Python 에서 `spark.createDataFrame(rows, schema).write.mode("append").saveAsTable(...)` 로 추가합니다.
    - 쓰기 허용 테이블은 revision_proposals 하나뿐입니다.
-4. 마지막 응답은 다음 형식의 한 줄만 출력합니다: `PROPOSED=<수> REJECTED=<수> NEEDS_RESEARCH=<수>`
+4. 처리 대상 페이지를 모두 기록한 뒤, 마지막 응답은 다음 형식의 한 줄만 출력합니다: `PROPOSED=<수> REJECTED=<수> NEEDS_RESEARCH=<수>` (질문이나 다른 문장을 덧붙이지 않습니다. publish 태스크가 이번 run의 기록 행 수를 세어, 처리 대상보다 적으면 Job을 실패로 표시합니다.)
