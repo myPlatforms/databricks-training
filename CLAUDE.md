@@ -73,3 +73,8 @@ PR은 CI에서 `mkdocs build --strict`가 통과해야 병합한다. `main` 병�
 
 Databricks Job `training-content-refresh`가 릴리즈 노트·블로그를 수집해 Delta(`<catalog>.training.*`)에 적재하고,
 Genie Code 태스크가 영향받는 페이지의 수정안을 만든 뒤, PR을 자동으로 연다. 자동 PR도 사람이 검토 후 병합한다.
+
+같은 Job의 `ext_*` 태스크(`pipeline/ext_pages.py`)는 이 리포 밖의 단독 HTML 페이지(`pipeline/ext_pages.json`에 등록, 현재 `myPlatforms/genie-ontology`)를 맡는다.
+인용 문서 변경과 주제어에 걸린 릴리즈 노트·블로그를 `ai_query`에 주고 **찾을 문장 → 바꿀 문장 + 영어 근거 인용** 목록만 받는다.
+근거가 원문에 없거나, 찾을 문장이 페이지에 정확히 한 번 있지 않거나, svg·script·style 안이거나, 페이지 구조가 바뀌는 수정은 버리고, 나머지만 그 페이지 리포에 PR로 연다(확인 필요 항목은 Issue).
+테이블은 `ext_*`만 쓰므로 교육 자료 태스크와 섞이지 않는다. 로컬 점검: `uv run --frozen --with httpx python pipeline/ext_pages.py --selftest`.
