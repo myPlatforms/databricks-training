@@ -1,6 +1,6 @@
 # 계보와 데이터 분류
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -60,7 +60,7 @@
 | 항목 | 내용 |
 |---|---|
 | 카탈로그 탐색기의 계보 | 무기한 보관됩니다. 기본 조회 기간은 1년입니다. |
-| 계보 시스템 테이블 | 1년 롤링 기간을 유지합니다. |
+| 계보 시스템 테이블 | `system.access.table_lineage`와 `system.access.column_lineage`는 기본으로 395일 롤링 기간을 유지합니다. |
 | 2024년 9월 1일 이전 계보 | 사용할 수 없습니다. 공식 문서: "Lineage data captured before September 1, 2024 is not available." |
 
 조회 방법은 다음과 같습니다.
@@ -103,7 +103,11 @@ Genie Code는 `/getTableLineages` 명령으로 계보 질문에 답할 수 있�
 | 분류 켜기 | 카탈로그 소유 또는 카탈로그에 대한 `MANAGE` |
 | 자동 태깅 켜기 (카탈로그 수준) | `USE CATALOG`, 태그에 대한 `APPLY TAG`, 태그에 대한 `ASSIGN` |
 | 자동 태깅 켜기 (메타스토어 수준) | 메타스토어 관리자이면서 태그에 대한 `ASSIGN` |
-| 결과 보기 | `MANAGE`, `READ METADATA`, 또는 `USE CATALOG`·`USE SCHEMA`·`SELECT`, 그리고 서버리스 컴퓨트 |
+| 결과 보기 (카탈로그 전체) | 카탈로그에 대한 `MANAGE`, `READ METADATA`, 또는 `USE CATALOG`·`USE SCHEMA`·`SELECT`, 그리고 서버리스 컴퓨트 |
+| 결과 보기 (스키마 하나) | 카탈로그에 대한 `USE CATALOG`와 스키마에 대한 `MANAGE`, `READ METADATA`, 또는 `USE SCHEMA`·`SELECT` |
+| 요약 결과 보기 | 카탈로그에 `USE CATALOG` 또는 `BROWSE`만 있으면 카탈로그와 스키마의 요약 결과를 볼 수 있음. 탐지 내용은 본인이 접근할 수 있는 테이블만 보임 |
+
+스키마 수준 접근을 쓰면 중앙 관리자 팀이 카탈로그 전체 결과에 대한 접근을 주지 않고도 분류 결과 검토를 스키마 소유자에게 위임할 수 있습니다.
 
 > **참고** 공식 문서는 결과 페이지의 자동 태깅 상태를 **Active**, **Inactive** 로 표기합니다. 메타스토어 수준에서는 일부 카탈로그에만 켜진 상태를 **Partially Active** 로 표시합니다.
 

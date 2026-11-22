@@ -1,6 +1,6 @@
 # 가드레일·거버넌스·모니터링
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 ## 왜 필요한가
 
@@ -15,7 +15,8 @@ Databricks 공식 문서의 AI 거버넌스 페이지는 다음 기능을 나열
 | 기능 (문서 명칭) | 상태 라벨 | 역할 |
 |---|---|---|
 | 서비스 정책 (Service policies) | Beta | 내용에 따라 요청과 응답을 허용하거나 차단 |
-| 내장 서비스 정책 (가드레일) | Beta (서비스 정책의 일부) | PII, 프롬프트 인젝션, 안전하지 않은 콘텐츠 등 위험 항목 검사 |
+| 내장 서비스 정책 (가드레일) | Beta (서비스 정책의 일부) | 민감 데이터, 안전하지 않은 콘텐츠, 탈옥 시도, 환각 등 위험 항목 검사. LLM 판정기(LLM-judge) 검사와 결정적 검사인 Sensitive Data Detection으로 구성 |
+| 스트리밍 응답 평가 | Beta (서비스 정책의 일부) | 모델 출력 정책이 스트리밍 응답을 생성 중에 검사. 기존 정책 포함 기본값이며, Full response evaluation을 고르면 전체 응답을 버퍼링 |
 | 외부 서비스 정책 | Beta (서비스 정책의 일부) | 제3자 가드레일 제공자의 판정을 적용 |
 | 속도 제한과 지출 상한 | 문서에 명시 없음 | 모델과 MCP 서비스의 용량 보호, 비용 통제 |
 | 사용량 추적 | 문서에 명시 없음 | 누가 어떤 모델이나 MCP 서비스를 언제 호출했는지 기록 |
@@ -28,7 +29,11 @@ Databricks 공식 문서의 AI 거버넌스 페이지는 다음 기능을 나열
 
 서비스 정책은 MCP 서비스에 붙을 때 입력 정책으로 사람의 승인을 요구할 수도 있다고 문서에 적혀 있습니다.
 
-> **참고** 이 페이지에서 확인하지 못한 항목은 다음과 같습니다. 별도의 안전 필터(safety filter) 기능, 독립된 PII 탐지 기능, 가드레일 실패 시 동작(fail-closed 여부). 문서는 PII를 위험 예시로만 언급하며, 실패 시 동작은 설명하지 않습니다. 이 장은 해당 내용을 쓰지 않았습니다.
+Sensitive Data Detection(`system.ai.detect_sensitive_data`)은 카드 번호, 사회보장번호 같은 구조화된 민감 데이터를 거부하거나 마스킹합니다. 결정적 검사이며 평가 모델을 쓰지 않습니다. 단일·배치 임베딩 입력에도 서비스 정책을 적용해 민감 데이터를 마스킹하거나 요청을 거부하고, 모델 실행 전에 안전하지 않은 콘텐츠를 거부할 수 있습니다(Beta).
+
+> **주의** 스트리밍 평가에서 이미 내보낸 텍스트는 회수할 수 없습니다. 응답 전체가 통과하기 전에 어떤 텍스트도 내보내면 안 되면 정책에서 Full response evaluation을 선택하십시오.
+
+> **참고** 이 페이지에서 확인하지 못한 항목은 다음과 같습니다. 별도의 안전 필터(safety filter) 기능, 가드레일 실패 시 동작(fail-closed 여부). 이 장이 확인한 원문은 실패 시 동작을 설명하지 않습니다. 이 장은 해당 내용을 쓰지 않았습니다.
 
 ## 어떻게 쓰는가
 
@@ -38,12 +43,14 @@ Databricks 공식 문서의 AI 거버넌스 페이지는 다음 기능을 나열
 
 MCP 서비스는 호출자별로 접근을 정합니다. 호출자는 MCP 호출을 위해 Consumer access가 있어야 하고, 서비스 자체에는 CAN USE 같은 권한이 필요합니다. 자세한 조건은 [도구: UC 함수와 MCP 서버](tools-uc-functions-and-mcp.md)과 [배포와 인증](deploy-and-authentication.md)에 있습니다.
 
+ABAC DENY 정책(Beta)은 이제 모델 서비스, 모델 제공자 서비스, MCP 서비스, 에이전트 서비스, 스킬에도 적용할 수 있고, 이런 객체에 직접 붙일 수 있습니다. 거버넌스 태그 기반으로 AI 자산 접근을 막을 때 함께 검토하십시오.
+
 ### 2. 서비스 정책 설계
 
 서비스 정책은 요청과 응답 내용을 기준으로 허용 또는 차단을 정합니다. 설계 순서는 다음과 같습니다.
 
 1. 위험 항목을 정합니다. 개인정보 노출, 프롬프트 인젝션, 금지 콘텐츠 중 무엇을 막을지 목록으로 씁니다.
-2. 내장 정책으로 충분한지 봅니다. 문서는 내장 정책이 PII, 프롬프트 인젝션, 안전하지 않은 콘텐츠 같은 위험을 다룬다고 설명합니다.
+2. 내장 정책으로 충분한지 봅니다. 문서는 내장 정책이 민감 데이터, 안전하지 않은 콘텐츠, 탈옥 시도, 환각 같은 흔한 위험을 다룬다고 설명합니다.
 3. 제3자 가드레일을 이미 쓰는 조직이라면 외부 서비스 정책으로 그 판정을 적용할 수 있는지 봅니다.
 4. 정책을 붙인 뒤 차단과 허용 결과를 어떤 기록으로 검토할지 정합니다. 정책 결정이 사용량 추적과 트레이스 중 어디에 남는지는 이 장의 원문 확인 범위에 없으므로, 적용 전에 서비스 정책 문서에서 확인하십시오.
 
@@ -128,3 +135,5 @@ MCP 서비스는 호출자별로 접근을 정합니다. 호출자는 MCP 호출
 - [Inference tables](https://docs.databricks.com/aws/en/ai-gateway/inference-tables)
 - [Govern an MCP](https://docs.databricks.com/aws/en/ai-gateway/govern-mcp-service)
 - [What is agent observability and quality?](https://docs.databricks.com/aws/en/mlflow3/genai/agent-observability-and-quality)
+- [ABAC DENY policies support AI securables and attachment to individual objects (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#abac-deny-policies-support-ai-securables-and-attachment-to-individual-objects-beta)
+- [Evaluate streaming responses incrementally with service policies (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#evaluate-streaming-responses-incrementally-with-service-policies-beta)

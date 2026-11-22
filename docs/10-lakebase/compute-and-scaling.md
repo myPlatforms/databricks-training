@@ -1,6 +1,6 @@
 # 컴퓨트와 스케일링
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 Lakebase의 컴퓨트(Compute)는 브랜치의 Postgres 엔드포인트를 실행하는 자원입니다. 이 페이지는 자동 확장(Autoscaling), 스케일 투 제로(Scale to zero), 읽기 복제본(Read replica), 고가용성(High availability, HA)을 다룹니다. 모든 수치는 AWS 공식 문서 원문 기준입니다.
 
@@ -28,9 +28,9 @@ Autoscaling은 최소와 최대 사이에서 부하에 맞춰 크기를 조정�
 | 최대와 최소의 차이 | "The difference between your maximum and minimum cannot exceed 16 CU" |
 | 80 CU 이상 | 고정 크기 전용 (Manage computes 페이지: "Computes of 80 CU or more are fixed-size only.") |
 
-AWS 원문의 "Manage computes" 페이지는 64 CU와 80 CU 사이 구간을 따로 설명하지 않습니다. 실제 설정 가능한 값은 콘솔의 슬라이더가 강제합니다.
+AWS 원문의 "Manage computes" 페이지는 Lakebase 앱이 자주 쓰는 크기 일부만 보여 준다고 설명합니다. Postgres API, Terraform, Declarative Automation Bundles, Databricks SDK로는 자동 확장 컴퓨트에 1–64, 더 큰 고정 크기 컴퓨트에 65–112 범위의 정수 CU 값을 설정할 수 있습니다.
 
-> **참고** Azure 프로젝트 문서에는 고정 크기 컴퓨트 상한으로 112 CU 표기가 있습니다. AWS 원문은 이 숫자를 명시하지 않으므로 이 페이지에서는 쓰지 않습니다.
+> **참고** Azure 프로젝트 문서에도 고정 크기 컴퓨트 상한으로 112 CU 표기가 있습니다.
 
 ### 2.2 스케일 투 제로
 
@@ -40,7 +40,7 @@ AWS 원문의 "Manage computes" 페이지는 64 CU와 80 CU 사이 구간을 따
 | 설정 범위 | "can be set between 60 seconds and 7 days" |
 | 사용 가능 조건 | "Scale to zero is available for computes of 32 CU or smaller." 자동 확장의 경우 최대 크기가 32 CU 이하여야 함 |
 | 조건 위반 시 | 32 CU 초과 컴퓨트에서 켜려고 하면 오류 |
-| 기본 설정 | `production` 브랜치는 스케일 투 제로가 켜져 있고 비활성 시간 24시간 |
+| 기본 설정 | `production` 브랜치는 스케일 투 제로가 켜져 있고 비활성 시간 24시간. 서버리스 컴퓨트 정책이 비활성 시간을 요구하면 스케일 투 제로를 켠 채 정책 한도 안의 값을 골라야 함 |
 
 **재접속 동작**: 일시 중지된 컴퓨트로 새 쿼리나 연결 요청이 오면 Lakebase가 자동으로 다시 활성화합니다. 재활성화는 "within a few hundred milliseconds"가 걸린다고 문서가 설명합니다. 문서는 애플리케이션이 이 짧은 재활성화 구간을 위해 **연결 재시도 로직** 을 구현해야 한다고 권장합니다.
 
@@ -49,6 +49,8 @@ AWS 원문의 "Manage computes" 페이지는 64 CU와 80 CU 사이 구간을 따
 재활성화 후에도 유지되는 것은 연결 문자열과 자격 증명(일시 중지 중에도 유효), 누적 통계와 플래너 통계입니다. 초기화되는 것은 캐시, 임시 테이블, 프리페어드 문장, 세션 설정, 커넥션 풀, 활성 트랜잭션이며, `pg_stat_statements` 데이터도 보존되지 않습니다.
 
 오토스케일링이 켜진 컴퓨트는 재활성화 때 최소 크기로 다시 시작합니다.
+
+> **참고** Databricks 블로그는 몇 주 동안 스케일 투 제로 상태였던 데이터베이스는 데이터가 더 이상 캐시되어 있지 않아, 깨어난 뒤 첫 읽기가 오브젝트 스토리지로 간다고 설명합니다. 이후 데이터는 빠른 계층에 캐시되어 일반 워크로드와 같은 로컬 경로로 읽힙니다.
 
 > **주의** 스케일 투 제로와 연결 풀은 함께 설계해야 합니다. 세션 상태가 초기화되므로, 풀이 오래된 연결을 들고 있으면 첫 요청에서 실패할 수 있습니다. 재시도와 연결 검증을 넣으십시오. 풀 동작은 [커넥션 풀링](connection-pooling.md)을 참고하십시오.
 
@@ -64,6 +66,7 @@ AWS 원문의 "Manage computes" 페이지는 64 CU와 80 CU 사이 구간을 따
 | 시작 직후 상태 | "immediately up to date when they start" |
 | 지연 확인 | 복제 지연은 Metrics 대시보드에서 확인. 문서는 지연 수치를 쓰지 않음 |
 | 자동 확장과 스케일 투 제로 | 복제본도 적용 가능. 복제본마다 컴퓨트 크기를 따로 정함 |
+| Data API 읽기 | Data API 읽기 요청을 읽기 복제본의 URL로 보내 주 컴퓨트의 부하를 덜 수 있음 |
 
 읽기 복제본은 **비동기** 입니다. 주 컴퓨트에 막 커밋된 값이 복제본에 아직 보이지 않을 수 있습니다. 방금 쓴 값을 바로 읽어야 하는 요청은 주 컴퓨트로 보내십시오.
 
@@ -187,6 +190,7 @@ HA와 스케일 투 제로는 동시에 쓸 수 없습니다. 자동 장애 조�
 - **보조 컴퓨트 크기는 주 컴퓨트를 따라갑니다.** 주 컴퓨트를 키우면 보조 컴퓨트의 하한도 같이 올라갑니다.
 - **연결 재시도를 구현합니다.** 스케일 투 제로, 장애 조치, 크기 변경 모두 연결에 영향을 줄 수 있습니다.
 - **읽기 복제본에서 방금 쓴 데이터를 기대하지 않습니다.** 복제는 비동기입니다.
+- **서버리스 컴퓨트 정책(Private Preview) 권한을 확인합니다.** 이 프리뷰에 등록된 워크스페이스에서는 컴퓨트 용량이나 스케일 투 제로 설정을 바꾸려면 Lakebase 프로젝트의 `CAN_MANAGE`와 프로젝트 정책의 `CAN_USE` 또는 `CAN_MANAGE`가 필요합니다. 정책이 해당 설정에 한도를 두지 않아도 마찬가지입니다. 정책을 조여도 기존 컴퓨트는 바뀌지 않고, 이후 변경에 정책이 적용됩니다.
 - **Azure와 AWS 기본값을 구분합니다.** Azure 프로젝트 문서의 기본 컴퓨트 표기(production 8–16 CU)와 기본값 절(2↔4 CU)은 서로 다릅니다. 원문 표기가 일관되지 않으므로 실제 기본값은 워크스페이스에서 확인하십시오.
 
 ## 참고 문서
@@ -198,3 +202,4 @@ HA와 스케일 투 제로는 동시에 쓸 수 없습니다. 자동 장애 조�
 - [High availability (AWS)](https://docs.databricks.com/aws/en/oltp/projects/manage-high-availability)
 - [Manage projects (AWS, Compute defaults 절)](https://docs.databricks.com/aws/en/oltp/projects/manage-projects)
 - [Manage projects (Azure)](https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects)
+- [Built on object storage, served from cache (Databricks 블로그)](https://www.databricks.com/blog/built-object-storage-served-cache)

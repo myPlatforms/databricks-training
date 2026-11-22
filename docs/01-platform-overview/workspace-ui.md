@@ -1,6 +1,6 @@
 # 워크스페이스 UI
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -73,7 +73,7 @@
 | Genie Code | 질문을 하고, 문서와 연결된 답을 받습니다. |
 | Search | 노트북, 쿼리, 대시보드, 파일, 테이블 같은 객체를 찾습니다. |
 | + New | 객체와 컴퓨트를 만들고 파일을 업로드합니다. |
-| 사용자 메뉴 | 설정(언어, 테마 등)을 엽니다. 조직에 Databricks Support 계약이 있으면 사용자 아이콘에서 **Get support** 를 눌러 지원 케이스를 열 수 있습니다. Genie Code 창의 **Need additional help?** 배너에 있는 **Get Support** 로도 열 수 있습니다. |
+| 사용자 메뉴 | 설정(언어, 테마 등)을 엽니다. 조직에 Databricks Support 계약이 있으면 사용자 아이콘에서 **Get support** 를 눌러 지원 케이스를 열 수 있습니다. Genie Code 창의 **Need additional help?** 배너에 있는 **Get Support** 로도 열 수 있습니다. Get support 양식은 문제 세부 정보를 채우고 진단 파일을 첨부하며, 제출 전에 AI가 생성한 해결책을 제안합니다. |
 | Help | Genie Code 메뉴 안에 있으며 도움말 센터, 설정, 피드백으로 연결됩니다. |
 
 > **참고** 문서에서 "Genie"는 사이드바의 독립 항목이 아닙니다. 홈 화면에서는 "Ask Genie", Analytics 그룹에서는 "Genie Agents"로 표기됩니다. 같은 이름을 다른 위치에서 찾으면 헷갈릴 수 있습니다.
@@ -134,3 +134,4 @@ Search는 노트북, 쿼리, 대시보드, 파일, 테이블 같은 객체를 �
 - [Workspace browser](https://docs.databricks.com/aws/en/workspace/workspace-browser)
 - [Search for workspace objects](https://docs.databricks.com/aws/en/search/)
 - [Databricks CLI](https://docs.databricks.com/aws/en/dev-tools/cli/)
+- [Submit support cases from your workspace with the Get support form (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#submit-support-cases-from-your-workspace-with-the-get-support-form)

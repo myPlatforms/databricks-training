@@ -1,6 +1,6 @@
 # AI Functions
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 AI Functions는 SQL 함수 호출만으로 텍스트 요약, 분류, 문서 파싱, 필드 추출, 모델 호출을 수행하는 함수 묶음입니다. 공식 문서는 함수를 문서 처리, 텍스트 변환, 텍스트 분석, 콘텐츠 생성, 예측, 시계열 예측, 메트릭 변화 분석, 검색 임베딩 등으로 묶어 제공합니다. 이 페이지는 함수 목록과 상태 라벨, 범용 함수인 `ai_query`와 문서 처리 함수인 `ai_extract`, `ai_parse_document`의 요구 사항과 권한을 다룹니다.
 
@@ -30,13 +30,15 @@ LLM이나 문서 처리 모델을 쓰려면 보통 엔드포인트를 만들고,
 | 텍스트 분석 | `ai_analyze_sentiment`, `ai_similarity` | 라벨 없음 |
 | 콘텐츠 생성 | `ai_gen` | 라벨 없음 |
 | 예측 | `ai_predict_class`, `ai_predict_value` | (Beta) |
-| 시계열 예측 | `ai_forecast` | 라벨 없음 |
+| 시계열 예측 | `ai_forecast` | 라벨 없음 (릴리즈 노트: 버전 2가 Databricks SQL에서 generally available, 2026-11-18) |
 | 시계열 예측 | `ai_detect_anomalies` | (Beta) |
 | 메트릭 변화 분석 | `ai_top_drivers` | (Beta) |
 | 검색 임베딩 | `vector_search` | 라벨 없음 |
 | 범용 | `ai_query` | 라벨 없음 |
 
 > **참고** 이 표의 "라벨 없음"은 "공식 문서가 GA라고 명시했다"는 뜻이 아닙니다. 원문에 라벨이 표시되지 않았다는 뜻입니다. 운영 도입 전에는 각 함수의 상세 페이지와 릴리즈 노트를 확인하십시오.
+
+> **참고** 릴리즈 노트에 따르면 `ai_forecast` 버전 2는 Databricks SQL에서 generally available입니다. 버전 2는 연구용으로 최적화된 시계열 파운데이션 모델을 사용하며, 내장 휴일 지원, 외부 공변량(external covariates), 음수가 아닌 예측(non-negative forecasts)을 추가합니다.
 
 ### 실행 환경 요구 사항
 
@@ -102,6 +104,7 @@ ai_extract(content, schema [, options])
 ```
 
 - `content`는 `STRING` 또는 `VARIANT`입니다. `ai_parse_document`의 출력도 받을 수 있습니다.
+- 스키마의 enum 필드는 허용값을 `"labels"`에 나열합니다. 예: `{"currency": {"type": "enum", "labels": ["USD", "EUR", "GBP"]}}`. 일치하는 enum 값이 없으면 결과는 null입니다.
 - 공식 문서는 Databricks SQL과 Databricks Runtime에서 적용되며, Databricks SQL Classic에서는 사용할 수 없다고 명시합니다.
 - 런타임 15.4 LTS 이상이 필요하고, 최적 성능을 위해 18.2 이상을 권장합니다.
 - 상태 라벨은 페이지에 없습니다.
@@ -200,3 +203,4 @@ FROM main.docs.parsed;
 - [AI Functions Asynchronous API (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-asynchronous-api-beta)
 - [AI Functions usage is now included in Unity Gateway budgets](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-usage-is-now-included-in-unity-gateway-budgets)
 - [What's coming — AI Functions require Databricks Runtime 17.3 LTS or above](https://docs.databricks.com/aws/en/release-notes/whats-coming#ai-functions-require-databricks-runtime-173-lts-or-above)
+- [ai_forecast version 2 is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai_forecast-version-2-is-now-generally-available)

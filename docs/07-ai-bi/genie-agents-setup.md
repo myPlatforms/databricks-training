@@ -1,6 +1,6 @@
 # Genie Agents 만들기
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -52,7 +52,9 @@ Genie Agent는 데이터 분석가가 용어와 예제를 한 번 설정해 두�
 
 문서는 Agent mode가 이전에 "Research Agent"로 불렸다고 명시합니다. Flash(Beta)는 단순한 질문에 속도를 우선하는 Agent mode 옵션이며, 워크스페이스 관리자가 "Genie Agents Flash Mode"를 켜야 합니다. Inspect(Public Preview)는 생성된 SQL을 검토해 필터, 날짜 범위, 조인을 점검하고 더 정확한 쿼리를 반환할 수 있습니다.
 
-> **주의** 비정형 파일이나 MCP 커넥터가 필요하면 Chat mode가 아니라 Agent mode여야 합니다. Unity Catalog 볼륨 파일 분석은 Public Preview입니다. PDF, 슬라이드, 이미지 같은 비정형 파일을 분석하고 원본 페이지를 가리키는 인용과 함께 답하며, 워크스페이스 관리자가 Previews 페이지에서 접근을 제어합니다.
+> **주의** 비정형 파일이나 MCP 커넥터가 필요하면 Chat mode가 아니라 Agent mode여야 합니다. Unity Catalog 볼륨 파일 분석은 Public Preview입니다. 작성자가 에이전트에 볼륨을 붙이면, 사용자는 PDF, Word 문서, 슬라이드, 이미지 같은 비정형 파일에 대해 에이전트의 정형 데이터와 같은 대화 안에서 질문할 수 있고, 답에는 원본 파일의 특정 페이지를 가리킬 수 있는 인용이 붙습니다. 워크스페이스 관리자가 Previews 페이지에서 **Analyze Files in Volumes with Genie Agents** 프리뷰를 켭니다.
+
+> **참고** Genie Agents의 MCP 도구는 GA입니다(AI/BI 릴리즈 노트). 작성자는 Databricks 제공 커넥터에 더해 Unity Gateway에 등록된 외부 MCP 서버를 붙일 수 있고, Agent mode API도 MCP 도구를 지원합니다. Agent mode는 Databricks 제공 MCP 커넥터와 외부 MCP 서버로 연결한 외부 도구와 소스를 쓸 수 있습니다.
 
 ## 3. 어떻게 쓰는가
 
@@ -168,7 +170,7 @@ Genie Agent를 웹사이트나 앱에 넣는 방식(iframe 임베딩)은 [4페�
 ### 언제 쓰지 않는가
 
 - 법적 효력이 있는 확정 수치를 생성형 답으로 내보내야 하는 경우
-- 데이터 소스가 UC 밖에 있어서 등록이 불가능한 경우(외부 도구 연결은 Beta)
+- 데이터 소스가 UC 밖에 있어서 등록이 불가능한 경우(MCP 도구 연결은 GA이지만 Agent mode에서만 쓸 수 있음)
 
 ## 5. 주의사항
 
@@ -177,7 +179,7 @@ Genie Agent를 웹사이트나 앱에 넣는 방식(iframe 임베딩)은 [4페�
 - **Databricks SQL 엔타이틀먼트를 확인합니다.** 엔타이틀먼트가 없는 사용자는 대화할 수 없습니다. Consumer access 사용자는 대화는 가능하지만 새 객체를 만들 수 없습니다.
 - **계정 전체 공유는 신중하게 씁니다.** All account users는 계정의 모든 사용자에게 열립니다. 데이터 접근은 사용자별 UC 권한으로 검사된다고 문서가 설명하지만, 에이전트 설정이 어디까지 보이는지는 이 장에서 확인하지 않았습니다.
 - **인증서 표시를 운영 절차에 넣습니다.** Certified, Deprecated, None 표시를 누가 관리하는지 정해 두십시오.
-- **라벨을 확인합니다.** Genie Agents 전체에는 GA 또는 Public Preview 라벨이 붙어 있지 않습니다. Flash(Beta), Inspect(Public Preview), 볼륨 파일 분석(Public Preview), 외부 도구 연결(Beta)처럼 기능별로 라벨이 다릅니다.
+- **라벨을 확인합니다.** Genie Agents 전체에는 GA 또는 Public Preview 라벨이 붙어 있지 않습니다. Flash(Beta), Inspect(Public Preview), 볼륨 파일 분석(Public Preview), Configure 설정의 커넥터 섹션(Beta), MCP 도구(GA)처럼 기능별로 라벨이 다릅니다.
 
 ## 참고 문서
 
@@ -190,3 +192,5 @@ Genie Agent를 웹사이트나 앱에 넣는 방식(iframe 임베딩)은 [4페�
 - [Databricks Genie app for Slack is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#databricks-genie-app-for-slack-is-now-generally-available)
 - [Databricks Genie app in Microsoft Teams is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#databricks-genie-app-in-microsoft-teams-is-now-generally-available)
 - [Genie in Slack is now generally available (Databricks 블로그)](https://www.databricks.com/blog/genie-slack-now-generally-available-governed-ai-cowork-right-where-work-happens)
+- [MCP tools in Genie Agents are generally available (AI/BI 릴리즈 노트)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#mcp-tools-in-genie-agents-are-generally-available)
+- [Analyze files in Unity Catalog volumes with Genie Agents (Public Preview) (AI/BI 릴리즈 노트)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026#analyze-files-in-unity-catalog-volumes-with-genie-agents-public-preview)

@@ -1,6 +1,6 @@
 # 데이터 모델링 기초
 
-> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 100
 
 데이터 모델링은 분석에 쓸 테이블을 어떤 구조로 나눌지 정하는 작업입니다. 이 페이지는 웨어하우스에서 가장 많이 쓰는 **스타 스키마(Star schema)** 와 **스노우플레이크 스키마(Snowflake schema)** 를 설명하고, Unity Catalog에서 **PK/FK 제약(Primary key·Foreign key constraint)** 을 어떻게 선언하는지, 그리고 그 제약이 무엇을 보장하지 않는지를 정리합니다.
 
@@ -98,6 +98,12 @@ CREATE TABLE main.dw.fact_sales (
 ```sql
 ALTER TABLE main.default.S ADD CONSTRAINT s_t_fk FOREIGN KEY(fk1, fk2) REFERENCES main.default.T;
 ```
+
+FK는 열을 부모 키의 열에 **위치 순서로** 매핑합니다. 위 예시에서 `REFERENCES` 절에 부모 열을 적지 않았으므로 `fk1`은 `T`의 PRIMARY KEY 정의 순서상 `pk1`에, `fk2`는 `pk2`에 매핑됩니다. 부모 열을 명시하려면 `REFERENCES main.default.T(pk1, pk2)`처럼 테이블 이름 뒤에 적습니다. FK를 선언할 때는 다음 규칙이 적용됩니다.
+
+- FK 열 이름과 제약 이름은 부모 테이블의 이름과 같을 필요가 없습니다.
+- FK 열 수는 부모 키 열 수와 같아야 합니다.
+- 각 FK 열의 데이터 타입은 대응하는 부모 열의 타입과 같아야 합니다.
 
 > **주의** `CTAS`(CREATE TABLE AS SELECT) 문장은 제약 절을 지원하지 않는다고 문서에 명시되어 있습니다. 제약이 필요한 테이블은 `CREATE TABLE`로 먼저 만들고 데이터를 적재하거나, `ALTER TABLE`로 나중에 추가합니다.
 

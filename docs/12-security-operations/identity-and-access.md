@@ -1,6 +1,6 @@
 # ID와 접근
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -20,7 +20,7 @@ Databricks는 계정 수준 ID 관리로 이 문제를 줄입니다. 계정 관�
 
 ### 2.1 계정 수준 ID 관리
 
-계정은 사용자와 서비스 프린시펄을 합쳐 최대 **10,000개**, 그룹은 최대 **5,000개** 를 지원합니다. 워크스페이스도 같은 한도를 가집니다.
+계정은 사용자와 서비스 프린시펄을 합쳐 최대 **10,000개**, 그룹은 최대 **5,000개** 를 지원합니다. 워크스페이스도 같은 한도를 가집니다. 리소스 한도 문서는 계정 단위의 이 두 한도를 고정값이 아닌 항목으로 표시하며, 2025-11-17 이후 생성된 계정은 그룹을 최대 10,000개, 사용자와 서비스 프린시펄을 최대 50,000개까지 둘 수 있다고 설명합니다. 일부 계정은 그룹을 최대 250,000개까지 둘 수 있으며, 계정 한도를 확인하거나 올리려면 Databricks 계정 팀에 문의합니다.
 
 ID 연동(Identity federation)이 켜진 워크스페이스에서는 관리자가 계정에 이미 있는 ID 중에서 골라 배정합니다. 문서는 이 설정이 새 워크스페이스에 기본으로 켜지며 끌 수 없다고 명시합니다. 원문은 "Databricks enables identity federation by default for all new workspaces, and you cannot disable it."입니다.
 
@@ -53,6 +53,8 @@ ID 연동(Identity federation)이 켜진 워크스페이스에서는 관리자�
 
 그룹 멤버십은 로그인, 토큰 인증, 잡 실행 같은 활동 때 IdP에서 새로 가져옵니다. 중첩 멤버십은 전이적으로(transitive) 가져오며, Databricks에 추가된 그룹의 멤버십만 가져옵니다. 새로 고침 시점은 활동에 따라 다릅니다.
 
+동기화된 멤버십을 포함한 그룹 멤버십은 API로 읽을 수 있습니다. 그룹의 직접 멤버는 Account·Workspace Direct Group Member API로 조회하며, 이 API는 중첩 그룹을 펼치지 않습니다. 사용자·서비스 프린시펄·그룹이 직접 또는 중첩으로 속한 모든 그룹은 Account·Workspace Transitive Parent Group API로 조회합니다. Direct Group Member 응답의 `membership_source` 필드는 `INTERNAL`(UI, API, SCIM으로 추가) 또는 `IDENTITY_PROVIDER`(자동 ID 관리가 IdP에서 동기화)입니다. 네 API 모두 페이지당 최대 1,000개 결과를 반환하며, Databricks 계정에 없는 ID는 반환하지 않습니다.
+
 | 활동 | 새로 고침 기준 |
 |---|---|
 | 브라우저 로그인 | 마지막 동기화 후 5분 초과 |
@@ -67,9 +69,9 @@ IdP에서 삭제된 사용자는 **Active: Removed From [IdP]** 상태가 됩니
 
 SCIM은 자동 ID 관리를 쓸 수 없을 때의 대체 방식입니다. 필요 조건은 Premium 플랜 이상과 계정 관리자 역할입니다. SSO는 권장되지만 필수는 아닙니다.
 
-계정 콘솔의 **Security** → **Identity provider setup** 탭에서 **Identity management** 절의 **Enable user provisioning** 을 누릅니다. 표시되는 SCIM 토큰과 Account SCIM URL을 IdP SCIM 커넥터의 SAML 프로비저닝 URL과 프로비저닝 API 토큰으로 입력합니다.
+계정 콘솔의 **Security** → **Identity provider setup** 탭에서 **Identity provider sync (SCIM)** 옆의 **Generate a SCIM token** 을 누릅니다. 선택적으로 **Select owning principal** 에서 서비스 프린시펄을 토큰 소유자로 지정할 수 있으며, 이 서비스 프린시펄은 계정 관리자여야 합니다. 비워 두면 본인이 토큰을 소유합니다. **Generate new token** 을 누릅니다. 표시되는 SCIM 토큰과 Account SCIM URL을 IdP SCIM 커넥터의 SAML 프로비저닝 URL과 프로비저닝 API 토큰으로 입력합니다.
 
-토큰을 바꿀 때는 **Regenerate token** 을 누르고 새 토큰을 저장합니다. 이전 토큰은 24시간 동안 유효하므로 그 안에 SCIM 애플리케이션을 갱신하십시오.
+토큰을 바꿀 때는 **Identity provider sync (SCIM)** 옆의 **Manage** 를 누르고, 필요하면 **Select owning principal** 에서 소유자를 고른 뒤 **Generate new token** 을 눌러 새 토큰을 저장합니다. 소유자를 비워 두면 이전 토큰을 서비스 프린시펄이 소유했더라도 새 토큰은 본인 소유가 됩니다. 이전 토큰은 24시간 동안 유효하므로 그 안에 SCIM 애플리케이션을 갱신하십시오.
 
 SCIM이 할 수 있는 것과 없는 것은 다음과 같습니다.
 
@@ -105,6 +107,8 @@ SCIM이 할 수 있는 것과 없는 것은 다음과 같습니다.
 3. **Service principals** 탭에서 **Add service principal** 을 누르고 이름을 입력한 뒤 **Add** 를 누릅니다.
 
 워크스페이스 관리자는 워크스페이스의 **Settings** → **Identity and access** 탭에서 **Service principals** 옆 **Manage** → **Add service principal** → **Add new** 순서로 만들 수 있습니다. 이때 계정에도 추가됩니다.
+
+> **참고** 새 서비스 프린시펄은 워크스페이스 관리자의 Service principals 페이지 검색 결과에 바로 나타나지 않을 수 있습니다. 검색창을 비우면 필터 없는 목록에서 볼 수 있으며, 이 지연은 서비스 프린시펄의 접근에 영향을 주지 않습니다.
 
 만든 서비스 프린시펄을 워크스페이스에 배정하려면 계정 콘솔에서 **Workspaces** → 워크스페이스 → **Permissions** 탭 → **Add permissions** 를 엽니다. 서비스 프린시펄을 고르고 권한(entitlement)을 지정한 뒤 **Save** 를 누릅니다. 배정은 다음 API 경로가 처리합니다.
 
@@ -183,6 +187,7 @@ GRANT SELECT ON SCHEMA main.sales TO `analysts`;
 - **그룹 이름 변경은 바로 반영되지 않습니다.** IdP에서 바꾼 그룹 이름은 계정 관리자가 계정 콘솔의 그룹 상세 페이지를 열어야 Databricks에 반영됩니다. 그룹을 이름으로 참조하는 GRANT 문이 있는지 먼저 점검하십시오. 동기화된 그룹은 계정 관리자가 워크스페이스에 배정하기 전까지 접근이 생기지 않습니다.
 - **SCIM으로 들어온 멤버십은 자동 ID 관리로 지워지지 않습니다.** 자동 ID 관리 전환 후에도 SCIM으로 동기화된 멤버는 SCIM API로 제거해야 합니다. 반대로 SCIM에서 자동 ID 관리로 옮기면 그룹, UC 권한, 워크스페이스 배정이 그대로 옮겨집니다.
 - **서비스 프린시펄을 개인 계정처럼 쓰지 마십시오.** 잡과 도구는 서비스 프린시펄로 인증하고, 사용자 권한은 그룹으로 주십시오.
+- **계정 전용 사용자의 Genie One 접근을 미리 검토하십시오.** 릴리즈 노트의 예정 변경(What's coming)에 따르면 2026년 11월에 계정 전용 사용자(account-only user)의 Genie One 접근이 GA가 되고 기본으로 켜집니다. 자동 ID 관리나 계정 수준 SCIM으로 추가된 사용자는 워크스페이스 배정이나 consumer access 없이 계정 수준 Genie One에 접근할 수 있고, 무엇을 볼 수 있는지는 Unity Catalog가 계속 통제합니다. 이 사용자들은 all account users 그룹에 공유된 객체에 접근할 수 있으므로 그 공유를 먼저 검토하십시오. 끄려면 계정 관리자가 계정 콘솔 **Settings > Account Settings** 에서 **Account-only users in Genie One** 을 끕니다.
 - **레거시 워크스페이스는 ID 연동 상태를 먼저 확인하십시오.** 이메일이 같은 계정이 병합되는 동작을 모르고 옮기면 권한이 예상과 다르게 합쳐질 수 있습니다.
 
 > **참고** 사용자 상태(비활성, 삭제)가 감사 로그와 데이터 소유권에 미치는 영향은 이 페이지 범위에서 확인하지 못했습니다. 실제 운영 전 계정 콘솔의 해당 설정을 직접 확인하십시오.
@@ -197,3 +202,5 @@ GRANT SELECT ON SCHEMA main.sales TO `analysts`;
 - [Automatically provision users (JIT)](https://docs.databricks.com/aws/en/security/auth/jit)
 - [Access control](https://docs.databricks.com/aws/en/security/auth/access-control/)
 - [Identity attributes (Beta)](https://docs.databricks.com/aws/en/admin/users-groups/identity-attributes/)
+- [Resource limits](https://docs.databricks.com/aws/en/resources/limits)
+- [Account-only user access to Genie One (What's coming)](https://docs.databricks.com/aws/en/release-notes/whats-coming#account-only-user-access-to-genie-one-will-soon-be-generally-available-and-enabled-by-default)

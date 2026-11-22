@@ -1,6 +1,6 @@
 # 인바운드 네트워크 접근
 
-> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 ## 한눈에 보기
 
@@ -44,7 +44,7 @@ Databricks는 이 문제를 PrivateLink로 사설 경로를 만들고, 그 위�
 
 ### 백엔드 PrivateLink (Back-end PrivateLink)
 
-클래식 컴퓨트 플레인(고객 VPC의 클러스터)에서 컨트롤 플레인으로 가는 트래픽을 사설화합니다. 범위는 클래식 컴퓨트입니다. 서버리스 컴퓨트에는 적용되지 않는다고 문서가 명시합니다.
+클래식 컴퓨트 플레인(고객 VPC의 클러스터)에서 컨트롤 플레인으로 가는 트래픽을 사설화합니다. 워크스페이스는 Private Link를 지원하는 AWS 리전에 있어야 하므로, 구성 전에 리전별 네트워킹 기능 지원 여부를 확인하십시오. 범위는 클래식 컴퓨트입니다. 서버리스 컴퓨트에는 적용되지 않는다고 문서가 명시합니다.
 
 | 엔드포인트 | 용도 |
 |---|---|
@@ -81,7 +81,9 @@ PrivateLink와의 관계는 다음과 같습니다.
 
 ### 컨텍스트 기반 인그레스 (Context-based ingress)
 
-등록된 VPC 엔드포인트 중 어떤 엔드포인트가 워크스페이스에 접근할 수 있는지를 정책으로 정합니다. 릴리즈 노트에 따르면 2026년 10월 12일부터 **GA** 입니다. 정책 조건에는 아이덴티티와 요청 유형이 포함됩니다.
+등록된 VPC 엔드포인트 중 어떤 엔드포인트가 워크스페이스에 접근할 수 있는지를 정책으로 정합니다. 릴리즈 노트에 따르면 2026년 10월 12일부터 **GA** 입니다. 정책은 아이덴티티, 요청 유형, 소스(source)를 결합해 누가 워크스페이스와 계정 수준 리소스에 접근할 수 있는지 정합니다. 워크스페이스 수준 정책은 워크스페이스 접근을, 단일 계정 수준 정책(`account-policy`)은 계정 콘솔 같은 계정 수준 리소스 접근을 다룹니다.
+
+2026년 11월 릴리즈 노트에 따르면 컨텍스트 기반 인그레스 정책에서 파트너 플랫폼 트래픽을 허용할 수 있습니다. 대상은 Power BI, Tableau Cloud, dbt Cloud, Slack·Microsoft Teams용 Genie 앱, 그리고 ChatGPT와 Claude입니다. ChatGPT와 Claude 규칙은 ChatGPT·Claude용 Databricks Genie 플러그인 같은 호스팅 MCP 클라이언트가 워크스페이스에 접근하도록 할 때 씁니다. Databricks가 파트너의 IP 정보를 최신으로 유지하므로 IP를 직접 추적하지 않아도 됩니다.
 
 정책에는 두 모드가 있습니다.
 
@@ -92,7 +94,7 @@ PrivateLink와의 관계는 다음과 같습니다.
 
 dry run으로 먼저 거부 로그를 보고, 정상 트래픽이 막히지 않는 것을 확인한 뒤 Enforced로 바꾸는 순서가 안전합니다.
 
-> **참고** 릴리즈 노트(2026-10-12)는 인바운드 Private Link용 컨텍스트 기반 인그레스 정책이 **GA** 가 되었다고 적습니다. 프런트엔드 PrivateLink 페이지는 상태 라벨 없이, 계정 관리자가 계정 콘솔의 Previews 페이지에서 "Context-Based Ingress: Workspace Private Access Policies"를 켜야 한다고 설명합니다. 계정 콘솔에서 이 설정이 어디에 있는지 먼저 확인하십시오.
+> **참고** 릴리즈 노트(2026-10-12)는 인바운드 Private Link용 컨텍스트 기반 인그레스 정책이 **GA** 가 되었다고 적습니다. 프런트엔드 PrivateLink 페이지는 상태 라벨 없이, 계정 관리자가 계정 콘솔의 Previews 페이지에서 "Context-Based Ingress: Workspace Private Access Policies"를 켜야 한다고 설명합니다. 계정 콘솔에서 이 설정이 어디에 있는지 먼저 확인하십시오. 통합 로그인을 포함한 계정 수준 리소스의 사설 접근은 **Beta** 이며, "Context-Based Ingress: Account Policy"를 켜서 시작합니다.
 
 ## 3. 어떻게 쓰는가
 
@@ -142,3 +144,5 @@ LIMIT 100;
 - [Back-end PrivateLink](https://docs.databricks.com/aws/en/security/network/classic/privatelink)
 - [IP access lists overview](https://docs.databricks.com/aws/en/security/network/front-end/ip-access-list)
 - [Release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Allow partner platforms in context-based ingress policies (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#allow-partner-platforms-in-context-based-ingress-policies)
+- [Allow ChatGPT and Claude as partner platforms in context-based ingress policies (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#allow-chatgpt-and-claude-as-partner-platforms-in-context-based-ingress-policies)
