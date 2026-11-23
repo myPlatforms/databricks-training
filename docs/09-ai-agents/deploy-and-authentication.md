@@ -92,9 +92,9 @@ source = { kind = "mcp", service = "system.ai.web_search" }
 
 Databricks Apps에서 사용자 권한을 쓰려면 앱이 요청할 **사용자 API 범위**(scope)를 선언해야 합니다. 범위는 예를 들어 `sql`, `genie`, `files` 같은 값입니다. 범위에 없는 기능은 사용자 권한이 있어도 막힙니다. 읽기 전용 범위로 `sql:read`(SQL API 읽기 전용)와 `sql:restricted-query`(읽기 전용 SQL 쿼리 실행)도 있습니다.
 
-범위는 앱을 만든 뒤에 추가합니다. 앱 상세 페이지에서 **Settings** 를 누르고 **User authorization** 아래 **Add scope** 로 범위를 고른 뒤 **Save** 를 누르며, 앱에 대한 CAN MANAGE 권한이 필요합니다. 범위를 요청하는 템플릿으로 앱을 만들 때는 생성 중에 범위를 검토할 수 있지만, 앱이 만들어지기 전까지는 바꿀 수 없습니다. App Space 안의 앱은 사용자 권한 설정을 스페이스에서 상속합니다.
+UI에서는 범위를 앱을 만든 뒤에 추가합니다. 앱 상세 페이지에서 **Settings** 를 누르고 **User authorization** 아래 **Add scope** 로 범위를 고른 뒤 **Save** 를 누르며, 앱에 대한 CAN MANAGE 권한이 필요합니다. 범위를 요청하는 템플릿으로 앱을 만들 때는 생성 중에 범위를 검토할 수 있지만, 앱이 만들어지기 전까지는 바꿀 수 없습니다. App Space 안의 앱은 사용자 권한 설정을 스페이스에서 상속합니다.
 
-CLI로 범위를 지정하는 예시는 다음과 같습니다.
+CLI에서는 앱을 만들거나 수정할 때 `user_api_scopes`를 넘깁니다. 예시는 다음과 같습니다.
 
 ```bash
 databricks apps create <app-name> \

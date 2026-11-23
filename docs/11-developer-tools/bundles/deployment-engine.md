@@ -16,7 +16,7 @@ Declarative Automation Bundles는 배포할 때 리소스 상태를 계산하고
 
 2026-06-10 항목의 원문은 "New bundles created using Databricks CLI version 1.3.0 and above use the direct deployment engine by default"입니다. 같은 노트에서 Terraform 엔진과 비교해 "instead of the Terraform deployment engine"이라고 적었습니다.
 
-> **주의** 이 기록은 두 가지를 말해 줍니다. 첫째, **새로 만든 번들** 은 CLI 1.3.0 이상에서 직접 엔진이 기본입니다. 둘째, **기존 번들** 은 마이그레이션으로 옮깁니다. 기능 릴리즈 노트에는 제거 시점이 없지만, **Databricks CLI v1.20.0 릴리즈 노트는 Terraform 배포 엔진 제거를 명시합니다.** 아래 2절을 확인하십시오.
+> **주의** 이 기록은 두 가지를 말해 줍니다. 첫째, **새로 만든 번들** 은 CLI 1.3.0 이상에서 직접 엔진이 기본입니다. 둘째, **기존 번들** 은 마이그레이션으로 옮깁니다. 기능 릴리즈 노트도 2026-10-07 "Terraform deployment engine removed" 항목(CLI 1.20.0)에서 제거를 밝혔고, **Databricks CLI v1.20.0 릴리즈 노트는 Terraform 배포 엔진 제거를 명시합니다.** 아래 2절을 확인하십시오.
 
 ## 2. CLI v1.20.0에서 바뀐 것
 

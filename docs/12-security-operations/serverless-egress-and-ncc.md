@@ -63,7 +63,7 @@ Restricted Access에서 허용되는 목적지는 다음과 같습니다.
 
 자원 쪽 방화벽에서 서버리스 접근을 허용하려면 "Serverless compute firewall configuration" 페이지를 따릅니다. 주의할 점은 자원 방화벽이 클래식 컴퓨트에도 영향을 준다는 것입니다. 서버리스 접근을 허용하더라도 클래식 연결용 네트워크는 따로 허용해야 합니다.
 
-> **참고** 방화벽 구성 문서는 Databricks 서버리스 OrgPath가 상용 AWS 리전에만 적용되며, 별도 AWS 파티션(`aws-us-gov`)에서 실행되는 Databricks on AWS GovCloud에는 적용되지 않는다고 설명합니다. AWS GovCloud에서 서버리스 컴퓨트의 S3 버킷 접근을 제한하려면 Databricks 계정 팀에 문의하도록 안내합니다.
+> **참고** 방화벽 구성 문서는 Databricks 서버리스 VPC들을 담은 OrgPath(VPCE OrgPath)가 상용 AWS 리전에만 적용되며, 별도 AWS 파티션(`aws-us-gov`)에서 실행되는 Databricks on AWS GovCloud에는 적용되지 않는다고 설명합니다. AWS GovCloud에서 서버리스 컴퓨트의 S3 버킷 접근을 제한하려면 Databricks 계정 팀에 문의하도록 안내합니다.
 
 ### NCC (Network connectivity configuration)
 

@@ -158,7 +158,7 @@ dp.create_auto_cdc_flow(
 
 ### 상태
 
-- **Bitemporal AUTO CDC**: 2026-11-10 갱신된 AUTO CDC API 문서에서는 Beta 표기가 빠졌습니다. 현재 상태 라벨은 "Bitemporal AUTO CDC" 문서에서 확인하십시오. 이중 시간(bitemporal) 대상은 업무 시간 컬럼에 `SEQUENCE BY`, 시스템 시간 컬럼에 `SYSTEM SEQUENCE BY`(Python은 `system_sequence_by`)를 모두 지정해야 하며, `AUTO CDC`에서만 지원됩니다.
+- **Bitemporal AUTO CDC**: 2026-11-10 갱신된 AUTO CDC API 문서에서는 Beta 표기가 빠졌습니다. "Bitemporal AUTO CDC" 문서에도 상태 라벨이 없으며, GA라고 밝힌 문장은 확인하지 못했습니다(문서에 명시 없음). 이중 시간(bitemporal) 대상은 업무 시간 컬럼에 `SEQUENCE BY`, 시스템 시간 컬럼에 `SYSTEM SEQUENCE BY`(Python은 `system_sequence_by`)를 모두 지정해야 하며, `AUTO CDC`에서만 지원됩니다.
 - 나머지 `AUTO CDC` 구문에 대해서는 이 페이지에서 상태 라벨을 확인하지 못했습니다. 문서에 명시 없음.
 
 ## 트레이드오프
@@ -188,4 +188,5 @@ dp.create_auto_cdc_flow(
 - [Expectations](https://docs.databricks.com/aws/en/ldp/expectations)
 - [AUTO CDC](https://docs.databricks.com/aws/en/ldp/cdc)
 - [Flows in Lakeflow pipelines](https://docs.databricks.com/aws/en/ldp/concepts/flows)
+- [Pipeline concepts](https://docs.databricks.com/aws/en/ldp/concepts/)
 - [Pipeline event log](https://docs.databricks.com/aws/en/ldp/monitor-event-logs)

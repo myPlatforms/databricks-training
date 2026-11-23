@@ -1,6 +1,6 @@
 # 구체화 뷰와 스트리밍 테이블
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 구체화 뷰(Materialized view)와 스트리밍 테이블(Streaming table)은 SQL 문장으로 정의한 결과를 Delta 테이블로 저장하고, 원천이 바뀌면 갱신하는 객체입니다. Databricks SQL 문서는 두 객체를 **독립형(standalone) 구체화 뷰·스트리밍 테이블** 로 SQL 웨어하우스 또는 서버리스 범용 컴퓨트의 노트북에서 만들고 새로 고침한다고 설명합니다. 이 페이지는 두 객체의 구문, 새로 고침, 실행 주체, 상태를 정리합니다.
 
@@ -72,7 +72,7 @@ GROUP BY order_date;
 - 적용 대상: Databricks SQL. 문서는 이 명령을 Databricks SQL 웨어하우스(Unity Catalog 필요)용으로 설명합니다.
 - 설명: 스트리밍 또는 증분 데이터 처리를 위한 추가 기능을 가진 Delta 테이블입니다.
 - 다른 Databricks Runtime 컴퓨트에서 실행하면 구문만 파싱되고 테이블은 만들어지지 않는다고 명시합니다.
-- 지원 상태: `FLOW` 절은 **Beta**, `REPLACE USING` 흐름은 **Beta** 이며 Databricks Runtime 18.2 이상이 필요합니다. 명령 자체에는 상태 라벨이 없습니다.
+- 지원 상태: `FLOW` 절은 **Beta** 이며 Databricks Runtime 17.3 이상이 필요합니다. `REPLACE USING` 흐름은 **Beta** 이며 Databricks Runtime 18.2 이상이 필요합니다. 명령 자체에는 상태 라벨이 없습니다.
 
 ```sql
 -- read_files로 읽은 원천을 스트리밍 테이블로 적재한다 (문서 예시와 같은 형태)
@@ -82,6 +82,10 @@ FROM STREAM read_files('<원천 경로>');
 ```
 
 > **주의** 문서의 예시는 Azure 저장소 경로를 씁니다. 위 예시의 `<원천 경로>`는 실제 Unity Catalog 볼륨 경로나 클라우드 저장소 경로로 바꿉니다. 파일 형식 옵션은 `read_files` 레퍼런스에서 확인합니다.
+
+**`CREATE TABLE ... FLOW`**: SQL 레퍼런스에는 흐름(flow)이 쓰는 관리형 테이블을 만드는 `CREATE TABLE ... FLOW` 문이 따로 있습니다. 상태는 **Beta** 이고 Databricks SQL에 적용되며, 문서는 프리뷰를 켤 필요가 없다고 설명합니다. 이 문은 단일 append 흐름이 데이터를 쓰는 Unity Catalog 관리형 테이블을 만들고, 실행하면 Databricks가 그 흐름을 돌리는 서버리스 파이프라인을 만듭니다. 새로 고침은 스트리밍 테이블과 같은 방식으로 필요할 때 또는 일정에 따라 합니다. 문서는 스트리밍 테이블과 달리 결과가 backing table이 없는 표준 관리형 Delta 테이블이라고 설명합니다. 흐름 절은 `FLOW INSERT BY NAME query` 형태이며, 테이블 절은 모두 `FLOW` 키워드 앞에 둡니다.
+
+**OpenSharing 공유**: 스트리밍 테이블 레퍼런스는 스트리밍 테이블을 OpenSharing으로 공유할 때 추가 제한이 적용된다고 안내합니다. 공유 문서의 "Add streaming tables to a share" 절에 따르면 공유하는 스트리밍 테이블에는 행 필터와 열 마스크, 파티션 필터를 둘 수 없습니다. Databricks-to-Open 공유 수신자는 현재 스냅샷만 읽을 수 있고, 시간 여행, 쿼리 이력, 스트리밍 읽기, CDF는 지원되지 않습니다.
 
 ### 구체화 뷰와 스트리밍 테이블 비교
 
@@ -108,7 +112,7 @@ FROM STREAM read_files('<원천 경로>');
 |---|---|
 | 갱신 비용 | 전체 새로 고침이 필요한 정의는 원천 전체를 다시 계산. 증분 가능 여부를 먼저 확인 |
 | 운영 주체 | 독립형 객체는 Databricks가 밑의 파이프라인을 관리. 세밀한 파이프라인 제어가 필요하면 04장의 Lakeflow 파이프라인 구성을 검토 |
-| 상태 | Beta 기능(`FLOW`, `REPLACE USING`)과 Public Preview(Managed Iceberg)는 운영 필수 기능으로 쓰기 전 검토 |
+| 상태 | Beta 기능(`FLOW`, `REPLACE USING`, `CREATE TABLE ... FLOW`)과 Public Preview(Managed Iceberg)는 운영 필수 기능으로 쓰기 전 검토 |
 | 컴퓨트 제약 | 스트리밍 테이블 명령은 Databricks SQL 웨어하우스에서 Unity Catalog를 요구. 다른 컴퓨트에서는 테이블이 생성되지 않음 |
 
 ## 주의사항
@@ -124,3 +128,5 @@ FROM STREAM read_files('<원천 경로>');
 - [CREATE MATERIALIZED VIEW](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-materialized-view)
 - [CREATE STREAMING TABLE](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-streaming-table)
 - [SQL language reference](https://docs.databricks.com/aws/en/sql/language-manual/)
+- [CREATE TABLE ... FLOW](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-flow)
+- [Create shares for OpenSharing](https://docs.databricks.com/aws/en/opensharing/create-share)
