@@ -1,6 +1,6 @@
 # 거버넌스와 비용
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 이 페이지는 공식 문서에 근거한 관리자 설정, 과금 구조, 사용량 확인 방법, 데이터 처리 범위를 정리합니다. 문서에 없는 내용은 "문서에 명시 없음"으로 표기합니다.
 
@@ -23,6 +23,7 @@ Genie Code는 워크스페이스 사용자가 바로 쓸 수 있어 사용량과
 | 서비스 프린시펄 | 무료 할당량이 없고, 모든 사용량이 청구됩니다. |
 | 예산과 무료 할당량 | 예산 설정으로 사용자의 월 무료 사용량을 없앨 수 없습니다. |
 | 컴퓨트 | SQL 웨어하우스 같은 컴퓨트는 별도로 청구되며 Genie 예산에 포함되지 않습니다. |
+| Genie Code CLI | GA. Genie Code와 같은 Genie 종량제로 청구되고, 사용자별 월 무료 사용량을 함께 씁니다. 사용량은 같은 Genie 예산에 포함되며 `system.billing.usage`에서 `usage_metadata.genie.surface`가 `GENIE_CODE_CLI`로 표시됩니다. |
 
 > **참고** 무료 할당량의 금액은 이 문서의 본문에 명시되어 있지 않습니다. 문서는 요금 페이지를 참고하도록 안내합니다. 2026-07-08 릴리즈 노트에는 Genie 제품의 월 무료 LLM 사용량 수치가 적혀 있으나, 이 장 작성 시점에 수치를 교차 확인하지 못했으므로 여기에 적지 않습니다. 실제 금액은 요금 페이지와 계정 콘솔에서 확인합니다.
 
@@ -46,17 +47,17 @@ Genie Code 사용량은 Genie 예산(Budgets)으로 제한할 수 있습니다.
 | 리소스 유형 (Resource type) | **Unity Gateway** |
 | 리소스 태그 (Resource tag) | 키 `databricks-product`, 값 `genie` |
 
-> **주의** 태그는 `databricks-product=genie` 하나만 씁니다. 문서는 다른 태그를 함께 붙이면 추적되지 않는다고 경고합니다.
+> **주의** 태그는 `databricks-product=genie` 를 씁니다. 다른 리소스 태그를 더 붙이면 Genie 사용량이 붙인 태그를 모두 가지고 있어야 하며, 그렇지 않으면 예산이 그 Genie 지출을 추적하거나 통제하지 않는다고 문서가 설명합니다.
 
 ### 임계값 (Thresholds)
 
 | 종류 | 설명 |
 |------|------|
-| Shared threshold | 범위 안 모든 사용자와 워크스페이스가 함께 쓰는 월간 풀 |
-| Per-user threshold | 범위 안 각 사용자에게 적용되는 월간 한도 (무료 할당량 이후) |
-| Per-user overrides | 특정 사용자나 그룹에 더 높은 한도를 줍니다. 공용 임계값은 바뀌지 않습니다. 여러 그룹에 속하면 가장 관대한 override가 적용됩니다. |
+| Shared threshold | 범위 안 모든 사용자와 워크스페이스가 함께 쓰는 월간 풀. 공용 임계값은 월간만 가능 |
+| Per-user threshold | 범위 안 각 사용자에게 적용되는 일별 한도, 월간 한도, 또는 둘 다 (무료 할당량 이후). 일별 한도는 UTC 기준 하루를 추적하고 00:00 UTC에 초기화되며, 월간 한도는 매월 1일에 초기화. 일별 한도는 월간 한도보다 낮게 설정 |
+| Per-user overrides | 특정 사용자나 그룹에 같은 기간의 기본값보다 높은 일별 또는 월간 한도를 줍니다. 공용 임계값은 바뀌지 않습니다. 여러 그룹에 속해 override가 여러 개이면 가장 높은 값이 적용됩니다. 기간별 override를 추가하려면 그 기간의 기본 사용자별 임계값이 있어야 합니다. |
 
-임계값에 도달했을 때 **Send alert**(알림)와 **Block usage**(차단)를 고를 수 있습니다. 문서는 공용 임계값에는 **Send alert** 만 쓰고, 차단은 사용자별 임계값과 override로 설정하는 것을 권장합니다. 알림은 입력한 이메일 주소로 가며, 수신자가 Databricks 사용자일 필요는 없습니다.
+임계값에 도달했을 때 **Send email**(이메일 알림), **Block usage**(차단), **Trigger webhook**(웹훅 호출) 중 하나 이상을 고를 수 있습니다. 문서는 공용 임계값에는 **Block usage** 를 고르지 말고, 차단은 사용자별 임계값과 override로 설정하는 것을 권장합니다. 사용자별 임계값의 조치는 **Actions** → **Edit actions** 에서 일별·월간 기간마다 정하며, 한 기간의 조치는 그 기간의 기본 임계값과 모든 override에 적용됩니다. 알림은 입력한 이메일 주소로 가며, 수신자가 Databricks 사용자일 필요는 없습니다. 일별 임계값으로 차단된 사용자는 00:00 UTC 이후 다시 Genie를 쓸 수 있습니다.
 
 | 한도 | 값 |
 |------|----|
@@ -97,6 +98,8 @@ Genie Code 사용량은 Genie 예산(Budgets)으로 제한할 수 있습니다.
 | 참여 (Engagement) | Active users by day and month, Active users per workspace | Top job roles, Top tasks, 사용 빈도, 사용 영역 |
 | 만족도 (User satisfaction) | — | 도움 만족도 (1–5 척도), 생산성 향상 (1–5 척도), 절감 시간 (비율 구간) |
 
+개별 Genie Code 실행(프롬프트, 응답, 도구 호출)을 검토하려면 Genie Code 트레이스를 Unity Gateway 통합 트레이스 테이블(unified trace table)로 내보냅니다. Genie 트레이싱은 기본으로 꺼져 있습니다. 워크스페이스 관리자가 켜면 트레이스 테이블 소유자와 테이블 접근 권한을 받은 사람이 사용자의 Genie Code 프롬프트, 응답, 도구 호출 결과를 읽을 수 있으므로 권한을 먼저 설계하십시오.
+
 활성 사용자(active user)는 하루 동안 제안을 받아 수락했거나 채팅에 참여한 고유 사용자로 정의됩니다. 문서는 설문 문항 예시도 제시합니다.
 
 ## 모델과 데이터 처리 범위
@@ -109,11 +112,11 @@ Genie Code의 에이전트 기능은 파트너 AI 기능 설정에 의존합니�
 |------|------|
 | 계정에서 켜기 | 계정 콘솔 → **Settings** → **Feature enablement** 탭 → **Enable partner-powered AI features** 를 **On**. 워크스페이스가 바꾸지 못하게 **Enforce** 를 쓸 수 있습니다. 변경은 감사 로그의 계정 이벤트로 기록됩니다. |
 | 워크스페이스에서 켜기 | 사용자 이름 → **Settings** → **Workspace admin** → **Advanced** 탭 → **Partner-powered AI features** |
-| 기본값 | 컴플라이언스 보안 프로필(CSP)이 없는 워크스페이스는 기본 켜짐. CSP 워크스페이스는 기본 꺼짐. |
+| 기본값 | 컴플라이언스 보안 프로필(CSP)이 켜진 워크스페이스를 포함해 모든 워크스페이스에서 기본 켜짐. |
 | 호스팅 제공자 (켠 경우) | Azure OpenAI service, OpenAI on Databricks, Anthropic on Databricks |
 | Genie Code 자동완성 | 항상 Databricks 호스팅 모델을 씁니다. |
 
-> **주의** 이 설정은 **제거 예정** 입니다. 2026-11-01까지 설정이 있는 워크스페이스에서는 토글이 비활성화되어 관리 화면에서 끌 수 없습니다. Settings API로는 바꿀 수 있습니다. 2026-11-01 이후에는 변경이 Databricks 계정 담당자에게 요청해야 합니다. 설정 제거 전후로 워크스페이스의 현재 값은 유지된다고 문서가 설명합니다.
+> **주의** 이 설정은 **제거 예정** 입니다. 설정이 켜진 워크스페이스에서는 계정·워크스페이스 토글이 이미 비활성화되어 관리 화면에서 끌 수 없습니다. 제거 전까지는 Settings API로 바꿀 수 있습니다. 문서는 제거 시점을 2026-11-01에서 "추후 날짜(a later date)"로 바꿨으며, 설정이 제거된 뒤에는 Databricks 계정 담당자에게 변경을 요청해야 합니다. 설정 제거 전후로 워크스페이스의 현재 값은 유지된다고 문서가 설명합니다.
 
 설정을 끄면 다음이 영향을 받습니다.
 
@@ -137,6 +140,7 @@ Genie Code는 Designated Service로 분류되어 있으며, 워크스페이스�
 
 - 워크스페이스에서 **cross-Geo 처리** 를 켜면 다른 Geo에서도 처리될 수 있습니다.
 - 별표가 붙은 기능은 cross-Geo 처리를 켜야 쓸 수 있다고 문서가 명시합니다.
+- Genie Code CLI도 Designated Service입니다. 문서의 Geo별 표는 Genie Code CLI를 Asia, India, Mainland China, Middle East and Africa Geo에서 cross-Geo 처리를 켜야만 쓸 수 있는 기능으로 표시합니다. Americas, Europe, Australia & New Zealand Geo에는 별도 각주가 붙어 있으며, 브라질, 캐나다, 영국 워크스페이스는 cross-Geo 처리가 필요하고, cross-Geo 처리가 꺼지면 호주·뉴질랜드 워크스페이스에서는 모델이 더 적고 컨텍스트 창이 더 작다고 설명합니다.
 - cross-Geo가 꺼진 상태에서 Genie Code chat과 cell actions의 처리 위치는 국가별로 다릅니다. 문서 예시: 브라질, 캐나다, 일본, 한국, 싱가포르, 영국은 자국 또는 해당 지역에서 처리됩니다. 홍콩은 싱가포르에서 처리됩니다. 인도네시아는 Asia Geo에서 처리됩니다.
 
 > **참고** 위 표는 문서 원문을 요약한 것입니다. 한국 워크스페이스의 실제 처리 위치와 cross-Geo 설정이 필요한지는 계정 담당자와 최신 Designated Services 문서로 확인합니다.
@@ -171,16 +175,16 @@ CSP 워크스페이스에서 Databricks 호스팅 Genie Code 모델을 쓸 수 �
 | 설정 | 장점 | 비용 |
 |------|------|------|
 | 파트너 AI 기능 켜기 | 에이전트 기능과 다수의 Genie 기능을 씁니다. | 파트너 제공자 모델 사용과 지역 처리 조건을 함께 검토해야 합니다. |
-| 파트너 AI 기능 끄기 | 파트너 제공자 의존을 줄입니다. | 에이전트와 여러 Genie 기능이 빠집니다. 설정은 2026-11-01 이후 계정 담당자에게 요청해야 바꿀 수 있습니다. |
+| 파트너 AI 기능 끄기 | 파트너 제공자 의존을 줄입니다. | 에이전트와 여러 Genie 기능이 빠집니다. 설정이 제거된 뒤에는 계정 담당자에게 요청해야 바꿀 수 있습니다. |
 | 예산 차단 (Block usage) | 사용자별 한도를 둘 수 있습니다. | 추적이 추정치라서 정확한 상한은 아닙니다. |
 | 자동 승인 허용 | 반복 작업이 빠릅니다. | 보안 경계가 아닙니다. |
 
 ## 주의사항
 
 - **예산은 청구 상한이 아닙니다.** 문서 경고를 그대로 따릅니다.
-- **태그는 `databricks-product=genie` 하나만 씁니다.**
-- **파트너 AI 설정 제거 일정(2026-11-01)을 확인합니다.** 설정 방식이 바뀌면 워크스페이스 운영 절차를 같이 바꿔야 합니다.
-- **CLI 사용량은 별도 해석이 필요합니다.** [Genie Code CLI](cli.md)의 주의 항목을 참고하십시오.
+- **태그는 `databricks-product=genie` 를 씁니다.** 다른 태그를 더하면 Genie 사용량이 그 태그를 모두 가져야 추적됩니다.
+- **파트너 AI 설정 제거 일정을 확인합니다.** 문서는 제거 시점을 2026-11-01에서 추후 날짜로 바꿨습니다. 설정 방식이 바뀌면 워크스페이스 운영 절차를 같이 바꿔야 합니다.
+- **CLI 사용량도 같은 Genie 예산에 들어갑니다.** Genie Code CLI(GA)는 Genie Code와 같은 방식으로 청구·관리됩니다. 자세한 내용은 [Genie Code CLI](cli.md)를 참고하십시오.
 - **상태 라벨**: 시스템 테이블 `system.access.assistant_events`는 Public Preview입니다. 그 밖의 기능은 상태가 페이지마다 다릅니다. 각 페이지의 상태 표기를 따릅니다.
 - **클라우드 차이**: 이 장은 AWS 문서를 기준으로 합니다. Azure 문서는 Microsoft Learn에 있으며 이 장에서 확인하지 않았습니다.
 
@@ -193,3 +197,5 @@ CSP 워크스페이스에서 Databricks 호스팅 Genie Code 모델을 쓸 수 �
 - [Genie Code 개요](https://docs.databricks.com/aws/en/genie-code/)
 - [Genie Code 릴리즈 노트 (2026년 7월)](https://docs.databricks.com/aws/en/release-notes/product/2026/july)
 - [Genie Code 릴리즈 노트 (2026년 8월)](https://docs.databricks.com/aws/en/release-notes/product/2026/august)
+- [Genie Code CLI](https://docs.databricks.com/aws/en/genie-code/genie-code-cli)
+- [Genie Code CLI is now generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-code-cli-is-now-generally-available)

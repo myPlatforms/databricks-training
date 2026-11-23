@@ -1,6 +1,6 @@
 # Unity Gateway
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 Unity Gateway는 Unity Catalog 위에서 모델, 모델 제공자 서비스, MCP 서버, 에이전트 도구의 **런타임 호출** 을 관리하는 엔터프라이즈 AI 거버넌스 계층입니다. 접근 제어, 트래픽 한도, 가드레일(서비스 정책), 사용량 추적을 한 체계로 묶습니다. 문서는 Unity Gateway를 "엔터프라이즈 AI 거버넌스 솔루션"이라고 소개하며, 2026-08-04에 일반 공개(GA)되었다고 릴리즈 노트가 밝힙니다.
 
@@ -35,6 +35,9 @@ Unity Gateway는 Unity Catalog 위에서 모델, 모델 제공자 서비스, MCP
 | 민감 데이터 탐지 | 가드레일 | Beta (2026-08-13) |
 | MCP 도구 호출 탈옥 탐지 | 가드레일 | Beta (2026-10-21) |
 | 파트너 가드레일 (외부 서비스 정책) | 가드레일 | Beta (2026-10-07) |
+| 임베딩 입력 가드레일 | 가드레일 | Beta (2026-11-18) |
+| 스트리밍 응답 평가 | 가드레일 | Beta (2026-11-18) |
+| Insights | 모니터링 | Beta (2026-11-17) |
 
 ## 접근 제어
 
@@ -90,7 +93,7 @@ Unity Catalog 권한이 "누가 서비스를 호출할 수 있는가"를 정하�
 - 초과하면 HTTP **429** 가 반환됩니다. 클라이언트는 지수 백오프로 재시도해야 합니다.
 - 동시 요청은 미리 검사되지 않으므로 순간 폭주는 사용량 집계 전에 통과할 수 있습니다. 한도는 서비스 인스턴스마다 따로 적용되어, 특히 생성 직후에는 짧은 초과가 생길 수 있고 평균은 설정 한도로 수렴한다고 문서가 설명합니다.
 
-> **주의** 한도는 "정확한 상한"이 아니라 평균 수렴 방식입니다. 비용이나 계약상 상한이 필요하면 예산 기능(Manage budgets, 문서 목차에 있음)과 사용량 대시보드를 함께 확인하십시오. 2026-11-01부터 예산에는 `ai_parse_document`, `ai_extract`, `ai_classify` 같은 작업별 AI Functions 지출도 포함됩니다. Spend Status API로 예산 대비 사용량을 조회할 수 있고, 지출 임계값 소진 시 웹훅을 호출하는 예산 알림은 Beta입니다.
+> **주의** 한도는 "정확한 상한"이 아니라 평균 수렴 방식입니다. 비용이나 계약상 상한이 필요하면 예산 기능(Manage budgets, 문서 목차에 있음)과 사용량 대시보드를 함께 확인하십시오. 2026-11-01부터 예산에는 `ai_parse_document`, `ai_extract`, `ai_classify` 같은 작업별 AI Functions 지출도 포함됩니다. Spend Status API로 예산 대비 사용량을 조회할 수 있고, 지출 임계값 소진 시 웹훅을 호출하는 예산 알림은 Beta입니다. Unity Gateway 범위 예산(Genie 예산 포함)은 월별 사용자별 임계값에 더해 일별 사용자별 임계값도 지원하며, 기간마다 알림·웹훅·사용 차단 조치를 따로 설정할 수 있습니다. 일별 임계값은 00:00 UTC에 초기화됩니다.
 
 ## 사용량 추적 (Usage tracking)
 
@@ -109,6 +112,8 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 | 결과 | `status_code`, `routing_information`, `mcp_metadata` |
 
 테이블 이름과 컬럼은 위 표 기준입니다. 조회 쿼리 예제는 문서에 없으므로 이 장에서 쓰지 않았습니다. 집계는 `system.ai_gateway.usage`의 컬럼으로 직접 작성하십시오.
+
+> **참고** `session_metadata`의 `coding_agent`, `agent_version`, `surface`는 클라이언트가 요청 헤더로 보고하는 값이며, Unity Gateway는 이 값을 검증하지 않습니다. `coding_agent`는 `Databricks-Custom-Coding-Agent` 요청 헤더에 값이 있으면 그 값을 쓰고, 없으면 User-Agent 헤더에서 추론합니다.
 
 ### 값과 주기
 
@@ -130,11 +135,13 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 - 대시보드는 계정 관리자가 **Govern > Create Usage Dashboard** 에서 만듭니다. 범위는 계정 또는 워크스페이스를 고르고, 데이터 권한을 설정하고, 자동 업데이트와 예약 갱신을 켤 수 있습니다.
 - 대시보드 조회 주체에도 기반 시스템 테이블 접근 권한이 있어야 합니다.
 
+> **참고** Unity Gateway Insights(Beta)는 에이전트를 무엇에 쓰는지, 토큰이 어디서 낭비되는지 보여 주는 보고서를 만듭니다. Genie Code가 통합 트레이스 테이블(unified trace table)의 세션 샘플로 각 보고서를 작성합니다.
+
 > **참고** 사용량 추적은 과금되는 Unity Gateway 기능입니다. 단가는 Unity Gateway 가격 페이지에서 확인하십시오. 이 장은 단가를 쓰지 않았습니다.
 
 ## 가드레일과 서비스 정책 (Service policies, Beta)
 
-서비스 정책은 등록된 AI 서비스와의 상호작용 **내용** 을 제어합니다. 요청 또는 응답 내용과 호출자를 기준으로 각 상호작용의 처리 방식을 **ALLOW, DENY, ASK** 중 하나로 결정합니다. ASK는 MCP 서비스에만 적용됩니다. 커스텀 정책 함수가 모델 서비스나 모델 제공자 서비스에서 ASK를 반환하면 요청 또는 응답이 차단됩니다. 채팅형 API에서 DENY는 오류 상태 대신 **HTTP 200** 응답으로 돌아오며, 차단한 정책 이름과 차단 사유가 함께 담깁니다. 전체 대화 이력을 다시 보내는 코딩 에이전트가 이후 턴마다 같은 차단을 다시 일으키지 않도록 하기 위해서입니다.
+서비스 정책은 등록된 AI 서비스와의 상호작용 **내용** 을 제어합니다. 요청 또는 응답 내용과 호출자를 기준으로 각 상호작용의 처리 방식을 **ALLOW, DENY, ASK** 중 하나로 결정합니다. ASK는 MCP 서비스에만 적용됩니다. 커스텀 정책 함수가 모델 서비스나 모델 제공자 서비스에서 ASK를 반환하면 요청 또는 응답이 차단됩니다. 채팅형 API에서 DENY는 오류 상태 대신 **HTTP 200** 응답으로 돌아오며, 차단한 정책 이름과 차단 사유가 함께 담깁니다. 전체 대화 이력을 다시 보내는 코딩 에이전트가 이후 턴마다 같은 차단을 다시 일으키지 않도록 하기 위해서입니다. 임베딩 입력이 거부되면 HTTP 400이 반환되고, 모델이 실행되기 전에 요청 전체가 차단됩니다.
 
 ### 정책 종류
 
@@ -153,6 +160,7 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 ### 적용 대상과 활성화
 
 - 적용 대상은 MCP 서비스, 모델 서비스, 모델 제공자 서비스입니다.
+- 단일 또는 배치 임베딩 입력에도 서비스 정책을 적용해 민감 데이터를 마스킹하거나 해당 요청을 거부하고, 모델 실행 전에 안전하지 않은 내용을 거부할 수 있습니다(Beta). 임베딩 요청은 입력 단계만 지원하며, 결과 벡터는 어떤 정책도 평가하지 않습니다.
 - 내장 정책은 Unity Gateway UI에서 이름으로 붙입니다.
 - 정책을 서비스에 붙이려면 대상 서비스의 `MANAGE` 권한이 필요합니다.
 - 내장 정책의 평가 모델은 모델 서비스에 `EXECUTE`가 있어야 하며, 카탈로그와 스키마의 `USE CATALOG`, `USE SCHEMA`도 필요합니다. 붙일 때 검사합니다.
@@ -163,12 +171,30 @@ Unity Gateway는 모델 서비스, 모델 제공자 서비스, MCP 서비스의 
 | 항목 | 내용 (문서 원문) |
 |---|---|
 | 순서 | 각 연결에 **rank** 가 있으며, 입력은 오름차순, 출력은 내림차순으로 평가. 한 rank에서 DENY가 나오면 이후 rank는 평가하지 않음 |
-| 같은 rank | 두 단계로 평가. 첫 단계에서 DENY가 없을 때만 커스텀 정책 함수, 외부 서비스 정책, `system.ai.detect_sensitive_data`, ASK 정책이 순차 단계에서 실행됨. 순차 단계는 DENY가 나와도 멈추지 않고 모두 실행됨 |
+| 같은 rank | 채팅형 모델 API와 MCP 도구 호출에서는 두 단계로 평가. 첫 단계에서 DENY가 없을 때만 커스텀 정책 함수, 외부 서비스 정책, `system.ai.detect_sensitive_data`, ASK 정책이 순차 단계에서 실행됨. 순차 단계는 DENY가 나와도 멈추지 않고 모두 실행됨 |
+| 같은 rank (임베딩) | 차단형 judge를 한 번에 하나씩 실행하며, 입력 항목은 최대 4개까지 동시에 검사. judge가 DENY하면 그 rank의 나머지 정책은 건너뜀 |
 | 로그 모드 | 정책을 Log 모드로 두면 차단하지 않고 결정만 기록 |
 | 평가 실패 | "평가 중 발생한 오류는 DENY"로 처리 (fail closed). 타임아웃도 오류에 포함 |
-| 외부 정책 | Enforce 모드에서 벤더 엔드포인트에 닿지 않거나 쓸 수 없는 응답이 와도 DENY. 벤더 장애 시 통과시키도록 설정할 수 없음. 호출자의 인증된 신원은 보내지 않지만, 호출자가 붙인 요청 태그(request tags)는 Log 모드에서도 보냄 |
+| 외부 정책 | Enforce 모드에서 벤더 엔드포인트에 닿지 않거나 쓸 수 없는 응답이 와도 DENY. 벤더 장애 시 통과시키도록 설정할 수 없음. 호출자의 인증된 신원은 보내지 않지만, 호출자가 붙인 요청 태그(request tags)는 Log 모드에서도 보냄. 스트리밍 평가에서는 출력 단계가 응답 하나당 벤더를 여러 번 호출할 수 있음 |
 
 > **주의** fail closed는 보안에는 안전하지만, 정책 평가 모델이 장애 나면 정상 요청도 모두 차단됩니다. 운영 전에 타임아웃과 장애 시 동작을 테스트하고, 로그 모드로 먼저 관찰하십시오.
+
+### 스트리밍 응답 평가 (Beta)
+
+모델 서비스와 모델 제공자 서비스에서는 각 정책의 **Response evaluation** 설정이 스트리밍 요청에 대한 출력 정책의 처리 방식을 정합니다. 이 기능은 Unity Gateway Service Policies 프리뷰에 포함되며 별도 토글이 없습니다.
+
+| 설정 | 동작 (문서 원문) |
+|---|---|
+| Streaming evaluation (기본값) | 모델이 생성하는 동안 출력 정책이 응답을 검사하고, 승인된 텍스트를 모델이 끝나기 전에 내보냄 |
+| Full response evaluation | 출력 정책이 전체 응답을 평가한 뒤에야 응답을 내보냄 |
+
+- 기존 정책도 기본값은 스트리밍 평가입니다. 전체 응답이 통과하기 전에는 어떤 텍스트도 클라이언트에 도달하면 안 되거나, 커스텀 정책이 완성된 답이나 토큰 사용량 같은 최종 필드를 필요로 하면 Full response evaluation을 선택합니다.
+- 요청에 적용되는 출력 정책 중 하나라도(Log 모드 정책 포함) 전체 응답 평가를 쓰면, 모든 출력 정책이 전체 응답을 평가합니다.
+- 비스트리밍 채팅형 요청과 MCP 도구 결과에는 출력 정책이 전체 응답 평가를 씁니다.
+- API에서는 정책의 `stream_mode` 필드를 `STREAM_MODE_WINDOWED_SYNC`(스트리밍 평가) 또는 `STREAM_MODE_FULLY_BUFFERED`(전체 응답 평가)로 설정합니다. 필드를 생략하면 스트리밍 평가입니다. MCP 서비스는 이 필드를 거부합니다.
+- 정책이 응답을 거부하면 아직 내보내지 않은 텍스트를 보류하고, 서비스 정책이 응답을 차단했다는 메시지를 덧붙인 뒤 스트림을 끝냅니다. 이미 내보낸 텍스트는 클라이언트에 남습니다.
+
+> **주의** 스트리밍 평가에서 이미 내보낸 텍스트는 회수할 수 없습니다. 문서는 보류하는 짧은 꼬리(held tail)가 경계 위험을 줄이지만 민감한 내용이 클라이언트에 도달하지 않는다고 보장하지는 않는다고 설명합니다.
 
 > **참고** 세부 생성 절차는 문서의 "Create and attach a service policy" 페이지에 있으며, 이 페이지는 UI 단계와 SQL·API 예제를 싣지 않았습니다. 확인하지 못한 설정은 이 장에서 쓰지 않았습니다.
 
@@ -186,7 +212,7 @@ Model Serving 엔드포인트 생성 화면의 **AI Gateway** 섹션은 문서�
 | 안전 필터 (Public Preview) | "Safety" 선택 | 안전하지 않은 내용 필터링 |
 | PII 탐지 (Public Preview) | Block, Mask, None 중 선택 | 이름, 주소, 카드번호 등 |
 
-> **주의** 내장 안전·PII 가드레일은 OpenAI 호환 Chat Completions·Completions 요청과 비스트리밍 응답을 지원하고, 임베딩 요청은 입력 가드레일만 지원합니다. 네이티브 Anthropic Messages 형식이나 Gemini `generateContent`·`streamGenerateContent` 형식 요청은 엔드포인트에 가드레일을 설정해도 내장·커스텀 가드레일이 평가하지 않습니다.
+> **주의** 내장 안전·PII 가드레일은 OpenAI 호환 Chat Completions·Completions 요청과 비스트리밍 응답을 지원하고, 임베딩 요청은 입력 가드레일만 지원합니다. 내장·커스텀 가드레일은 네이티브 Anthropic Messages, Gemini `generateContent`·`streamGenerateContent`, TypeSafe System One API 형식 요청을 지원하지 않으며, 가드레일이 켜져 있으면 이 형식의 요청은 HTTP 400 오류를 반환합니다.
 
 - 엔드포인트 관리 작업에는 `CAN MANAGE`가 필요합니다. 생성자에게 자동 부여됩니다.
 - 가드레일과 한도를 우회하지 못하도록 엔드포인트 생성과 `CAN MANAGE`는 관리자에게만 주고, 나머지는 쿼리 권한만 주라고 문서가 권장합니다.
@@ -223,3 +249,7 @@ Model Serving 엔드포인트 생성 화면의 **AI Gateway** 섹션은 문서�
 - [AI Functions usage is now included in Unity Gateway budgets](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-functions-usage-is-now-included-in-unity-gateway-budgets)
 - [Check budget usage with the Spend Status API](https://docs.databricks.com/aws/en/release-notes/product/2026/october#check-budget-usage-with-the-spend-status-api)
 - [Budget alerts can now trigger webhooks (Beta)](https://docs.databricks.com/aws/en/release-notes/unity-gateway#budget-alerts-can-now-trigger-webhooks-beta)
+- [Evaluate streaming responses incrementally with service policies (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#evaluate-streaming-responses-incrementally-with-service-policies-beta)
+- [Service policies protect embedding inputs (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#service-policies-protect-embedding-inputs-beta)
+- [Budgets now support daily thresholds in addition to monthly thresholds](https://docs.databricks.com/aws/en/release-notes/product/2026/november#budgets-now-support-daily-thresholds-in-addition-to-monthly-thresholds)
+- [Analyze agent usage and find wasted tokens with Unity Gateway Insights (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#analyze-agent-usage-and-find-wasted-tokens-with-unity-gateway-insights-beta)

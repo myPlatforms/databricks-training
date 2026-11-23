@@ -1,6 +1,6 @@
 # 서버리스 컴퓨트
 
-> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 서버리스 컴퓨트(Serverless compute)는 노트북, 워크플로(Job), Lakeflow 파이프라인을 Databricks가 관리하는 온디맨드 자원에서 실행하는 방식입니다. 이 페이지는 서버리스가 어떤 워크로드를 지원하는지, 환경 버전(Environment version)과 기본 환경(Base environment)이 무엇인지, 노트북과 Job에서 각각 어떻게 설정하는지, 성능 모드와 타임아웃을 다룹니다. 제약과 지원 기능의 세부 목록은 [서버리스 제약과 지원 기능](serverless-limitations.md) 페이지에 있습니다.
 
@@ -100,7 +100,7 @@ spark.conf.set("spark.databricks.execution.timeout", "3600")
 
 ### 2.4 Job에서 서버리스 쓰기
 
-Job 작업 유형이 서버리스를 지원하면 Job 생성 시 서버리스 컴퓨트가 기본으로 선택됩니다. 기존 Job은 Job 상세 창의 **Compute** 설정에서 서버리스로 바꿀 수 있습니다. 사용 정책(Usage policy)이 하나만 할당된 사용자라면 그 정책이 새 Job에 자동 선택됩니다.
+Job 작업 유형이 서버리스를 지원하면 Job 생성 시 서버리스 컴퓨트가 기본으로 선택됩니다. 기존 Job은 Job 상세 창의 **Compute** 설정에서 서버리스로 바꿀 수 있습니다. Genie Migrate for Serverless(Beta)를 쓰면 Databricks CLI의 `compute-migrations` 명령 그룹으로 클래식 Job을 백그라운드에서 서버리스로 옮길 수 있습니다. 에이전트가 Job마다 서버리스 작업 사본(working copy)을 만들고, 사용자가 검토·승인한 뒤에야 원래 Job을 바꿉니다. 작업 사본을 한 번 실행해 검증할 수도 있습니다. Genie Code에서는 `/compute`로 노트북이나 Job 하나를 옮깁니다. 워크스페이스 관리자가 **Previews** 페이지에서 Compute Agent 프리뷰를 켜야 합니다. 사용 정책(Usage policy)이 하나만 할당된 사용자라면 그 정책이 새 Job에 자동 선택됩니다.
 
 문서 기준 Job 설정 요점은 다음과 같습니다.
 
@@ -170,7 +170,7 @@ Job으로 옮길 때는 같은 코드를 노트북 태스크로 등록하고, �
 - **환경 버전을 고정해서 기록하십시오.** 노트북은 환경 설정이 노트북 메타데이터에 남습니다. 문서가 `environment_version = "5"` 같은 형태의 예시를 보여 줍니다. 팀 공유 전에 버전과 의존성 목록을 저장소에 함께 두면 재현이 쉽습니다.
 - **Python 패키지는 환경의 Dependencies에서 설치하십시오.** 노트북 안에서 임의로 패키지를 설치하면 같은 환경을 다른 노트북이나 Job이 재현하기 어렵습니다. 설치 절차는 문서의 **Dependencies** 절차를 따르십시오.
 - **상태 라벨을 확인하십시오.** 노트북 기능과 Job 기능이 같은 상태를 갖지 않습니다. 운영 Job에 쓰기 전에 기능별 상태를 봅니다.
-- **사용 정책과 태깅.** 문서는 서버리스 노트북에서 노트북 태그를 지원하지 않으며, 태깅은 서버리스 사용 정책으로 하라고 안내합니다. Databricks 블로그는 서버리스 컴퓨트 객체에 태그를 붙여 비용을 귀속하는 Serverless Compute tags를 **Beta** 로, 자동화 워크로드의 지출 속도를 컴퓨트 객체 단위로 제한하는 rate limits를 **Beta** 로 소개합니다.
+- **사용 정책과 태깅.** 문서는 서버리스 노트북에서 노트북 태그를 지원하지 않으며, 태깅은 서버리스 사용 정책으로 하라고 안내합니다. Databricks 블로그는 서버리스 컴퓨트 객체에 태그를 붙여 비용을 귀속하는 Serverless Compute tags를 **Beta** 로, 자동화 워크로드의 지출 속도를 컴퓨트 객체 단위로 제한하는 rate limits를 **Beta** 로 소개합니다. 2026년 11월 릴리즈 노트에 따르면 서버리스 Job과 파이프라인은 자동화 컴퓨트 객체에 크기(size)를 설정해 Spark executor 자동 확장을 제한할 수 있습니다(Beta).
 - **Unity Catalog 전제.** 레거시 워크스페이스는 Unity Catalog를 활성화하기 전까지 서버리스 컴퓨트를 쓸 수 없습니다.
 
 ## 참고 문서
@@ -187,3 +187,5 @@ Job으로 옮길 때는 같은 코드를 노트북 태스크로 등록하고, �
 - [Smarter cost controls for serverless (Databricks 블로그)](https://www.databricks.com/blog/smarter-cost-controls-serverless)
 - [2026년 10월 릴리즈 노트: Serverless log delivery to Unity Catalog volumes (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#serverless-log-delivery-to-unity-catalog-volumes-beta)
 - [2026년 10월 릴리즈 노트: Shared Serverless (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#shared-serverless-beta)
+- [Genie Migrate for Serverless (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#genie-migrate-for-serverless-beta)
+- [Serverless rate limits are now in Beta (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#serverless-rate-limits-are-now-in-beta)

@@ -1,6 +1,6 @@
 # Agent Bricks CLI로 에이전트 개발하기
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 왜 필요한가
 
@@ -16,7 +16,7 @@ Agent Bricks CLI(`agentbricks`)는 이 준비 작업을 프로젝트 템플릿�
 
 | 단계 | 명령 | 하는 일 |
 |---|---|---|
-| 설치 | `pip install databricks-agentbricks` | CLI 설치 |
+| 설치 | `uv tool install databricks-agentbricks` 또는 `pip install databricks-agentbricks` | CLI 설치 |
 | 인증 | `databricks auth login`, `agentbricks login` | 워크스페이스 OAuth 프로필 저장 |
 | 생성 | `agentbricks init` | 프레임워크 템플릿으로 프로젝트 생성 |
 | 저장소 연결 | `agentbricks sessions bind`, `agentbricks memory bind` | 세션·메모리 저장소 연결 (선택) |
@@ -42,7 +42,7 @@ Agent Bricks CLI(`agentbricks`)는 이 준비 작업을 프로젝트 템플릿�
 공식 퀵스타트의 명령을 그대로 옮긴 절차입니다. 워크스페이스 URL과 프로필 이름만 바꿉니다.
 
 ```bash
-pip install databricks-agentbricks
+uv tool install databricks-agentbricks
 
 databricks auth login --host https://<your-workspace-url> --profile <profile>
 agentbricks login --profile <profile>
@@ -53,11 +53,17 @@ cd my-agent
 agentbricks dev
 ```
 
-`agentbricks dev`는 로컬에서 포트 8000으로 에이전트를 띄웁니다. 배포는 다음 명령으로 합니다.
+퀵스타트는 CLI를 uv 도구로 설치하는 명령을 보여 주며, pip로 설치하려면 `pip install databricks-agentbricks`를 씁니다.
+
+`agentbricks dev`는 채팅 앱과 에이전트 API를 `http://localhost:8000`에서 띄웁니다. 서버를 켜 둔 채 두 번째 터미널에서 `http://localhost:8000/api/invocations`로 POST 요청을 보내 로컬에서 시험할 수 있습니다. 요청 본문의 `id`는 요청마다 새 UUID, `session_id`는 요청이 속한 대화(같은 대화의 후속 메시지는 같은 세션 ID를 재사용), `input`은 에이전트에 보낼 메시지입니다.
+
+배포는 프로젝트 디렉터리에서 다음 명령으로 합니다.
 
 ```bash
-agentbricks deploy my-agent
+agentbricks deploy
 ```
+
+`agentbricks init`이 이름 `my-agent`를 `agent.toml`에 기록했으므로 이름을 넘기지 않습니다. CLI는 `agent-bricks-my-agent`라는 이름의 앱을 만들며, `agentbricks deployments`와 `agentbricks endpoint` 명령에는 이 이름을 씁니다. `agentbricks deploy`는 에이전트가 응답할 때까지 기다린 뒤 배포 URL을 돌려줍니다. 기다리지 않으려면 `--no-wait`를 붙이고 `agentbricks deployments wait`를 실행합니다. 배포된 에이전트는 `agentbricks endpoint invoke agent-bricks-my-agent --path /api/invocations --json ...`로 시험합니다.
 
 `databricks auth login`과 `agentbricks login`은 두 개의 명령입니다. 한 줄로 이어 쓰지 않도록 주의하십시오. 퀵스타트 문서도 두 명령을 따로 실행하라고 안내합니다.
 
@@ -141,7 +147,7 @@ agentbricks deployments logs
 agentbricks deployments stop
 ```
 
-배포 상태와 로그는 `agentbricks deployments` 하위 명령(`list`, `get`, `wait`, `logs`, `start`, `stop`, `delete`)으로 봅니다.
+배포 상태와 로그는 `agentbricks deployments` 하위 명령(`list`, `get`, `wait`, `logs`, `start`, `stop`, `delete`)으로 봅니다. 배포가 실패하면 `agentbricks deployments logs agent-bricks-my-agent`처럼 앱 이름을 넣어 로그를 확인합니다.
 
 ## 함수 도구 작성 예시
 
@@ -197,7 +203,7 @@ agent = create_react_agent(
 
 ## 주의사항
 
-- **Python 버전**: 패키지는 Python 3.10에서도 설치되지만, 생성된 프로젝트는 Python 3.11 이상이 필요합니다. 문서는 Python 3.12를 권장합니다.
+- **Python 버전**: 퀵스타트의 요구 사항은 Python 3.11 이상이며, 문서는 Python 3.12를 권장합니다. Agent Bricks CLI 문서는 패키지 자체는 Python 3.10에서도 설치되지만, 생성된 프로젝트에는 Python 3.11 이상이 필요하다고 설명합니다.
 - **`uv` 필요**: `init`, `dev`, `deploy`는 프로젝트 실행에 `uv`를 씁니다. 설치 실패 시 문서가 안내하는 명령은 `pip install --only-binary :all: databricks-agentbricks`와 `uv tool install --python 3.12 databricks-agentbricks`입니다.
 - **배포 권한**: `agentbricks deploy`를 실행하는 사용자는 앱, 저장소, MLflow 실험을 만들거나 관리할 권한이 있어야 합니다. 문서는 `--auth app` 도구에 한해 앱 서비스 프린시펄에 접근을 부여한다고 설명합니다.
 - **로컬 실행의 메모리 상태**: 로컬 채팅 앱은 메모리가 "Not connected"로 표시될 수 있습니다. 배포 전에 원격 저장소 연결을 확인하십시오.

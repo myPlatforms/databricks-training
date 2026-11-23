@@ -1,6 +1,6 @@
 # 컴퓨트 종류와 선택 기준
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 100
 
 Databricks의 컴퓨트는 크게 세 가지로 나뉩니다. 서버리스 컴퓨트(Serverless compute), 클래식 컴퓨트(Classic compute), SQL 웨어하우스(SQL warehouses)입니다. 공식 Compute 개요 페이지는 세 가지 옵션을 각각 "Databricks가 관리하는 온디맨드 자원", "직접 만들고 설정하고 관리하는 자원", "SQL과 BI 작업에 최적화된 자원으로, 서버리스 또는 클래식으로 제공"으로 요약합니다. 이 페이지는 세 분류를 구분하고, 워크로드에 맞는 선택 기준을 정리합니다.
 
@@ -61,7 +61,7 @@ Databricks는 이 문제를 세 가지 컴퓨트 유형으로 나눠서 풀도�
 | Pro | 지원 | 지원 | 미지원 | 보통 약 4분 | 고객 AWS 계정 |
 | Classic | 지원 | 미지원 | 미지원 | 보통 약 4분 | 고객 AWS 계정 |
 
-SQL 웨어하우스는 자격 증명 패스스루(credential passthrough)를 지원하지 않습니다. 페이지에는 Lakehouse Real-Time 유형(Beta, SELECT 쿼리만 지원)도 나오지만 실행 위치는 명시되어 있지 않습니다. 시작 시간 수치는 공식 SQL warehouse 유형 페이지에서 확인했습니다.
+SQL 웨어하우스는 자격 증명 패스스루(credential passthrough)를 지원하지 않습니다. 페이지에는 Lakehouse Real-Time 유형(Beta)도 나오며, 읽기(`SELECT`) 쿼리와 `CREATE TABLE AS SELECT`(CTAS)를 지원하지만 실행 위치는 명시되어 있지 않습니다. 기존 웨어하우스의 유형은 SQL Warehouses 페이지와 웨어하우스 상세 페이지의 유형 라벨(Serverless, Pro, Classic, Real-Time)로 확인합니다. 시작 시간 수치는 공식 SQL warehouse 유형 페이지에서 확인했습니다.
 
 ### 2.5 액세스 모드: Standard와 Dedicated
 
