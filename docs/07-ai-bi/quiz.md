@@ -144,7 +144,7 @@
 <details markdown="1">
 <summary>정답과 해설</summary>
 
-**정답: C** — 본문은 Microsoft가 Databricks 커넥터에서 Metric View BI Compatibility Mode 옵션을 제거했으며, 그 옵션을 쓰던 보고서는 더 이상 동작하지 않는다고 설명합니다. 대체 방법으로 커넥터의 Native query와 DirectQuery 모드의 `MEASURE()` 패턴을 안내합니다. A는 본문과 어긋나고, B는 옵션이 제거되었으므로 불가능합니다. D는 본문이 제시하는 대안이 아닙니다.
+**정답: C** — 본문은 이전 공식 Power BI 문서가 Metric View BI Compatibility Mode 옵션의 제거와 그 옵션을 쓰던 보고서의 동작 중단을 경고했다고 설명하고, 기존 보고서의 의존성을 먼저 점검하라고 권합니다. 현재 문서가 안내하는 방식 가운데 하나가 커넥터의 Native query에서 DirectQuery 모드로 `MEASURE()` 패턴을 쓰는 방법입니다. A는 본문과 어긋나고, B는 본문에 옵션을 다시 켜는 방법이 없으므로 근거가 없습니다. D는 본문이 제시하는 대안이 아닙니다.
 
 근거: [외부 BI 도구와 병행 — 도구별 연결 방식](external-bi-tools.md#도구별-연결-방식)
 

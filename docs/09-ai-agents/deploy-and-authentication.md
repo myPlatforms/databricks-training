@@ -1,6 +1,6 @@
 # 배포와 인증
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 ## 왜 필요한가
 
@@ -43,7 +43,16 @@ Databricks Apps는 OAuth 2.0 기반의 두 신원 모델을 씁니다.
 
 ### 1. 에이전트 배포
 
-Agent Bricks CLI 프로젝트는 `agentbricks deploy`로 배포합니다. 명령은 [Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md)에 있습니다. 배포하는 사용자는 앱, 저장소, MLflow 실험을 만들거나 관리할 권한이 있어야 합니다.
+Agent Bricks CLI 프로젝트는 `agentbricks deploy`로 배포합니다. 명령은 [Agent Bricks CLI로 에이전트 개발하기](build-agent-with-cli.md)에 있습니다. 배포하는 사용자는 앱, 저장소, MLflow 실험을 만들거나 관리할 권한이 있어야 합니다. `agentbricks deploy`의 인수는 배포 이름이며 최대 17자입니다. 앱 이름은 `agent-bricks-<name>`이 되고, 첫 배포 때 이름이 `agent.toml`에 기록되므로 이후 배포에서는 생략할 수 있습니다.
+
+명령 시간 제한이 짧은 스크립트나 코딩 에이전트에서는 기다리지 않고 배포한 뒤 별도 명령으로 완료를 기다립니다.
+
+```bash
+agentbricks deploy my-agent --no-wait
+agentbricks deployments wait agent-bricks-my-agent
+```
+
+`agentbricks deployments wait`는 기본으로 최대 100초를 기다리며 `--timeout`으로 바꿀 수 있습니다. 종료 코드는 `0`(배포 완료, 요청 응답), `1`(배포 실패), `75`(아직 배포 중, 다시 실행)입니다.
 
 배포 후 상태를 확인하는 명령은 다음과 같습니다.
 
@@ -81,9 +90,11 @@ source = { kind = "mcp", service = "system.ai.web_search" }
 
 ### 3. Databricks Apps에서 사용자 토큰 읽기
 
-Databricks Apps에서 사용자 권한을 쓰려면 앱이 요청할 **사용자 API 범위**(scope)를 선언해야 합니다. 범위는 예를 들어 `sql`, `genie`, `files` 같은 값입니다. 범위에 없는 기능은 사용자 권한이 있어도 막힙니다.
+Databricks Apps에서 사용자 권한을 쓰려면 앱이 요청할 **사용자 API 범위**(scope)를 선언해야 합니다. 범위는 예를 들어 `sql`, `genie`, `files` 같은 값입니다. 범위에 없는 기능은 사용자 권한이 있어도 막힙니다. 읽기 전용 범위로 `sql:read`(SQL API 읽기 전용)와 `sql:restricted-query`(읽기 전용 SQL 쿼리 실행)도 있습니다.
 
-CLI로 범위를 지정하는 예시는 다음과 같습니다.
+UI에서는 범위를 앱을 만든 뒤에 추가합니다. 앱 상세 페이지에서 **Settings** 를 누르고 **User authorization** 아래 **Add scope** 로 범위를 고른 뒤 **Save** 를 누르며, 앱에 대한 CAN MANAGE 권한이 필요합니다. 범위를 요청하는 템플릿으로 앱을 만들 때는 생성 중에 범위를 검토할 수 있지만, 앱이 만들어지기 전까지는 바꿀 수 없습니다. App Space 안의 앱은 사용자 권한 설정을 스페이스에서 상속합니다.
+
+CLI에서는 앱을 만들거나 수정할 때 `user_api_scopes`를 넘깁니다. 예시는 다음과 같습니다.
 
 ```bash
 databricks apps create <app-name> \
@@ -149,6 +160,8 @@ Databricks Apps 위의 MCP 서버를 호출하려면 호출자에게 앱의 **CA
 - **지원 중단된 범위 이름**: 예를 들어 `sql.warehouses`는 `sql`로 바뀌었습니다. 오래된 예제의 범위 이름을 그대로 쓰지 마십시오.
 - **감사**: 사용자 수준 작업은 감사 로그로 남기고, 범위를 최소로 유지하십시오. 문서가 권장합니다.
 - **PAT 금지**: MCP 서버 호출에 PAT를 쓰지 마십시오.
+- **앱 권한을 CLI로 바꿀 때**: `databricks apps update-permissions`는 기존 권한에 추가하고, `databricks apps set-permissions`는 전체를 교체합니다. `set-permissions`를 쓸 때는 자신을 포함해 접근이 필요한 사용자·그룹·서비스 프린시펄을 모두 넣지 않으면 CAN_MANAGE 권한을 잃습니다. 현재 권한은 `databricks apps get-permissions`로 확인합니다.
+- **호출 id 재사용 금지**: `DurableAgentServer` 에이전트를 호출할 때 요청마다 새 `id`를 씁니다. 같은 `id`를 다시 보내면 서버는 그 호출의 저장된 결과를 돌려주고, 그 호출이 실패했다면 500 오류를 돌려줍니다.
 - **문서 명칭 확인**: 문서 페이지에는 Agent Runtime의 기능 상태 라벨이 없습니다. 운영 적용 전에 해당 페이지에서 라벨과 지역 가용성을 확인하십시오.
 - **Model Serving 레거시**: 기존 Model Serving 에이전트를 옮기는 작업은 마이그레이션 가이드를 따르십시오. 문서 링크는 아래 참고 문서에 있습니다.
 

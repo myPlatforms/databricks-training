@@ -1,6 +1,6 @@
 # 볼륨과 외부 스토리지
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -162,11 +162,11 @@ GRANT WRITE VOLUME ON VOLUME mycatalog.myschema.myvolume TO `ingest-team`;
 
 ## 5. 주의사항
 
-> **주의** 공식 문서는 관리형 볼륨의 삭제에 7일 보존이 적용된다고 설명합니다. 복구 절차와 보존 기간이 지난 뒤의 동작은 이 장에서 확인한 원문에 없으므로, 삭제 전에 공식 문서에서 직접 확인하십시오.
+> **주의** 공식 문서는 관리형 볼륨의 삭제에 7일 보존이 적용된다고 설명합니다. 2026년 11월 릴리즈 노트에 따르면 삭제한 Unity Catalog 볼륨은 7일 안에 복구할 수 있습니다. `SHOW VOLUMES DROPPED`로 볼륨 ID를 찾은 뒤 `UNDROP VOLUME WITH ID`를 실행하면 권한과 태그까지 함께 복원되며, Databricks Runtime 19 이상이 필요합니다. 보존 기간이 지난 뒤의 동작은 이 장에서 확인한 원문에 없으므로, 삭제 전에 공식 문서에서 직접 확인하십시오.
 
 > **주의** 외부 볼륨을 삭제해도 클라우드 스토리지의 데이터는 남습니다. 반대로 남은 데이터는 UC 권한의 대상이 아니므로, 외부 경로를 직접 접근할 수 있는 주체를 따로 관리해야 합니다.
 
-> **주의** Files API 3.0은 2026년 10월 23일 릴리즈 노트에서 Beta로 공지되었습니다. 다중 파트 업로드(5000 MiB 초과 파일)와 조건부 작업(현재 버전 기준의 업로드, 다운로드, 삭제)을 지원한다고 설명합니다. Beta이므로 운영 코드에 넣기 전에 상태를 확인하십시오.
+> **주의** Files API 3.0은 2026년 10월 23일 릴리즈 노트에서 Beta로 공지되었습니다. 다중 파트 업로드(5000 MiB 초과 파일)와 조건부 작업(현재 버전 기준의 업로드, 다운로드, 삭제)을 지원한다고 설명합니다. 2026년 11월 What's coming 페이지는 Unity Catalog 볼륨용 Files API 3.0이 곧 GA가 되며, 2026년 12월부터 컴플라이언스 보안 프로필(compliance security profile)이 켜진 워크스페이스에서도 기본으로 사용할 수 있게 된다고 예고합니다. GA 전까지는 운영 코드에 넣기 전에 상태를 확인하십시오.
 
 - 2026년 10월 27일 릴리즈 노트는 **볼륨 파일 편집** 을 GA로 공지했습니다. 워크스페이스의 파일 편집기에서 볼륨 파일을 직접 편집할 수 있습니다. 편집 권한 요구 사항은 릴리즈 노트에 명시되어 있지 않으므로 권한 설계 전에 원문을 확인하십시오.
 - 볼륨 경로에서 쓰기 전에 `WRITE VOLUME` 권한과 상위 카탈로그·스키마의 진입 권한(`USE CATALOG`, `USE SCHEMA`)이 함께 있어야 합니다. 진입 권한은 [권한 모델과 소유권](privileges-and-ownership.md)에서 설명했습니다.
@@ -180,3 +180,5 @@ GRANT WRITE VOLUME ON VOLUME mycatalog.myschema.myvolume TO `ingest-team`;
 - [External locations](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/external-locations)
 - [Unity Catalog resource limits](https://docs.databricks.com/aws/en/resources/limits)
 - [Databricks release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Recover dropped Unity Catalog volumes with UNDROP VOLUME (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#recover-dropped-unity-catalog-volumes-with-undrop-volume)
+- [What's coming: Files API 3.0 will soon be generally available](https://docs.databricks.com/aws/en/release-notes/whats-coming#files-api-30-will-soon-be-generally-available)

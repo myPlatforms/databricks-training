@@ -1,6 +1,6 @@
 # 시작하기
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 100
 
 ## 한눈에 보기
 
@@ -94,7 +94,7 @@ SELECT current_user() AS me, current_catalog() AS catalog_name;
 | 6 | 데이터 엔지니어링 | Apache Spark로 ETL 파이프라인 만들기 | `/aws/en/getting-started/etl-quick-start` |
 | 7 | AI·머신러닝 | 모델 학습과 배포 | `/aws/en/getting-started/ml-get-started` |
 | 8 | AI·머신러닝 | 딥러닝 모델 학습과 추적 | `/aws/en/mlflow/mlflow3-dl-workflow` |
-| 9 | AI·머신러닝 | 노코드로 LLM 질의와 에이전트 프로토타입 | `/aws/en/getting-started/gen-ai-llm-agent` |
+| 9 | AI·머신러닝 | 에이전트 만들고 배포하기 (Build and deploy an agent) | `/aws/en/agents/quickstart` |
 
 > **참고** 튜토리얼 제목에 나오는 Genie One은 공식 시작하기 페이지의 표기입니다. 다른 페이지의 Genie 명칭(Genie Agents, Genie Code)과 역할이 다르므로 혼동하지 마십시오. 자세한 구분은 [용어 정리](glossary.md)에서 다룹니다.
 

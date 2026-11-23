@@ -1,6 +1,6 @@
 # 수집 방법 선택 기준
 
-> 기준일: 2026-11-09 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 100
 
 ## 한눈에 보기
 
@@ -132,7 +132,7 @@ Lakeflow Connect 수집 결과 테이블은 **스트리밍 테이블** 입니다
 | Lakeflow 파이프라인 | 선언된 흐름의 증분 처리를 엔진이 관리 | 문서 개요에 별도 항목 없음 (스트리밍 테이블 정의에 따름) | 파이프라인 실행 컴퓨트 기준 |
 | Structured Streaming 직접 구현 | 체크포인트로 진행 상태를 직접 관리 | 스키마 처리 로직을 직접 설계 | 실행 컴퓨트 기준. 실시간 모드(RTM)는 장시간 배치로 동작 |
 
-> **참고** Lakeflow Connect 데이터베이스 커넥터는 인제스천 게이트웨이를 별도 잡의 연속 태스크로 실행합니다. 게이트웨이 비용이 파이프라인 비용과 별도로 발생한다는 점을 설계 단계에서 확인하십시오.
+> **참고** Lakeflow Connect 데이터베이스 커넥터는 인제스천 게이트웨이를 별도 잡의 연속 태스크로 실행합니다. 게이트웨이 비용이 파이프라인 비용과 별도로 발생한다는 점을 설계 단계에서 확인하십시오. 단, 2026년 11월 릴리즈 노트에 따르면 PostgreSQL은 별도 인제스천 게이트웨이 없이 단일 통합 CDC 파이프라인(integrated CDC pipeline)으로 변경 데이터를 수집할 수 있으며, 이 기능은 Beta입니다.
 
 ### 언제 어떤 방식을 피하는가
 
@@ -162,3 +162,4 @@ Lakeflow Connect 수집 결과 테이블은 **스트리밍 테이블** 입니다
 - [Read, don't copy: replacing file feeds with OpenSharing - Part 2 (Databricks 블로그)](https://www.databricks.com/blog/read-dont-copy-replacing-file-feeds-opensharing-part-2-how-implement)
 - [Push-based CDC into Unity Catalog with Zerobus Ingest and Debezium (Databricks 블로그)](https://www.databricks.com/blog/push-based-cdc-unity-catalog-zerobus-ingest-and-debezium)
 - [Release notes, 2026년 10월: Native XML file format support is now generally available](https://docs.databricks.com/aws/en/release-notes/product/2026/october#native-xml-file-format-support-is-now-generally-available)
+- [Release notes, 2026년 11월: PostgreSQL integrated CDC pipeline is now in Beta](https://docs.databricks.com/aws/en/release-notes/product/2026/november#postgresql-integrated-cdc-pipeline-is-now-in-beta)

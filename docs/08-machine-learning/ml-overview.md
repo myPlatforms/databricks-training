@@ -1,6 +1,6 @@
 # ML 개요
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 100
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 100
 
 Databricks의 머신러닝 기능은 하나의 제품이 아니라 **데이터 준비 → 학습 → 추적 → 등록 → 서빙 → 모니터링** 의 각 단계에 대응하는 구성 요소 묶음입니다. 이 페이지는 전체 지도를 먼저 잡고, 각 구성 요소가 어느 페이지에서 다뤄지는지 연결합니다.
 
@@ -92,9 +92,9 @@ AI Runtime은 딥러닝 학습과 파인튜닝을 위한 **완전 관리형 서�
 | GPU | 온디맨드 A10, H100. 다른 가속기는 이 페이지에서 명시되지 않음 |
 | 연결 | 노트북을 클러스터 설정 없이 바로 연결 |
 | 환경 | 최소 Standard 환경 또는 ML 프레임워크가 미리 들어 있는 Databricks AI 환경, 필요하면 커스텀 Docker 이미지 |
-| 진입 경로 | Quickstart(터미널), Databricks CLI(YAML 잡 제출), 노트북, 잡, Ray(Ray Core·Data·Train·Tune) |
+| 진입 경로 | Quickstart(터미널), Databricks CLI(YAML 잡 제출), 노트북, 잡(AI Runtime 노트북을 반복 잡으로 예약), Ray(Ray Core·Data·Train·Tune) |
 | 데이터 로딩 | Unity Catalog 볼륨에서 스트리밍 로더로 데이터를 읽어 GPU 활용률을 높이는 방식 |
-| 배포 | 학습한 모델을 Model Serving으로 배포 가능 |
+| 배포 | 학습한 모델을 기록·등록한 뒤 CPU 또는 GPU 컴퓨트의 Model Serving 엔드포인트로 배포 가능 |
 
 > **참고** AI Runtime 세부 옵션과 분산 학습은 [모델 학습 도구](model-training.md)에서 다룹니다.
 

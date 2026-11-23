@@ -1,6 +1,6 @@
 # 인증과 토큰
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -48,6 +48,8 @@ export DATABRICKS_CLIENT_SECRET="<client-secret>"
 ```
 
 > **주의** 위 예시의 `<workspace-url>`은 자리표시자입니다. 실제 워크스페이스 URL과 자격증명을 공개 문서나 저장소에 쓰지 마십시오.
+
+**범위 수정자(scope modifier)**: 2026년 11월 릴리즈 노트에 따르면 PAT와 OAuth의 범위 수정자가 GA입니다. 범위 수정자는 API 범위(scope)를 그 일부 작업으로 좁힙니다. 예를 들어 `clusters:read`는 읽기 작업만, `sql:restricted-query`는 읽기 전용 SQL 쿼리만 허용합니다. PAT, OAuth 시크릿, OAuth 토큰 요청에서 쓸 수 있습니다. `all-apis` 범위는 서비스 프린시펄이 권한을 가진 모든 REST API를 호출할 수 있는 토큰을 요청하므로, 토큰을 제한하려면 특정 범위를 요청합니다. 일부 서비스는 워크스페이스 토큰 요청에 `authorization_details`를 요구합니다.
 
 ### OAuth OBO (On-behalf-of)
 
@@ -132,3 +134,4 @@ databricks token-management delete TOKEN_ID
 - [Release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
 - [OAuth on-behalf-of for service principals is generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#oauth-on-behalf-of-for-service-principals-is-generally-available)
 - [Authorize headless machines with the OAuth device code flow (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/october#authorize-headless-machines-with-the-oauth-device-code-flow-beta)
+- [Scope modifiers for personal access tokens and OAuth are generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#scope-modifiers-for-personal-access-tokens-and-oauth-are-generally-available)

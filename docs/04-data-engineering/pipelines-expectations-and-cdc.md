@@ -1,6 +1,6 @@
 # Expectations와 AUTO CDC
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -158,7 +158,7 @@ dp.create_auto_cdc_flow(
 
 ### 상태
 
-- **Bitemporal AUTO CDC**: **Beta**.
+- **Bitemporal AUTO CDC**: 2026-11-10 갱신된 AUTO CDC API 문서에서는 Beta 표기가 빠졌습니다. "Bitemporal AUTO CDC" 문서에도 상태 라벨이 없으며, GA라고 밝힌 문장은 확인하지 못했습니다(문서에 명시 없음). 이중 시간(bitemporal) 대상은 업무 시간 컬럼에 `SEQUENCE BY`, 시스템 시간 컬럼에 `SYSTEM SEQUENCE BY`(Python은 `system_sequence_by`)를 모두 지정해야 하며, `AUTO CDC`에서만 지원됩니다.
 - 나머지 `AUTO CDC` 구문에 대해서는 이 페이지에서 상태 라벨을 확인하지 못했습니다. 문서에 명시 없음.
 
 ## 트레이드오프
@@ -179,6 +179,8 @@ dp.create_auto_cdc_flow(
 - **정렬 키 NULL**: `SEQUENCE BY` 컬럼에 NULL이 있으면 지원되지 않습니다. 원천 단계에서 정리하십시오.
 - **흐름 제약**: AUTO CDC 흐름은 스트리밍 테이블만 대상으로 삼을 수 있고, 원천은 ONCE 흐름이라도 스트리밍 원천이어야 한다고 문서가 명시합니다. 하나의 스트리밍 테이블이 AUTO CDC 대상이면 다른 AUTO CDC 흐름만 추가로 대상으로 삼을 수 있습니다.
 - **Update flow**: Public Preview이며 Python에서만 쓸 수 있습니다.
+- **REPLACE WHERE 대상**: `REPLACE WHERE` 흐름이 대상으로 삼는 테이블에는 expectation을 쓸 수 없습니다.
+- **구체화 뷰 증분 새로 고침**: 파이프라인 개념 문서는 구체화 뷰의 증분 새로 고침에 서버리스 컴퓨트가 필요하다고 설명합니다.
 - **지표 확인**: 지표가 비어 있으면 규칙이 없거나, 흐름이 지원하지 않는 연산자를 쓰거나, 지표 설정이 꺼져 있을 수 있습니다. 이벤트 로그와 함께 확인하십시오 ([파이프라인 이벤트 로그](pipelines-event-log.md)).
 
 ## 참고 문서
@@ -186,4 +188,5 @@ dp.create_auto_cdc_flow(
 - [Expectations](https://docs.databricks.com/aws/en/ldp/expectations)
 - [AUTO CDC](https://docs.databricks.com/aws/en/ldp/cdc)
 - [Flows in Lakeflow pipelines](https://docs.databricks.com/aws/en/ldp/concepts/flows)
+- [Pipeline concepts](https://docs.databricks.com/aws/en/ldp/concepts/)
 - [Pipeline event log](https://docs.databricks.com/aws/en/ldp/monitor-event-logs)

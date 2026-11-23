@@ -1,6 +1,6 @@
 # Delta Lake 동작 원리
 
-> 기준일: 2026-11-17 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 Delta Lake는 Parquet 데이터 파일 위에 **트랜잭션 로그(Transaction log)** 를 얹은 오픈 테이블 포맷입니다. Databricks에서 테이블을 만들 때 별도로 지정하지 않으면 기본 형식이 Delta Lake입니다. 이 페이지는 로그가 어떻게 버전과 ACID를 만드는지, 스키마가 쓰기 시점에 어떻게 검증되고 변경되는지, 여러 문장을 하나의 트랜잭션으로 묶는 방법을 다룹니다.
 
@@ -111,6 +111,8 @@ ALTER TABLE main.sales.orders ADD COLUMN channel STRING;
 
 > **참고** 공식 문서는 INSERT와 MERGE에서 스키마 진화의 의미가 특별하다고 설명하며, 자세한 규칙은 "Enable schema evolution" 절을 보라고 안내합니다. 자동 진화를 켜기 전에 해당 절을 확인하십시오.
 
+> **참고** 새 열을 기존 행에 채울 때 바뀌지 않은 열을 다시 쓰지 않으려면 효율적인 열 업데이트(Efficient Column Updates, Beta)를 씁니다. 열 추가와 백필(backfill)을 변경 없는 열의 재작성 없이 수행하며, 워크스페이스 관리자가 Previews 페이지에서 접근을 켭니다. 세부 사용법은 "Efficient column updates in Delta Lake" 문서를 따릅니다.
+
 ### 3.4 컬럼 이름 변경과 삭제 (컬럼 매핑)
 
 컬럼 이름 변경과 삭제는 컬럼 매핑(Column mapping) 기능이 있어야 합니다. 컬럼 매핑은 물리 파일의 컬럼 이름과 논리 이름을 분리합니다. 문서의 설정 예는 다음과 같습니다.
@@ -205,3 +207,4 @@ Delta와 Iceberg는 둘 다 파일 목록을 메타데이터로 관리하는 오
 - [Transactions](https://docs.databricks.com/aws/en/transactions)
 - [Work with table history](https://docs.databricks.com/aws/en/tables/history)
 - [What's coming — All Unity Catalog managed tables will be upgraded to catalog commits](https://docs.databricks.com/aws/en/release-notes/whats-coming#all-unity-catalog-managed-tables-will-be-upgraded-to-catalog-commits)
+- [Efficient column updates (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#efficient-column-updates-beta)

@@ -1,6 +1,6 @@
 # 외부 BI 도구와 병행
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 ## 한눈에 보기
 
@@ -46,12 +46,12 @@ AI/BI 대시보드와 Genie는 Databricks 안의 소비 계층입니다. 조직�
 
 | 도구 | 연결 방식 | 주의 |
 |---|---|---|
-| Power BI | Databricks Power BI 커넥터의 **Native query** 에서 `MEASURE()` 패턴을 DirectQuery 모드로 사용 | 메트릭 뷰 BI 호환 모드는 커넥터에서 제거됨 |
+| Power BI | 메트릭 뷰를 Power BI 의미 모델(semantic model)로 게시(Private Preview). Databricks Power BI 커넥터의 **Native query** 에서 `MEASURE()` 패턴을 DirectQuery 모드로 쓸 수도 있음 | 이전 문서는 메트릭 뷰 BI 호환 모드가 커넥터에서 제거되었다고 안내함(아래 주의 참고) |
 | Tableau | 사용자 정의 SQL의 `MEASURE()` 패턴, 또는 연결 대화 상자의 **Initial SQL** 필드에서 BI 호환 모드 설정 | 세부 설정은 Tableau 연결 문서 참고 |
 | Sigma | `MEASURE()` 패턴을 쓰는 사용자 정의 SQL 기반 데이터셋 | 측정값 접근은 SQL로만 |
 | 기타 JDBC·ODBC 도구 | 드라이버의 pass-through SQL 옵션으로 `MEASURE()` 패턴 사용 | 메타데이터는 JDBC 드라이버 문서 참고 |
 
-> **주의** Power BI 메트릭 뷰 연동은 공식 문서 기준으로 바뀌었습니다. 공식 Power BI 문서는 Microsoft가 Databricks 커넥터에서 **Metric View BI Compatibility Mode** 옵션을 제거했으며, 그 옵션을 쓰던 보고서는 더 이상 동작하지 않는다고 명시합니다. 대체 방법으로는 커넥터의 Native query 옵션과 `MEASURE()`를 DirectQuery 모드에서 쓰는 방법을 안내합니다. 기존에 BI 호환 모드를 전제로 만든 Power BI 보고서가 있다면 이 변경을 먼저 확인하십시오.
+> **주의** Power BI 메트릭 뷰 연동 안내는 공식 문서에서 바뀌었습니다. 2026-11-11 개정 전의 공식 Power BI 문서는 Microsoft가 Databricks 커넥터에서 **Metric View BI Compatibility Mode** 옵션을 제거했으며, 그 옵션을 쓰던 보고서는 더 이상 동작하지 않는다고 경고했습니다. 2026-11-11 개정에서 이 경고 문구가 빠졌고, 현재 문서에는 이 옵션에 대한 설명이 없습니다. 현재 외부 BI 도구 문서는 Power BI의 권장 방식으로 메트릭 뷰를 Power BI 의미 모델로 게시하는 방법(Private Preview)을 먼저 제시하고, 커넥터의 Native query 옵션에서 `MEASURE()` 패턴을 DirectQuery 모드로 쓰는 방법도 함께 안내합니다. 기존에 BI 호환 모드를 전제로 만든 Power BI 보고서가 있다면 지금 동작하는지 먼저 확인하십시오.
 
 ## 3. 어떻게 쓰는가
 
@@ -66,7 +66,7 @@ Power BI 연결에 대한 공식 Power BI 문서의 설정 옵션은 다음과 �
 | 인증 | 서비스 프린시펄을 쓰는 머신 간 OAuth |
 | 드라이버 | ODBC 대신 **ADBC** 드라이버 사용 가능. Lakehouse Real-Time 웨어하우스에는 ADBC가 필요하다고 문서에 나옴 |
 | SSO | Microsoft Entra ID를 SSO 공급자로 사용 |
-| 메트릭 뷰 | BI 호환 모드는 제거되었음(위 주의 참고) |
+| 메트릭 뷰 | BI 호환 모드는 이전 문서가 커넥터에서 제거되었다고 안내함(위 주의 참고). 메트릭 뷰를 Power BI 의미 모델로 게시하는 **Connect metric views to Power BI** 옵션은 Private Preview |
 | 역할 기반 연결 | `Assume` 권한이 있는 사용자가 역할로 OAuth 연결을 승인하면, Power BI는 그 역할로 쿼리를 실행 |
 
 > **참고** Power BI 서비스에 Databricks 데이터를 게시하는 기능과 Power BI 작업(task)으로 의미 모델(semantic model)을 조율하는 기능도 문서에 나옵니다. 작업 기능은 먼저 UC에 Power BI 연결이 있어야 합니다. 두 기능의 세부 요건은 이 장에서 확인하지 않았습니다.
@@ -108,6 +108,8 @@ Genie Code의 `/importBI` 기능은 Tableau나 Power BI 파일을 메트릭 뷰�
 
 보고서 전체를 AI/BI 대시보드로 옮기려면 문서가 안내하는 별도 가이드 "Import BI files using Genie Code"를 따르십시오.
 
+> **참고** Databricks 블로그는 여러 보고서를 한 번에 AI/BI 대시보드로 옮기는 대량 마이그레이션(bulk migration)이 GA라고 소개합니다. 보고서 파일을 Unity Catalog 볼륨의 한 디렉터리에 두고, 초안 대시보드에서 Genie Code를 열어 `/importBI <path/to/volume/directory>`처럼 디렉터리를 지정합니다. 대량 실행은 항상 볼륨에서 파일을 읽으며, 채팅에 파일을 끌어다 놓는 방식은 보고서 하나를 가져올 때만 됩니다. 시작 전에 계정과 워크스페이스 수준 모두에서 파트너 제공 AI 기능(partner-powered AI features)이 켜져 있는지 확인합니다.
+
 ### 3-5. 가져오기 기능의 변화
 
 | 날짜 | 항목 | 상태 |
@@ -117,12 +119,13 @@ Genie Code의 `/importBI` 기능은 Tableau나 Power BI 파일을 메트릭 뷰�
 | 2026-09-10 | `/importBI`에서 매개변수가 있는 Tableau 계산 지원 확대 | 라벨 없음 |
 | 2026-10-15 | `.tmdl` 파일로 Power BI 데이터 모델 가져오기 | 라벨 없음 |
 | 2026-10-22 | Power BI·Tableau 파일 최대 100개 일괄 가져오기(Genie Code) | 라벨 없음 |
+| 2026-11-19 (블로그 게시일) | 볼륨 디렉터리 단위 대시보드 대량 마이그레이션(Databricks 블로그가 GA로 소개) | GA |
 
 ## 4. 트레이드오프
 
 - **병행은 점진적 이전을 쉽게 하지만, 두 계층의 지표가 여전히 갈릴 수 있습니다.** 외부 도구의 DAX나 계산 필드가 메트릭 뷰와 같은 식을 쓰는지 검증하십시오.
 - **`MEASURE()` 연결은 정확하지만 SQL을 보낼 수 있는 도구에 한정됩니다.** 사용자 정의 SQL이 없는 도구는 BI 호환 모드나 래퍼 뷰가 필요합니다.
-- **BI 호환 모드는 도구가 집계를 생성하는 방식이라 사용할 수 있는 경우가 제한적입니다.** Power BI 커넥터에서는 제거되었습니다. Tableau에서는 Initial SQL 필드에서 설정합니다.
+- **BI 호환 모드는 도구가 집계를 생성하는 방식이라 사용할 수 있는 경우가 제한적입니다.** Power BI 커넥터에서는 제거되었다고 이전 문서가 안내했습니다. Tableau에서는 Initial SQL 필드에서 설정합니다.
 - **`/importBI`는 빠르지만 변환 결과를 검토해야 합니다.** 가져온 정의가 원본 보고서의 계산과 같은지 확인하는 단계가 필요합니다.
 
 ### 언제 쓰지 않는가
@@ -132,14 +135,14 @@ Genie Code의 `/importBI` 기능은 Tableau나 Power BI 파일을 메트릭 뷰�
 
 ## 5. 주의사항
 
-- **Power BI 보고서의 BI 호환 모드 의존성을 먼저 찾습니다.** 옵션이 제거되었으므로, 기존 보고서가 이 옵션을 쓰는지 점검하십시오.
+- **Power BI 보고서의 BI 호환 모드 의존성을 먼저 찾습니다.** 이전 문서가 옵션 제거를 안내했으므로, 기존 보고서가 이 옵션을 쓰는지와 지금 동작하는지 점검하십시오.
 - **모든 측정값을 `MEASURE()`로 감쌉니다.** 하나라도 빠지면 쿼리가 실패합니다.
 - **`SELECT *`를 쓰지 않습니다.** 열을 명시해야 합니다.
 - **서비스 프린시펄과 권한을 설계합니다.** 외부 도구의 연결 주체가 누구인지에 따라 UC 권한 검사 결과가 달라집니다. 06장 권한 모델을 기준으로 설계하십시오.
 - **ADBC와 ODBC를 구분합니다.** Lakehouse Real-Time 웨어하우스에는 ADBC가 필요하다고 문서에 나옵니다.
 - **Consumer access 사용자에게 외부 BI용 웨어하우스를 열 때 주의합니다.** Consumer access 문서는 사용자가 서드파티 BI 도구용으로 SQL 웨어하우스 접근을 받을 수 있다고 설명합니다. 웨어하우스 접근 범위를 점검하십시오.
-- **`Publish to Power BI` 같은 게시 기능의 요건은 이 장에서 확인하지 않았습니다.** 요건을 추측하지 말고 Power BI 연결 문서에서 확인하십시오.
-- **상태 라벨을 확인합니다.** 파트너 도구 페이지에는 라벨이 없습니다. 가져오기 기능의 GA와 라벨 없음은 위 표를 기준으로 하십시오.
+- **`Publish to Power BI` 같은 게시 기능의 요건은 이 장에서 확인하지 않았습니다.** Databricks 블로그는 Publish to Power BI를 Private Preview로 소개합니다. 요건을 추측하지 말고 Power BI 연결 문서에서 확인하십시오.
+- **상태 라벨을 확인합니다.** 파트너 도구 페이지 대부분에는 라벨이 없지만, Power BI 페이지의 **Connect metric views to Power BI** 항목은 Private Preview로 표시됩니다. 가져오기 기능의 GA와 라벨 없음은 위 표를 기준으로 하십시오.
 
 ## 참고 문서
 
@@ -149,3 +152,5 @@ Genie Code의 `/importBI` 기능은 Tableau나 Power BI 파일을 메트릭 뷰�
 - [메트릭 뷰 쿼리(Query metric views)](https://docs.databricks.com/aws/en/uc-semantics/metric-views/query)
 - [Consumer access](https://docs.databricks.com/aws/en/ai-bi/consumers/)
 - [AI/BI 릴리즈 노트 (2026)](https://docs.databricks.com/aws/en/ai-bi/release-notes/2026)
+- [Bulk migrate your dashboards to AI/BI with Genie Code (Databricks 블로그)](https://www.databricks.com/blog/bulk-migrate-your-dashboards-aibi-genie-code)
+- [Unity Catalog Metric Views, now in Power BI (Databricks 블로그)](https://www.databricks.com/blog/unity-catalog-metric-views-now-power-bi-one-unified-governed-semantic-layer-all-your-reporting)

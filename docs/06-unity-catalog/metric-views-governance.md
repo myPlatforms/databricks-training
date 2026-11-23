@@ -1,6 +1,6 @@
 # 메트릭 뷰의 거버넌스
 
-> 기준일: 2026-11-02 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 > **참고** 이 페이지는 메트릭 뷰의 **정의 방식과 거버넌스 측면** 만 다룹니다. 대시보드, Genie 공간, 에이전트에서 메트릭 뷰를 쓰는 방법은 07장 AI/BI 범위입니다.
 
@@ -51,10 +51,11 @@ UC 객체 분류에서 메트릭 뷰는 **뷰(View)의 한 종류** 입니다. �
 
 | 기능 | 설명 | 상태 |
 |---|---|---|
-| 매개변수(Parameters) | 쿼리 시점에 값을 바인딩해 하나의 메트릭 뷰에서 여러 쿼리 변형을 만듭니다. | 문서에 상태 라벨 없음 |
-| 구체화(Materialization) | 집계를 미리 계산하고 점진적으로 갱신합니다. 쿼리 엔진이 적절할 때 구체화된 뷰로 쿼리를 바꿔 실행할 수 있습니다. | 문서에 상태 라벨 없음 |
+| 매개변수(Parameters) | 쿼리 시점에 값을 바인딩해 하나의 메트릭 뷰에서 여러 쿼리 변형을 만듭니다. 매개변수를 정의한 메트릭 뷰를 조회하려면 Databricks Runtime 18.2 이상이 필요합니다. | GA (2026년 11월 릴리즈 노트) |
+| 구체화(Materialization) | 집계를 미리 계산하고 점진적으로 갱신합니다. 쿼리 엔진이 적절할 때 구체화된 뷰로 쿼리를 바꿔 실행할 수 있습니다. Databricks Runtime 17.3 이상이 필요합니다. | GA (2026-07-24 릴리즈 노트) |
 | 에이전트 메타데이터 | 동의어, 표시 이름, 서식 규칙을 붙여 AI 에이전트가 필드를 이해하게 합니다. | 문서에 상태 라벨 없음 |
 | 윈도 측정값 | 이동 평균, 기간 대비 변화, 누적 합계 | GA (2026-10-06 릴리즈 노트) |
+| 더 세밀한 수준의 측정값(Finer level of detail, LOD) | `include` 목록이 있는 `partition` 블록과 `outer_aggregate` 함수로 쿼리보다 세밀한 단위에서 집계한 뒤 쿼리 단위로 다시 집계합니다. Databricks Runtime 19 이상이 필요합니다. | GA (2026-09-17 릴리즈 노트) |
 | 숫자 인덱스 열 기반 윈도 측정값 | 숫자 타입 인덱스 열 위의 윈도 측정값 | 릴리즈 노트에 상태 라벨 없음 (2026-09-14) |
 | 메트릭 뷰 간 관계(Relationships) | `ALTER VIEW ... ADD CONSTRAINT ... RELATIONSHIP`으로 원천 메트릭 뷰가 대상 메트릭 뷰에 조인되는 방식(카디널리티와 조인 조건)을 기록해, AI 어시스턴트와 BI 도구가 올바른 조인 경로를 고르게 합니다. Databricks Runtime 19 이상 또는 SQL 웨어하우스가 필요합니다. | Beta (2026-10-30 릴리즈 노트) |
 
@@ -135,3 +136,5 @@ ALTER VIEW mycatalog.myschema.revenue_metrics OWNER TO `finance-team`;
 - [Data classification](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-classification)
 - [Databricks release notes, September 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/september)
 - [Databricks release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [Databricks release notes, July 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/july)
+- [Metric view parameters are generally available (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#metric-view-parameters-are-generally-available)
