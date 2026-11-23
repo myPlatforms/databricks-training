@@ -16,7 +16,7 @@ Databricks 공식 문서의 AI 거버넌스 페이지는 다음 기능을 나열
 |---|---|---|
 | 서비스 정책 (Service policies) | Beta | 내용에 따라 요청과 응답을 허용하거나 차단 |
 | 내장 서비스 정책 (가드레일) | Beta (서비스 정책의 일부) | 민감 데이터, 안전하지 않은 콘텐츠, 탈옥 시도, 환각 등 위험 항목 검사. LLM 판정기(LLM-judge) 검사와 결정적 검사인 Sensitive Data Detection으로 구성 |
-| 스트리밍 응답 평가 | Beta (서비스 정책의 일부) | 모델 출력 정책이 스트리밍 응답을 생성 중에 검사. 기존 정책 포함 기본값이며, Full response evaluation을 고르면 전체 응답을 버퍼링 |
+| 스트리밍 응답 평가 | Beta (서비스 정책의 일부) | 모델 서비스·모델 제공자 서비스의 스트리밍 채팅형 요청에서 출력 정책이 응답을 생성 중에 검사. 기존 정책 포함 기본값이며, Full response evaluation을 고르면 전체 응답을 버퍼링. 비스트리밍 요청과 MCP 도구 결과에는 전체 응답 평가를 사용 |
 | 외부 서비스 정책 | Beta (서비스 정책의 일부) | 제3자 가드레일 제공자의 판정을 적용 |
 | 속도 제한과 지출 상한 | 문서에 명시 없음 | 모델과 MCP 서비스의 용량 보호, 비용 통제 |
 | 사용량 추적 | 문서에 명시 없음 | 누가 어떤 모델이나 MCP 서비스를 언제 호출했는지 기록 |
@@ -43,7 +43,7 @@ Sensitive Data Detection(`system.ai.detect_sensitive_data`)은 카드 번호, �
 
 MCP 서비스는 호출자별로 접근을 정합니다. 호출자는 MCP 호출을 위해 Consumer access가 있어야 하고, 서비스 자체에는 CAN USE 같은 권한이 필요합니다. 자세한 조건은 [도구: UC 함수와 MCP 서버](tools-uc-functions-and-mcp.md)과 [배포와 인증](deploy-and-authentication.md)에 있습니다.
 
-ABAC DENY 정책(Beta)은 이제 모델 서비스, 모델 제공자 서비스, MCP 서비스, 에이전트 서비스, 스킬에도 적용할 수 있고, 이런 객체에 직접 붙일 수 있습니다. 거버넌스 태그 기반으로 AI 자산 접근을 막을 때 함께 검토하십시오.
+ABAC DENY 정책(Beta)은 이제 모델 서비스, 모델 제공자 서비스, MCP 서비스, 에이전트 서비스, 스킬에도 적용할 수 있습니다. 또한 테이블, 볼륨, 함수, 모델, 시크릿과 이 AI 객체들에 정책을 직접 붙일 수 있습니다. 거버넌스 태그 기반으로 AI 자산 접근을 막을 때 함께 검토하십시오.
 
 ### 2. 서비스 정책 설계
 
@@ -137,3 +137,4 @@ ABAC DENY 정책(Beta)은 이제 모델 서비스, 모델 제공자 서비스, M
 - [What is agent observability and quality?](https://docs.databricks.com/aws/en/mlflow3/genai/agent-observability-and-quality)
 - [ABAC DENY policies support AI securables and attachment to individual objects (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#abac-deny-policies-support-ai-securables-and-attachment-to-individual-objects-beta)
 - [Evaluate streaming responses incrementally with service policies (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#evaluate-streaming-responses-incrementally-with-service-policies-beta)
+- [Service policies protect embedding inputs (Beta)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#service-policies-protect-embedding-inputs-beta)

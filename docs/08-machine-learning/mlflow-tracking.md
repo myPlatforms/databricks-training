@@ -113,7 +113,7 @@ mlflow.register_model(
 
 ### 5. 배포 잡 (MLflow 3)
 
-문서는 MLflow 3 배포 잡(deployment jobs)이 평가, 승인, 배포를 자동화하며, Unity Catalog로 관리되고 활동 로그가 남는다고 설명합니다. 문서의 간단한 예시는 평가, 승인, 배포의 세 단계로 이루어지며, 평가 단계는 전통 ML 모델에는 `mlflow.models.evaluate`, GenAI 애플리케이션에는 `mlflow.genai.evaluate`를 호출해 검증 메트릭을 만듭니다. 세부 설정은 "MLflow 3 deployment jobs" 페이지를 따르십시오.
+문서는 MLflow 3 배포 잡(deployment jobs, Public Preview)이 평가, 승인, 배포를 자동화하며, Unity Catalog로 관리되고 활동 로그가 남는다고 설명합니다. 문서의 간단한 예시는 평가, 승인, 배포의 세 단계로 이루어지며, 평가 단계는 전통 ML 모델에는 `mlflow.models.evaluate`, GenAI 애플리케이션에는 `mlflow.genai.evaluate`를 호출해 검증 메트릭을 만듭니다. 세부 설정은 "MLflow 3 deployment jobs" 페이지를 따르십시오.
 
 > **주의** 같은 문서군의 Unity Catalog 레지스트리 제약 목록에는 "활동 로그, 웹훅, 이메일 알림은 지원되지 않는다"는 항목이 있습니다. 배포 잡의 활동 로그와 레지스트리의 제약은 범위가 다를 수 있으므로, 감사 요건이 있으면 두 원문을 모두 확인하십시오.
 

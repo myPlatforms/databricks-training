@@ -26,7 +26,7 @@ Autoscaling은 최소와 최대 사이에서 부하에 맞춰 크기를 조정�
 | 1 CU | "each CU providing 2 GB of RAM" (RAM 2 GB) |
 | Autoscaling 최대 | "Autoscaling is available for computes up to 64 CU (128 GB)." |
 | 최대와 최소의 차이 | "The difference between your maximum and minimum cannot exceed 16 CU" |
-| 80 CU 이상 | 고정 크기 전용 (Manage computes 페이지: "Computes of 80 CU or more are fixed-size only.") |
+| 64 CU 초과 | 고정 크기 전용 (Manage computes 페이지: "Larger fixed-size computes: 65 CU to 112 CU") |
 
 AWS 원문의 "Manage computes" 페이지는 Lakebase 앱이 자주 쓰는 크기 일부만 보여 준다고 설명합니다. Postgres API, Terraform, Declarative Automation Bundles, Databricks SDK로는 자동 확장 컴퓨트에 1–64, 더 큰 고정 크기 컴퓨트에 65–112 범위의 정수 CU 값을 설정할 수 있습니다.
 

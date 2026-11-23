@@ -38,7 +38,7 @@ LLM이나 문서 처리 모델을 쓰려면 보통 엔드포인트를 만들고,
 
 > **참고** 이 표의 "라벨 없음"은 "공식 문서가 GA라고 명시했다"는 뜻이 아닙니다. 원문에 라벨이 표시되지 않았다는 뜻입니다. 운영 도입 전에는 각 함수의 상세 페이지와 릴리즈 노트를 확인하십시오.
 
-> **참고** 릴리즈 노트에 따르면 `ai_forecast` 버전 2는 Databricks SQL에서 generally available입니다. 버전 2는 연구용으로 최적화된 시계열 파운데이션 모델을 사용하며, 내장 휴일 지원, 외부 공변량(external covariates), 음수가 아닌 예측(non-negative forecasts)을 추가합니다.
+> **참고** 릴리즈 노트에 따르면 `ai_forecast` 버전 2는 Databricks SQL에서 generally available입니다. 버전 2는 원문 표현으로 "research-optimized" 시계열 파운데이션 모델을 써서 기본 설정 상태의 정확도(out-of-the-box accuracy)를 높였고, 내장 휴일 지원, 외부 공변량(external covariates), 음수가 아닌 예측(non-negative forecasts)을 추가합니다.
 
 ### 실행 환경 요구 사항
 

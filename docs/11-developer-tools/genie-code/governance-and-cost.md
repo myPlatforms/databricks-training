@@ -55,7 +55,7 @@ Genie Code 사용량은 Genie 예산(Budgets)으로 제한할 수 있습니다.
 |------|------|
 | Shared threshold | 범위 안 모든 사용자와 워크스페이스가 함께 쓰는 월간 풀. 공용 임계값은 월간만 가능 |
 | Per-user threshold | 범위 안 각 사용자에게 적용되는 일별 한도, 월간 한도, 또는 둘 다 (무료 할당량 이후). 일별 한도는 UTC 기준 하루를 추적하고 00:00 UTC에 초기화되며, 월간 한도는 매월 1일에 초기화. 일별 한도는 월간 한도보다 낮게 설정 |
-| Per-user overrides | 특정 사용자나 그룹에 같은 기간의 기본값보다 높은 일별 또는 월간 한도를 줍니다. 공용 임계값은 바뀌지 않습니다. 기간별 override를 추가하려면 그 기간의 기본 사용자별 임계값이 있어야 합니다. |
+| Per-user overrides | 특정 사용자나 그룹에 같은 기간의 기본값보다 높은 일별 또는 월간 한도를 줍니다. 공용 임계값은 바뀌지 않습니다. 여러 그룹에 속해 override가 여러 개이면 가장 높은 값이 적용됩니다. 기간별 override를 추가하려면 그 기간의 기본 사용자별 임계값이 있어야 합니다. |
 
 임계값에 도달했을 때 **Send email**(이메일 알림), **Block usage**(차단), **Trigger webhook**(웹훅 호출) 중 하나 이상을 고를 수 있습니다. 문서는 공용 임계값에는 **Block usage** 를 고르지 말고, 차단은 사용자별 임계값과 override로 설정하는 것을 권장합니다. 사용자별 임계값의 조치는 **Actions** → **Edit actions** 에서 일별·월간 기간마다 정하며, 한 기간의 조치는 그 기간의 기본 임계값과 모든 override에 적용됩니다. 알림은 입력한 이메일 주소로 가며, 수신자가 Databricks 사용자일 필요는 없습니다. 일별 임계값으로 차단된 사용자는 00:00 UTC 이후 다시 Genie를 쓸 수 있습니다.
 
@@ -140,7 +140,7 @@ Genie Code는 Designated Service로 분류되어 있으며, 워크스페이스�
 
 - 워크스페이스에서 **cross-Geo 처리** 를 켜면 다른 Geo에서도 처리될 수 있습니다.
 - 별표가 붙은 기능은 cross-Geo 처리를 켜야 쓸 수 있다고 문서가 명시합니다.
-- Genie Code CLI도 Designated Service입니다. 문서는 Genie Code CLI에 대해 브라질, 캐나다, 영국 워크스페이스는 cross-Geo 처리가 필요하고, cross-Geo 처리가 꺼지면 호주·뉴질랜드 워크스페이스에서는 모델이 더 적고 컨텍스트 창이 더 작다고 설명합니다.
+- Genie Code CLI도 Designated Service입니다. 문서의 Geo별 표는 Genie Code CLI를 Asia, India, Mainland China, Middle East and Africa Geo에서 cross-Geo 처리를 켜야만 쓸 수 있는 기능으로 표시합니다. Americas, Europe, Australia & New Zealand Geo에는 별도 각주가 붙어 있으며, 브라질, 캐나다, 영국 워크스페이스는 cross-Geo 처리가 필요하고, cross-Geo 처리가 꺼지면 호주·뉴질랜드 워크스페이스에서는 모델이 더 적고 컨텍스트 창이 더 작다고 설명합니다.
 - cross-Geo가 꺼진 상태에서 Genie Code chat과 cell actions의 처리 위치는 국가별로 다릅니다. 문서 예시: 브라질, 캐나다, 일본, 한국, 싱가포르, 영국은 자국 또는 해당 지역에서 처리됩니다. 홍콩은 싱가포르에서 처리됩니다. 인도네시아는 Asia Geo에서 처리됩니다.
 
 > **참고** 위 표는 문서 원문을 요약한 것입니다. 한국 워크스페이스의 실제 처리 위치와 cross-Geo 설정이 필요한지는 계정 담당자와 최신 Designated Services 문서로 확인합니다.

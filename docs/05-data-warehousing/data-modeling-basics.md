@@ -99,7 +99,7 @@ CREATE TABLE main.dw.fact_sales (
 ALTER TABLE main.default.S ADD CONSTRAINT s_t_fk FOREIGN KEY(fk1, fk2) REFERENCES main.default.T;
 ```
 
-FK는 열을 부모 키의 열에 **위치 순서로** 매핑합니다. 위 예시에서 `REFERENCES` 절에 부모 열을 적지 않았으므로 `fk1`은 `T`의 PRIMARY KEY 정의 순서상 `pk1`에, `fk2`는 `pk2`에 매핑됩니다. 부모 열을 명시하려면 `REFERENCES main.default.T(pk1, pk2)`처럼 테이블 이름 뒤에 적습니다. FK를 선언할 때는 다음 규칙이 적용됩니다.
+FK는 열을 부모 키의 열에 **위치 순서로** 매핑합니다. 문서 예시에서 `T`의 기본 키는 `PRIMARY KEY (pk1, pk2)`입니다. 위 예시는 `REFERENCES` 절에 부모 열을 적지 않았으므로 PRIMARY KEY 정의 순서대로 `fk1`은 `pk1`에, `fk2`는 `pk2`에 매핑됩니다. 부모 열을 명시하려면 `REFERENCES main.default.T(pk1, pk2)`처럼 테이블 이름 뒤에 적습니다. FK를 선언할 때는 다음 규칙이 적용됩니다.
 
 - FK 열 이름과 제약 이름은 부모 테이블의 이름과 같을 필요가 없습니다.
 - FK 열 수는 부모 키 열 수와 같아야 합니다.

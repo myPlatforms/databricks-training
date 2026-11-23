@@ -25,7 +25,7 @@ Lakebase는 Databricks 플랫폼에 통합된 관리형 Postgres 데이터베이
 | 2 | [컴퓨트와 스케일링](compute-and-scaling.md) | 300 | Autoscaling(CU, 범위 제약), 스케일 투 제로, 읽기 복제본, 고가용성(HA) |
 | 3 | [브랜치와 복구](branches-and-recovery.md) | 300 | 브랜치, 인스턴트 복구, 특정 시점 브랜치, 재해 복구(Private Preview) |
 | 4 | [연결과 인증](connect-and-auth.md) | 200 | OAuth 토큰을 비밀번호로 쓰는 방식, 토큰 만료, 연결 수명, 롤과 권한, 클라이언트 도구 |
-| 5 | [커넥션 풀링](connection-pooling.md) | 300 | 내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러와 OAuth의 배타 관계 |
+| 5 | [커넥션 풀링](connection-pooling.md) | 300 | 내장 PgBouncer 풀러, 트랜잭션 모드의 제약, 풀러가 받는 인증 방식 |
 | 6 | [동기화 테이블](synced-tables.md) | 200 | Unity Catalog Delta를 Lakebase로 동기화, 동기화 모드, 타입 매핑, 제약 |
 | 7 | [변경 데이터 반출](change-data-out.md) | 300 | CDF(Lakebase → Delta), 논리 복제(Logical replication)의 지원 범위 |
 | 8 | [Databricks Apps와 함께 쓰기](apps-integration.md) | 200 | 리소스 바인딩, 주입되는 환경 변수, 서비스 프린시펄 역할 |

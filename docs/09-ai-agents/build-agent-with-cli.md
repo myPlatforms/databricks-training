@@ -203,7 +203,7 @@ agent = create_react_agent(
 
 ## 주의사항
 
-- **Python 버전**: 퀵스타트의 요구 사항은 Python 3.11 이상이며, 문서는 Python 3.12를 권장합니다.
+- **Python 버전**: 퀵스타트의 요구 사항은 Python 3.11 이상이며, 문서는 Python 3.12를 권장합니다. Agent Bricks CLI 문서는 패키지 자체는 Python 3.10에서도 설치되지만, 생성된 프로젝트에는 Python 3.11 이상이 필요하다고 설명합니다.
 - **`uv` 필요**: `init`, `dev`, `deploy`는 프로젝트 실행에 `uv`를 씁니다. 설치 실패 시 문서가 안내하는 명령은 `pip install --only-binary :all: databricks-agentbricks`와 `uv tool install --python 3.12 databricks-agentbricks`입니다.
 - **배포 권한**: `agentbricks deploy`를 실행하는 사용자는 앱, 저장소, MLflow 실험을 만들거나 관리할 권한이 있어야 합니다. 문서는 `--auth app` 도구에 한해 앱 서비스 프린시펄에 접근을 부여한다고 설명합니다.
 - **로컬 실행의 메모리 상태**: 로컬 채팅 앱은 메모리가 "Not connected"로 표시될 수 있습니다. 배포 전에 원격 저장소 연결을 확인하십시오.

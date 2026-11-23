@@ -93,8 +93,8 @@ GitHub 커넥터는 쓰기가 파일 내용, 이슈, 풀 리퀘스트로 제한�
 - **쓰기 권한을 최소화합니다.** GitHub처럼 쓰기 범위가 정해진 커넥터도 있지만, 사용자 정의 서버는 앱이 가진 권한만큼 쓸 수 있습니다.
 - **Auto-approve 아래에서 MCP 도구가 실행될 수 있습니다.** 운영 환경에서 승인 설정을 함께 검토합니다. 승인 설정은 [모드·기능과 데이터 접근 권한](features-and-permissions.md)을 참고하십시오.
 - **Genie Code CLI에서도 MCP를 쓸 수 있습니다.** CLI는 `genie mcp add`로 추가합니다. 자세한 내용은 [Genie Code CLI](cli.md)를 참고하십시오.
-- **상태 라벨은 이 페이지에 없습니다.** 릴리즈 노트에는 2026-08-06 "Databricks-managed MCP connectors are now integrated with Unity Gateway (Beta)"가 있습니다. 기본 제공 커넥터의 통합 상태이며, 이 페이지 전체의 상태를 뜻하지는 않습니다.
-- **규정 준수 보안 프로필 워크스페이스는 기본 활성화가 예정되어 있습니다.** 2026년 12월부터 compliance security profile이 켜진 워크스페이스에서 Genie One과 Genie Code의 Databricks 제공 MCP 커넥터가 기본으로 활성화된다고 릴리즈 노트의 예정 변경(What's coming)이 안내합니다.
+- **상태 라벨은 이 페이지에 없습니다.** 릴리즈 노트에는 2026-08-06 "Databricks-managed MCP connectors are now integrated with Unity Gateway (Beta)"가 있습니다. Databricks 제공 MCP 커넥터의 통합 상태이며, 이 페이지 전체의 상태를 뜻하지는 않습니다.
+- **규정 준수 보안 프로필 워크스페이스는 기본 활성화가 예정되어 있습니다.** 릴리즈 노트의 예정 변경(What's coming)에 따르면 2026년 12월부터 compliance security profile이 켜진 워크스페이스에서 Genie One과 Genie Code의 Databricks 제공 MCP 커넥터가 기본으로 활성화될 예정입니다. 예정 변경이 밝힌 대상 커넥터는 Google Drive, Gmail, Google Calendar, Microsoft 365, Atlassian, Slack, GitHub입니다.
 
 ## 참고 문서
 
