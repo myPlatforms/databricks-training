@@ -1,6 +1,6 @@
 # 파라미터·태스크 값·조건 분기
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 한눈에 보기
 
@@ -70,6 +70,7 @@ booking_status = dbutils.jobs.taskValues.get(
 | `{{job.run_id}}` | 잡 실행 ID |
 | `{{job.repair_count}}` | 현재 실행의 복구(repair) 시도 횟수 |
 | `{{job.start_time.<argument>}}` | 실행 시작 시각(UTC). 인수로 형식 지정 (예: `iso_date`) |
+| `{{(job.start_time - 1.day).iso_date}}` | 날짜 연산(date arithmetic, Beta). 날짜를 기간만큼 이동한 뒤 형식 지정. 이 예는 실행 시작 전날 날짜 |
 | `{{job.parameters.<name>}}` | 잡 파라미터 값 |
 | `{{job.trigger.type}}` | 트리거 종류. 반환값: `periodic`, `one_time`, `run_job_task`, `file_arrival`, `continuous`, `table`, `model` |
 | `{{job.trigger.file_arrival.location}}` | 파일 도착 트리거의 저장 위치 |
@@ -189,3 +190,4 @@ For each 태스크는 **중첩된 태스크 하나** 를 입력 배열의 각 �
 - [If/else condition task](https://docs.databricks.com/aws/en/jobs/tasks/if-else)
 - [For each task](https://docs.databricks.com/aws/en/jobs/tasks/for-each)
 - [Disabled tasks](https://docs.databricks.com/aws/en/jobs/disabled-tasks)
+- [Shift dates in Lakeflow Jobs parameters with date arithmetic (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#shift-dates-in-lakeflow-jobs-parameters-with-date-arithmetic-beta)

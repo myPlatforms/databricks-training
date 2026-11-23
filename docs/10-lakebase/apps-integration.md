@@ -1,6 +1,6 @@
 # Databricks Apps와 함께 쓰기
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 Databricks Apps는 워크스페이스 안에서 웹 애플리케이션을 만들고 배포하는 기능입니다. 앱에 Lakebase 데이터베이스를 **리소스로 바인딩** 하면, 플랫폼이 앱 전용 서비스 프린시펄(Service Principal)과 Postgres 역할을 만들고 연결 정보를 환경 변수로 주입합니다. 이 페이지는 바인딩 절차, 주입되는 환경 변수, 앱의 서비스 프린시펄이 받는 권한, 코드에서 연결하는 방법을 다룹니다.
 
@@ -40,7 +40,7 @@ Lakebase 리소스 바인딩은 이 작업의 대부분을 플랫폼이 맡습�
 5. 권한 검토 화면에서 서비스 프린시펄 권한을 확인하고 **Create app** 을 클릭합니다.
 6. 배포는 약 2–3분 걸리며, 상태가 **Running** 이 되면 앱 URL을 엽니다.
 
-기존 앱에 리소스를 추가하는 방법은 문서의 "Add a Lakebase resource to a Databricks app" 절을 참조합니다. 이 페이지 근거 문서에는 `databricks.yml`이나 `app.yaml`의 리소스 선언 예시가 없었습니다. 따라서 이 장에서는 YAML 예시를 쓰지 않습니다.
+기존 앱에 리소스를 추가할 때는 앱을 편집하면서 **Settings** > **Resources** 에서 **+ Add resource** > **Database** 를 클릭합니다(앱을 만들 때는 **App resources** 섹션). 자세한 절차는 문서의 "Add a Lakebase resource to a Databricks app" 절을 참조합니다. 이 페이지 근거 문서에는 `databricks.yml`이나 `app.yaml`의 리소스 선언 예시가 없었습니다. 따라서 이 장에서는 YAML 예시를 쓰지 않습니다.
 
 ## 4. 주입되는 환경 변수
 

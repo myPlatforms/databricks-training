@@ -1,6 +1,6 @@
 # AI Search와 검색 기반 에이전트
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 ## 왜 필요한가
 
@@ -20,7 +20,7 @@ AI Search 인덱스는 **엔드포인트**(인덱스를 담는 서버 자원)와
 |---|---|---|---|
 | Delta Sync, Databricks 계산 임베딩 | Databricks가 선택한 모델로 계산 | 소스와 자동 동기화 | 텍스트 컬럼을 지정하면 임베딩을 만들고, 선택 시 UC 테이블에 저장 |
 | Delta Sync, 자체 임베딩 | 소스 테이블에 이미 있음 | 소스와 자동 동기화 | 임베딩 벡터 컬럼을 지정. 나중에 관리형 임베딩으로 바꿀 수 없음 (새 인덱스 필요) |
-| Direct Vector Access | 사용자가 계산 | 수동 (REST API로 갱신) | 임베딩 테이블이 바뀔 때 API로 직접 갱신. 소스 유형 목록은 문서에 없음 |
+| Direct Vector Access | 사용자가 계산 | 수동 (REST API로 갱신) | 임베딩 테이블이 바뀔 때 API로 직접 갱신. 표준 엔드포인트에서만 지원. 소스 유형 목록은 문서에 없음 |
 | 전체 텍스트 검색 인덱스 (Beta) | 없음 | 트리거 방식 | 임베딩 컬럼 없는 Delta Sync 인덱스. BM25 키워드 검색. 스토리지 최적화 엔드포인트 필요 |
 
 인덱스 유형 중 Delta Sync 두 가지가 가장 많이 쓰입니다. 소스 테이블이 바뀌면 인덱스가 따라 갱신되기 때문입니다.
@@ -156,7 +156,7 @@ results = index.similarity_search(
 |---|---|
 | 관리형 임베딩인가 자체 임베딩인가 | 임베딩 모델을 Databricks에 맡기면 파이프라인이 단순. 이미 벡터를 관리하고 있다면 자체 임베딩. 자체 임베딩 인덱스를 관리형으로 바꾸려면 새 인덱스가 필요하다고 문서가 명시 |
 | Continuous인가 Triggered인가 | 몇 초 안의 반영이 필요하면 Continuous. 비용을 줄이고 주기적으로 갱신하면 Triggered |
-| 표준인가 스토리지 최적화인가 | 스토리지 최적화는 Triggered만 지원. 임베딩 차원이 16으로 나누어 떨어져야 함 |
+| 표준인가 스토리지 최적화인가 | 스토리지 최적화는 Triggered만 지원. 임베딩 차원이 16으로 나누어 떨어져야 함. Direct Vector Access 인덱스는 스토리지 최적화에서 지원되지 않으므로 표준 엔드포인트를 씀 |
 | 벡터만인가 하이브리드인가 | 정확한 식별자나 고유명사가 많으면 `hybrid`. 개념 질의 중심이면 `ANN` |
 
 ## 주의사항
@@ -168,7 +168,8 @@ results = index.similarity_search(
 - **인덱스 이름 규칙**: 공백, 마침표, 슬래시, 제어 문자를 쓸 수 없습니다.
 - **임베딩 엔드포인트 설정**: 대규모 데이터에는 GPU 엔드포인트를 쓰고, CPU 엔드포인트는 소규모 데이터와 테스트에만 씁니다. 임베딩 엔드포인트의 기본 "Scale to zero" 선택은 해제하십시오. 그대로 두면 첫 질의가 시간 초과될 수 있다고 문서가 설명합니다.
 - **QPS 조정 상태**: 엔드포인트의 목표 QPS를 바꾸면 응답 상태가 `SCALING_CHANGE_IN_PROGRESS`에서 `SCALING_CHANGE_APPLIED`로 바뀝니다. 적용이 끝나기 전에 부하 테스트 결과를 해석하지 마십시오.
-- **전체 텍스트 검색의 Beta 상태**: 전체 텍스트 인덱스와 `FULL_TEXT` 질의는 Beta입니다. 운영 적용 전에 상태를 확인하십시오.
+- **전체 텍스트 검색의 Beta 상태**: 전체 텍스트 인덱스와 `FULL_TEXT` 질의는 Beta입니다. 사용하려면 Previews에서 **AI Search: Full-Text Search**(구 Vector Search: Full-Text Search)를 켭니다. 운영 적용 전에 상태를 확인하십시오.
+- **엔드포인트 모니터링**: 엔드포인트의 **Metrics** 탭이나 API에서 실패한 질의가 임베딩 모델 엔드포인트에서 왔는지 AI Search에서 왔는지, 표준 엔드포인트의 인덱스에 초당 몇 행이 쓰이는지 확인할 수 있습니다. 엔드포인트 수준의 질의율, 지연 시간, 오류는 "Monitor AI Search endpoints" 문서를 따릅니다.
 - **청킹 설계**: 문서 분할 방식과 청크 크기는 공식 AI Search 페이지에서 권장값을 찾지 못했습니다. 이 장은 그 부분을 특정 수치로 제시하지 않습니다. 소스 테이블을 설계할 때 청크 단위와 메타데이터(출처, 문서 ID, 날짜)를 함께 두는 편이 나중에 필터링과 출처 표시에 유리합니다. 이는 설계 판단이며 문서 권장 사항이 아닙니다.
 
 ## 참고 문서
@@ -179,3 +180,4 @@ results = index.similarity_search(
 - [Use AI Search as an MCP tool](https://docs.databricks.com/aws/en/agents/mcp-tools/built-in-mcp-services)
 - [Change data feed](https://docs.databricks.com/aws/en/tables/features/change-data-feed)
 - [Iceberg v3](https://docs.databricks.com/aws/en/iceberg/iceberg-v3)
+- [AI Search endpoint metrics show error sources and ingestion rate (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#ai-search-endpoint-metrics-show-error-sources-and-ingestion-rate)

@@ -1,6 +1,6 @@
 # 배포 엔진: Terraform에서 직접 배포 엔진으로
 
-> 기준일: 2026-10-29 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 Declarative Automation Bundles는 배포할 때 리소스 상태를 계산하고 워크스페이스에 반영하는 **배포 엔진** 을 씁니다. 이 페이지는 엔진이 어떻게 바뀌었는지, 지금 어떤 엔진이 기본인지, 기존 번들을 옮기려면 무엇을 해야 하는지 정리합니다. 엔진 변경 이력은 릴리즈 노트에 있으므로, 이 페이지의 날짜와 버전은 모두 릴리즈 노트 원문을 기준으로 합니다.
 
@@ -95,7 +95,7 @@ databricks -v
 
 ### 5.2 마이그레이션 명령
 
-명령 레퍼런스의 `bundle deployment migrate`는 **Public Preview** 입니다. 설명은 "Migrate the bundle from using the Terraform deployment engine to using the direct deployment engine."입니다. 문서는 "To complete the migration you must then deploy the bundle."이라고 적고, 확인 방법으로 `databricks bundle plan`을 제시합니다.
+명령 레퍼런스의 `bundle deployment migrate` 설명은 "Migrate the bundle from using the Terraform deployment engine to using the direct deployment engine."입니다. 2026-11-04 갱신된 명령 레퍼런스에서는 Public Preview 표시가 빠졌고, CLI 1.14 이상에서는 `databricks bundle deploy`가 번들을 자동으로 마이그레이션하므로 이 명령은 선택 사항이라고 설명합니다. 이 명령은 마이그레이션된 배포 상태를 로컬에 쓰고, 다음 배포가 마이그레이션을 완료합니다. 확인 방법으로는 `databricks bundle plan`을 제시합니다.
 
 ```bash
 databricks bundle deployment migrate -t dev
@@ -135,7 +135,7 @@ databricks bundle deploy -t dev
 |---|---|
 | 필드 제거 | `databricks.yml`에서 설정된 필드를 지우면 다음 배포에서 리소스 기본값으로 되돌아갑니다. Terraform은 값을 그대로 둡니다. 값을 유지하려면 명시적으로 씁니다. |
 | 드리프트 | 직접 엔진이 다루지 않는 필드는 드리프트가 생길 수 있으며, 다음 `plan` 또는 `deploy`에서 갱신됩니다. |
-| 직접 엔진 필수 리소스 | 클러스터 정책, Unity Catalog 카탈로그·외부 위치·시크릿, Genie 스페이스, 인스턴스 풀, 잡 실행, AI Search 엔드포인트, MCP 서비스, 모델 제공자 서비스, 모델 서비스, Postgres 스냅샷 스케줄 |
+| 직접 엔진 필수 리소스 | 클러스터 정책, Unity Catalog 카탈로그·외부 위치·시크릿, Feature Views, FeatureSpecs, Genie Agents(구 Genie spaces), 인스턴스 풀, 잡 실행, Materialization sets, AI Search 엔드포인트, MCP 서비스, 모델 제공자 서비스, 모델 서비스, Postgres 스냅샷 스케줄 |
 | `lifecycle.started` | 직접 엔진에서만 동작하며, `apps`, `clusters`, `sql_warehouses`에만 적용됩니다. |
 
 ## 7. 주의사항

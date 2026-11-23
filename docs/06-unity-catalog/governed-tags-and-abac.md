@@ -1,6 +1,6 @@
 # 거버넌스 태그와 ABAC 정책
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 ## 한눈에 보기
 
@@ -80,7 +80,7 @@ Databricks가 미리 정의한 시스템 거버넌스 태그도 있습니다. �
 | 행 필터(Row filter) | 조건에 맞는 행만 보여 줍니다. | 문서에 상태 라벨 없음. 테이블에 적용 |
 | 열 마스크(Column mask) | 민감 열 값을 가립니다. | 문서에 상태 라벨 없음. 테이블에 적용 |
 | GRANT 정책 | 태그 조건에 맞는 객체에 권한을 부여합니다. | 모델, 모델 서비스, 모델 프로바이더 서비스, MCP 서비스: GA. 에이전트 서비스, 스킬: Beta (GRANT 정책 페이지 기준) |
-| DENY 정책 | 태그 조건에 맞는 객체에서 권한을 거부합니다. `MANAGE ACCESS CONTROL`을 거부하는 등 지원되는 객체 유형에 한정됩니다. | Beta |
+| DENY 정책 | 태그 조건에 맞는 객체에서 권한을 거부합니다. `MANAGE ACCESS CONTROL`을 거부하는 등 지원되는 객체 유형에 한정됩니다. 메타스토어·카탈로그·스키마 수준 외에 지원되는 보안 객체에 직접 연결할 수도 있으며, 지원 유형에 모델 서비스, 모델 프로바이더 서비스, MCP 서비스, 에이전트 서비스, 스킬이 추가되었습니다. | Beta |
 
 > **주의** 서비스 유형의 상태 라벨은 페이지마다 다릅니다. 보안 설계에 넣기 전에 해당 기능 페이지에서 최신 표기를 확인하십시오.
 
@@ -218,7 +218,7 @@ ABAC 관련 기능은 상태가 세분화되어 있습니다. 공식 문서와 �
 | DENY 정책 | Beta | 정책 페이지 |
 | 시간 여행(Time travel) 쿼리의 ABAC 강제 | Beta | 릴리즈 노트 |
 | 컨텍스트 속성, 신원 속성(열 마스크) | Beta | 릴리즈 노트 |
-| 거버넌스 태그 전파(tag propagation) | Beta (2026-10-12 공지) | 릴리즈 노트 |
+| 거버넌스 태그 전파(tag propagation) | Beta (2026-10-12 공지). 2026년 11월부터 서버리스 컴퓨트 외에 Databricks Runtime 19 이상 클래식 컴퓨트도 지원 | 릴리즈 노트 |
 | 태그 자동화(Tag automations) | Beta (2026-08-07 공지) | 릴리즈 노트 |
 | 행 필터와 열 마스크(테이블 대상) | 문서에 상태 라벨 없음 | 정책 페이지 |
 
@@ -255,3 +255,4 @@ ABAC 관련 기능은 상태가 세분화되어 있습니다. 공식 문서와 �
 - [Governed tags](https://docs.databricks.com/aws/en/admin/governed-tags/)
 - [Unity Catalog resource limits](https://docs.databricks.com/aws/en/resources/limits)
 - [Tags (SET TAG, UNSET TAG)](https://docs.databricks.com/aws/en/database-objects/tags)
+- [Governed tag propagation supports classic compute (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#governed-tag-propagation-supports-classic-compute-beta)

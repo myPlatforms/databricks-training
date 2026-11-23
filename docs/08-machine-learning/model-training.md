@@ -1,6 +1,6 @@
 # 모델 학습 도구
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 이 페이지는 Databricks에서 모델을 학습하는 도구를 정리합니다. 고전 ML은 ML 런타임(Databricks Runtime for ML) 위에서 학습하고, 하이퍼파라미터 튜닝은 Optuna나 Ray Tune을 씁니다. 큰 데이터와 모델은 분산 학습을 씁니다. 딥러닝 GPU 워크로드는 AI Runtime(서버리스 GPU)을 씁니다.
 
@@ -99,10 +99,12 @@ AI Runtime은 딥러닝 학습, 파인튜닝 등을 위한 **완전 관리형 �
 | Quickstart | 터미널에서 AI Runtime으로 첫 워크로드를 실행 |
 | Databricks CLI | YAML 작업 구성으로 분산 GPU 학습 잡을 제출하고 관리 |
 | 노트북 | 노트북을 AI Runtime에 연결해 클러스터 없이 대화형으로 개발 |
-| 잡(Jobs) | GPU 워크로드를 반복 잡으로 예약하고, 업스트림과 다운스트림 태스크와 연결 |
+| 잡(Jobs) | AI Runtime 노트북을 반복 잡으로 예약 |
 | Ray | Ray Core, Ray Data, Ray Train, Ray Tune을 AI Runtime에서 실행 |
 
 Quickstart와 CLI의 세부 명령은 해당 페이지에서 확인하십시오. 이 장은 명령을 추정하지 않았습니다.
+
+> **참고** 2026년 11월 릴리즈 노트에 따르면 UCDataset(Beta)은 AI Runtime에서 Spark나 SQL 웨어하우스 없이 Unity Catalog 테이블의 행을 PyTorch 학습 루프로 바로 스트리밍합니다. 읽는 동안 필터 식과 삭제 벡터(deletion vector)를 적용하고, 조건에 맞는 행을 GPU와 데이터 로더 워커에 나눕니다. Databricks 블로그는 학습 잡이 실행 주체의 신원으로 데이터를 읽어 테이블의 Unity Catalog 권한이 적용되며, Beta에서는 행 필터나 열 마스크가 있는 테이블을 읽을 수 없다고 설명합니다. AI Runtime에서 학습한 모델은 기록·등록한 뒤 CPU 또는 GPU 컴퓨트의 Model Serving 엔드포인트로 배포할 수 있습니다.
 
 ## 분산 학습 옵션
 
@@ -140,3 +142,5 @@ Quickstart와 CLI의 세부 명령은 해당 페이지에서 확인하십시오.
 - [Hyperparameter tuning](https://docs.databricks.com/aws/en/machine-learning/automl-hyperparam-tuning/)
 - [AutoML](https://docs.databricks.com/aws/en/machine-learning/automl/)
 - [Ray on Databricks](https://docs.databricks.com/aws/en/machine-learning/ray/)
+- [Load Unity Catalog tables into PyTorch on AI Runtime (Beta) (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#load-unity-catalog-tables-into-pytorch-on-ai-runtime-beta)
+- [Accelerate GPU training on Unity Catalog tables with UCDataset (Databricks 블로그)](https://www.databricks.com/blog/accelerate-gpu-training-unity-catalog-tables-ucdataset)

@@ -1,6 +1,6 @@
 # 암호화·시크릿·컴플라이언스
 
-> 기준일: 2026-10-28 · 근거: 공식 문서 · 수준: 300
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 300
 
 ## 한눈에 보기
 
@@ -22,7 +22,7 @@
 
 | 적용 범위 | 대상 데이터 | 메모 |
 |---|---|---|
-| 관리형 서비스 (Managed services) | 컨트롤 플레인 데이터. 노트북 소스, 시크릿, Databricks SQL 쿼리와 쿼리 기록, AI/BI 대시보드, Genie Agents, AI Search 인덱스, Lakebase Autoscaling 프로젝트 데이터, Git 자격증명 | 서버리스 워크스페이스에서는 워크스페이스 스토리지와 루트 스토리지도 포함 |
+| 관리형 서비스 (Managed services) | 컨트롤 플레인 데이터. 노트북 소스, Databricks 시크릿 스코프에 저장된 시크릿, Databricks SQL 쿼리와 쿼리 기록, AI/BI 대시보드, Genie Agents, AI Search 인덱스, Lakebase Autoscaling 프로젝트 데이터, Git 자격증명 | 서버리스 워크스페이스에서는 워크스페이스 스토리지와 루트 스토리지도 포함 |
 | 워크스페이스 스토리지 (Workspace storage) | 워크스페이스 스토리지 버킷. DBFS 루트(FileStore, MLflow 모델, DBFS 루트의 Lakeflow pipelines 데이터), 잡 결과 같은 시스템 데이터, 선택 시 클래식 컴퓨트의 EBS 볼륨 | 기본 스토리지(default storage)에는 적용 안 됨 |
 | Unity Catalog | 기본 스토리지로 뒷받침되는 카탈로그의 데이터 | 카탈로그마다 다른 키 사용 가능. KMS로 암호화된 S3 버킷을 읽고 쓸 수 있음 |
 
@@ -34,6 +34,7 @@
 |---|---|
 | 쿼리 기록 | 관리형 서비스 키를 설정한 뒤에도 `system` 카탈로그에 키를 설정하기 전까지 쿼리 기록 테이블의 `statement_text` 같은 필드가 비어 보입니다. 릴리즈 노트에 따르면 `system` 카탈로그의 키로 쿼리 기록을 복호화하는 기능이 2026년 10월 2일 GA입니다 |
 | 대시보드 | 2024년 11월 1일 이후에 만든 AI/BI 대시보드만 암호화되고 CMK와 호환됨 |
+| 키 교체 | AWS KMS 키 교체(자동 또는 온디맨드)는 관리형 서비스용 고객 관리 키와 호환됨 |
 | DBFS 마운트 | 워크스페이스 스토리지 키는 추가 DBFS 마운트를 암호화하지 않음. 마운트는 레거시 패턴이며 Unity Catalog 사용을 권장 |
 | 서버리스 EBS | 서버리스 컴퓨트에는 원격 EBS 볼륨 암호화가 적용되지 않음. 서버리스 디스크는 수명이 짧다고 문서가 설명 |
 
@@ -96,7 +97,7 @@ api_key = dbutils.secrets.get(scope="my-scope", key="api-key")
 
 | 구분 | 표준 |
 |---|---|
-| 정부·공공 | CCCS Medium (Protected B), DoD IL5, FedRAMP High, FedRAMP Moderate, IRAP, ISMAP |
+| 정부·공공 | CCCS Medium (Protected B), DoD IL5, FedRAMP Class D(구 High), FedRAMP Class C(구 Moderate), IRAP, ISMAP |
 | 산업·보안 인증 | C5, HIPAA, HITRUST, K-FSI, PCI-DSS, TISAX, UK Cyber Essentials Plus |
 
 > **참고** 위 구분 열은 이 장에서 나눈 것이며 문서의 분류가 아닙니다.
@@ -111,7 +112,7 @@ api_key = dbutils.secrets.get(scope="my-scope", key="api-key")
 - 클러스터와 SQL 웨어하우스에 AWS Nitro 인스턴스 유형 강제
 - 모든 송신(egress) 트래픽에 TLS 1.2 이상. 메타스토어 통신 포함
 
-릴리즈 노트에 따르면 2026년 10월 16일부터 컴플라이언스 보안 프로필 워크스페이스는 모든 표준을 지원하는 `READ METADATA` 권한이 기본으로 켜집니다. 같은 달 5일부터 Genie Code 예약 작업도 이 워크스페이스에서 기본으로 켜집니다.
+릴리즈 노트에 따르면 2026년 10월 16일부터 컴플라이언스 보안 프로필 워크스페이스는 모든 표준을 지원하는 `READ METADATA` 권한이 기본으로 켜집니다. 같은 달 5일부터 Genie Code 예약 작업도 이 워크스페이스에서 기본으로 켜집니다. 2026년 11월 릴리즈 노트에 따르면 SSL 인증서 지원을 포함한 JDBC Unity Catalog 연결도 이 워크스페이스에서 기본으로 제공됩니다. What's coming 페이지는 IP 함수가 이 워크스페이스에서 기본으로 제공될 예정이며, 2026년 12월 20일 이후에는 웹훅 알림 대상의 OAuth 인증도 리전과 컴플라이언스 표준 요건에 따라 기본으로 제공된다고 예고합니다. 기존 웹훅 대상은 설정된 인증 방식을 유지합니다.
 
 > **주의** 프로필을 켜면 Enhanced Security and Compliance 추가 기능 요금이 부과된다고 문서가 명시합니다. 단가는 이 장에 쓰지 않습니다. 가격 페이지에서 확인하십시오.
 
@@ -157,3 +158,5 @@ api_key = dbutils.secrets.get(scope="my-scope", key="api-key")
 - [Compliance security profile](https://docs.databricks.com/aws/en/security/privacy/security-profile)
 - [Enhanced security monitoring](https://docs.databricks.com/aws/en/security/privacy/enhanced-security-monitoring)
 - [Release notes, October 2026](https://docs.databricks.com/aws/en/release-notes/product/2026/october)
+- [JDBC Unity Catalog connections are now available by default for workspaces with the compliance security profile enabled (릴리즈 노트, 2026년 11월)](https://docs.databricks.com/aws/en/release-notes/product/2026/november#jdbc-unity-catalog-connections-are-now-available-by-default-for-workspaces-with-the-compliance-security-profile-enabled)
+- [What's coming?](https://docs.databricks.com/aws/en/release-notes/whats-coming)

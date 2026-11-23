@@ -1,6 +1,6 @@
 # Unity Catalog의 모델
 
-> 기준일: 2026-10-30 · 근거: 공식 문서 · 수준: 200
+> 기준일: 2026-11-23 · 근거: 공식 문서 · 수준: 200
 
 Unity Catalog의 모델 레지스트리(Model Registry)는 MLflow 모델을 `catalog.schema.model` 3단계 이름으로 등록하고, 버전과 별칭(alias)으로 배포 대상을 관리하는 저장소입니다. 권한, 계보(lineage), 검색을 다른 데이터 자산과 같은 체계로 묶습니다.
 
@@ -155,6 +155,7 @@ GRANT EXECUTE ON FUNCTION prod.ml_team.churn_model TO `ml-serving-sp@example.com
 |---|---|
 | 스테이지 대신 별칭 | 운영·스테이징 구분을 별칭과 이름으로 표현한다. 워크스페이스 레지스트리의 Stage 방식과 다르다 |
 | 웹훅·알림 | 문서는 Unity Catalog 레지스트리에서 웹훅과 이메일 알림을 지원하지 않는다고 명시한다 |
+| 활동 로그 | 모델과 모델 버전 페이지의 활동 로그는 배포 작업(deployment job) 활동만 보여 준다. 그 밖의 활동은 감사 로그(audit logs)로 추적한다 |
 | 검색 | `order_by`, 태그 필터를 쓸 수 없고 정확 일치(equality) 연산자만 쓸 수 있다. 이름으로 찾을 때는 `get_registered_model`을 쓴다 |
 | 삭제 | 등록 모델 삭제는 되돌릴 수 없으며 아티팩트와 메타데이터를 함께 지운다 |
 
